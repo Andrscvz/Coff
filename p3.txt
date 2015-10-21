@@ -1,0 +1,9 @@
+program p3; 
+var a, b, c: float;
+{
+	if ((a)){
+		a = (-35.01 + c) / b;
+	}else{
+		a = c * (50 / 2.0);
+	}; 
+}

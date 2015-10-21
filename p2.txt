@@ -1,0 +1,4 @@
+
+principal vacio inicio(){
+	imprimir('hola');
+}
