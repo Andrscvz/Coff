@@ -1,35 +1,35 @@
 
 clase coff extiende andres{
 	atributos:
-		entero x = 0;
+		entero a = 0;
 	metodos:
-		funcion vacio manuel(entero x, decimal &y){
+		funcion vacio manuel(entero b, decimal &c){
 			leer(x);
 			asigna y = x + y;
 			imprimir(y);
 		}
 }
 
-funcion entero suma1(entero x){
-	decimal y = 0;
+funcion entero suma1(entero d){
+	decimal e = 0;
 	ejec suma1(x);
 	asigna x = x + 1;
 	retorna x;
 } 
 
-entero a[20] = [0,1,2];
-texto c[10] = ['a','b'];
+entero f[20] = [0,1,2];
+texto g[10] = ['a','b'];
 
 
 /*Este es un comentario*/
 principal vacio inicio(){
-	entero viejo = 0;
+	entero h = 0;
 	
 	asigna viejo = suma1(viejo);
 	
 	ejec suma1(viejo);
 	
-	coff x;
+	coff i;
 	
 	ejec x.manuel(1,2); /* checar */
 	

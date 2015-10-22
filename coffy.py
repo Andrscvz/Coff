@@ -29,26 +29,33 @@ def p_p1(p):
 def p_p2(p):
 	'''p2 : empty
 			| funcion p2'''
+	global metodoToF
 	metodoToF = 0
 			
 def p_p3(p):
 	'''p3 : empty
 			| variables p3'''
+	global globalToF
 	globalToF = 1
 	
 #Funcion principal donde arranca el programa
 #funcion TIPO principal PARAMETROS { variables estatuto RETORNA expresion;}
 def p_principal(p):
 	'''principal : PRINCIPAL pr1 ID parametros BIZQ pr2 BDER'''
-	globalToF = 0
+	global scopeProcs
+	global globalToF
+	global dirProcs 
+	global tipoActualFuncion 
 	scopeProcs += 1
+	globalToF = 0
 	dirProcs[p[3],0] = [scopeProcs,tipoActualFuncion]
 	
 def p_pr1(p):
 	'''pr1 : tiposimple
 			| VACIO'''
-	if p[1] != 'none':
-		tipoActualFuncion = p[1]
+	global tipoActualFuncion 
+	#if p in locals():
+	tipoActualFuncion = p[1]
 
 def p_pr2(p):
 	'''pr2 : pr21 pr22'''
@@ -67,6 +74,8 @@ def p_tipo(p):
 			| DECIMAL
 			| TEXTO
 			| ID'''
+	global tipoActualVariable 
+	global tipoActualFuncion 
 	tipoActualVariable = p[1]
 	tipoActualFuncion = p[1]
 
@@ -76,10 +85,14 @@ def p_variables(p):
 
 def p_v1(p):
 	'''v1 : ID v2'''
+	global globalToF
+	global tablaVariables
+	global tipoActualVariable
+	global scopeProcs
 	if globalToF:
-		tablaVariables[p[1],0] = {tipoActualVariable}
+		tablaVariables[p[1],0] = tipoActualVariable
 	else:
-		tablaVariables[p[1],scopeProcs] = {tipoActualVariable} 
+		tablaVariables[p[1],scopeProcs] = tipoActualVariable 
 
 def p_v2(p):
 	'''v2 : empty
@@ -138,6 +151,8 @@ def p_tiposimple(p):
 	'''tiposimple : ENTERO
 					| DECIMAL
 					| TEXTO'''
+	global tipoActualFuncion
+	global tipoActualVariable
 	tipoActualFuncion = p[1]
 	tipoActualVariable = p[1]
 					
@@ -148,8 +163,13 @@ def p_parametros(p):
 def p_pa1(p):
 	'''pa1 : empty 
 			| tiposimple pa2 ID pa3'''
-	if p[3] != 'none':
-		tablaVariables[p[3],scopeProcs] = {tipoActualVariable} 
+	global tablaVariables
+	global scopeProcs
+	global tipoActualVariable
+	try:
+		tablaVariables[p[3],scopeProcs] = tipoActualVariable
+	except IndexError:
+		scopeProcs = scopeProcs
 
 def p_pa2(p):
 	'''pa2 : empty
@@ -232,7 +252,12 @@ def p_f1(p):
 def p_funcion(p):
 	'''funcion : FUNCION fun1 ID parametros BIZQ fun2 BDER'''
 	global scopeProcs 
+	global metodoToF
+	global claseRef
+	global tipoActualFuncion
+	global dirProcs
 	scopeProcs += 1
+	
 	if metodoToF:
 		dirProcs[p[3],claseRef] = [scopeProcs,tipoActualFuncion]
 	else:
@@ -241,9 +266,9 @@ def p_funcion(p):
 def p_fun1(p):
 	'''fun1 : tipo
 			| VACIO'''
-	#print(p[1])
-	if p[1] is not None:
-		tipoActualFuncion = p[1]
+	global tipoActualFuncion
+	#if p in locals():
+	tipoActualFuncion = p[1]
 
 def p_fun2(p):
 	'''fun2 : fun21 fun22'''
@@ -338,8 +363,11 @@ def p_si1(p):
 #Clase
 def p_clases(p):
 	'''clases : CLASE ID cl1 BIZQ atributos metodos BDER'''
-	global scopeProcs 
+	global scopeProcs
+	global claseRef
+	global dirProcs
 	scopeProcs += 1
+	print(scopeProcs)
 	claseRef = scopeProcs
 	dirProcs[p[2],0] = [scopeProcs,""]
 
@@ -362,6 +390,7 @@ def p_metodos(p):
 def p_met1(p):
 	'''met1 : empty
 			| funcion met1'''
+	global metodoToF
 	metodoToF = 1
 			
 #Vacio
@@ -388,8 +417,18 @@ try:
 	yacc.parse(entry)
 	
 	print("----------------Tabla de variables---------------")
+	for keys,values in tablaVariables.items():
+		print("/////")
+		print(keys)
+		print(values)
+		print("/////")
 	print("-------------------------------------------------")
 	print("----------------Directorio de Procs--------------")
+	for keys,values in dirProcs.items():
+		print("/////")
+		print(keys)
+		print(values)
+		print("/////")
 	print("-------------------------------------------------")
 	if error:
 		print("Programa Exitoso")
