@@ -6,6 +6,14 @@ import sys
 
 # Lista de tokens del lexer
 tokens = coffl.tokens
+tablaVariables = {}
+tipoActualVariable = ""
+dirProcs = {}
+scopeProcs = 0
+globalToF = 0
+metodoToF = 0
+tipoActualFuncion = 0
+claseRef = 0
 
 # Funciones de las reglas gramaticales
 
@@ -21,19 +29,26 @@ def p_p1(p):
 def p_p2(p):
 	'''p2 : empty
 			| funcion p2'''
+	metodoToF = 0
 			
 def p_p3(p):
 	'''p3 : empty
 			| variables p3'''
-
+	globalToF = 1
+	
 #Funcion principal donde arranca el programa
 #funcion TIPO principal PARAMETROS { variables estatuto RETORNA expresion;}
 def p_principal(p):
 	'''principal : PRINCIPAL pr1 ID parametros BIZQ pr2 BDER'''
-
+	globalToF = 0
+	scopeProcs += 1
+	dirProcs[p[3],0] = [scopeProcs,tipoActualFuncion]
+	
 def p_pr1(p):
 	'''pr1 : tiposimple
 			| VACIO'''
+	if p[1] != 'none':
+		tipoActualFuncion = p[1]
 
 def p_pr2(p):
 	'''pr2 : pr21 pr22'''
@@ -52,6 +67,8 @@ def p_tipo(p):
 			| DECIMAL
 			| TEXTO
 			| ID'''
+	tipoActualVariable = p[1]
+	tipoActualFuncion = p[1]
 
 #Declaracion de variables
 def p_variables(p):
@@ -59,6 +76,10 @@ def p_variables(p):
 
 def p_v1(p):
 	'''v1 : ID v2'''
+	if globalToF:
+		tablaVariables[p[1],0] = {tipoActualVariable}
+	else:
+		tablaVariables[p[1],scopeProcs] = {tipoActualVariable} 
 
 def p_v2(p):
 	'''v2 : empty
@@ -117,6 +138,8 @@ def p_tiposimple(p):
 	'''tiposimple : ENTERO
 					| DECIMAL
 					| TEXTO'''
+	tipoActualFuncion = p[1]
+	tipoActualVariable = p[1]
 					
 #Parametros que se mandan a las funciones o metodos
 def p_parametros(p):
@@ -125,6 +148,8 @@ def p_parametros(p):
 def p_pa1(p):
 	'''pa1 : empty 
 			| tiposimple pa2 ID pa3'''
+	if p[3] != 'none':
+		tablaVariables[p[3],scopeProcs] = {tipoActualVariable} 
 
 def p_pa2(p):
 	'''pa2 : empty
@@ -206,10 +231,19 @@ def p_f1(p):
 #Funcion
 def p_funcion(p):
 	'''funcion : FUNCION fun1 ID parametros BIZQ fun2 BDER'''
+	global scopeProcs 
+	scopeProcs += 1
+	if metodoToF:
+		dirProcs[p[3],claseRef] = [scopeProcs,tipoActualFuncion]
+	else:
+		dirProcs[p[3],0] = [scopeProcs,tipoActualFuncion]
 
 def p_fun1(p):
 	'''fun1 : tipo
 			| VACIO'''
+	#print(p[1])
+	if p[1] is not None:
+		tipoActualFuncion = p[1]
 
 def p_fun2(p):
 	'''fun2 : fun21 fun22'''
@@ -304,6 +338,10 @@ def p_si1(p):
 #Clase
 def p_clases(p):
 	'''clases : CLASE ID cl1 BIZQ atributos metodos BDER'''
+	global scopeProcs 
+	scopeProcs += 1
+	claseRef = scopeProcs
+	dirProcs[p[2],0] = [scopeProcs,""]
 
 def p_cl1(p):
 	'''cl1 : empty
@@ -324,6 +362,7 @@ def p_metodos(p):
 def p_met1(p):
 	'''met1 : empty
 			| funcion met1'''
+	metodoToF = 1
 			
 #Vacio
 def p_empty(p):
@@ -347,6 +386,11 @@ try:
 	for line in s:
 		entry += line
 	yacc.parse(entry)
+	
+	print("----------------Tabla de variables---------------")
+	print("-------------------------------------------------")
+	print("----------------Directorio de Procs--------------")
+	print("-------------------------------------------------")
 	if error:
 		print("Programa Exitoso")
 except EOFError:

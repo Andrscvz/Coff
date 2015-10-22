@@ -292,34 +292,59 @@ state 0
     TEXTO           reduce using rule 145 (empty -> .)
     ID              reduce using rule 145 (empty -> .)
     PRINCIPAL       reduce using rule 145 (empty -> .)
+<<<<<<< HEAD
     CLASE           shift and go to state 1
 
     p1                             shift and go to state 4
     empty                          shift and go to state 3
     clases                         shift and go to state 2
+=======
+    CLASE           shift and go to state 3
+
+    empty                          shift and go to state 1
+    p1                             shift and go to state 2
+    clases                         shift and go to state 4
+>>>>>>> origin/master
     programa                       shift and go to state 5
 
 state 1
 
+<<<<<<< HEAD
     (136) clases -> CLASE . ID cl1 BIZQ atributos metodos BDER
 
     ID              shift and go to state 6
+=======
+    (2) p1 -> empty .
+
+    FUNCION         reduce using rule 2 (p1 -> empty .)
+    ENTERO          reduce using rule 2 (p1 -> empty .)
+    DECIMAL         reduce using rule 2 (p1 -> empty .)
+    TEXTO           reduce using rule 2 (p1 -> empty .)
+    ID              reduce using rule 2 (p1 -> empty .)
+    PRINCIPAL       reduce using rule 2 (p1 -> empty .)
+>>>>>>> origin/master
 
 
 state 2
 
+<<<<<<< HEAD
     (3) p1 -> clases . p1
     (2) p1 -> . empty
     (3) p1 -> . clases p1
+=======
+    (1) programa -> p1 . p2 p3 principal
+    (4) p2 -> . empty
+    (5) p2 -> . funcion p2
+>>>>>>> origin/master
     (145) empty -> .
-    (136) clases -> . CLASE ID cl1 BIZQ atributos metodos BDER
+    (92) funcion -> . FUNCION fun1 ID parametros BIZQ fun2 BDER
 
-    FUNCION         reduce using rule 145 (empty -> .)
     ENTERO          reduce using rule 145 (empty -> .)
     DECIMAL         reduce using rule 145 (empty -> .)
     TEXTO           reduce using rule 145 (empty -> .)
     ID              reduce using rule 145 (empty -> .)
     PRINCIPAL       reduce using rule 145 (empty -> .)
+<<<<<<< HEAD
     CLASE           shift and go to state 1
 
     empty                          shift and go to state 3
@@ -337,10 +362,98 @@ state 3
     ID              reduce using rule 2 (p1 -> empty .)
     PRINCIPAL       reduce using rule 2 (p1 -> empty .)
 
+=======
+    FUNCION         shift and go to state 7
+
+    empty                          shift and go to state 6
+    funcion                        shift and go to state 8
+    p2                             shift and go to state 9
+
+state 3
+
+    (136) clases -> CLASE . ID cl1 BIZQ atributos metodos BDER
+
+    ID              shift and go to state 10
+
+>>>>>>> origin/master
 
 state 4
 
-    (1) programa -> p1 . p2 p3 principal
+    (3) p1 -> clases . p1
+    (2) p1 -> . empty
+    (3) p1 -> . clases p1
+    (145) empty -> .
+    (136) clases -> . CLASE ID cl1 BIZQ atributos metodos BDER
+
+    FUNCION         reduce using rule 145 (empty -> .)
+    ENTERO          reduce using rule 145 (empty -> .)
+    DECIMAL         reduce using rule 145 (empty -> .)
+    TEXTO           reduce using rule 145 (empty -> .)
+    ID              reduce using rule 145 (empty -> .)
+    PRINCIPAL       reduce using rule 145 (empty -> .)
+<<<<<<< HEAD
+    FUNCION         shift and go to state 11
+
+    p2                             shift and go to state 8
+    empty                          shift and go to state 9
+    funcion                        shift and go to state 10
+=======
+    CLASE           shift and go to state 3
+
+    empty                          shift and go to state 1
+    p1                             shift and go to state 11
+    clases                         shift and go to state 4
+>>>>>>> origin/master
+
+state 5
+
+    (0) S' -> programa .
+
+
+
+state 6
+
+    (4) p2 -> empty .
+
+<<<<<<< HEAD
+    EXTIENDE        shift and go to state 14
+    BIZQ            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 12
+    cl1                            shift and go to state 13
+=======
+    ENTERO          reduce using rule 4 (p2 -> empty .)
+    DECIMAL         reduce using rule 4 (p2 -> empty .)
+    TEXTO           reduce using rule 4 (p2 -> empty .)
+    ID              reduce using rule 4 (p2 -> empty .)
+    PRINCIPAL       reduce using rule 4 (p2 -> empty .)
+
+>>>>>>> origin/master
+
+state 7
+
+    (92) funcion -> FUNCION . fun1 ID parametros BIZQ fun2 BDER
+    (93) fun1 -> . tipo
+    (94) fun1 -> . VACIO
+    (16) tipo -> . ENTERO
+    (17) tipo -> . DECIMAL
+    (18) tipo -> . TEXTO
+    (19) tipo -> . ID
+
+    VACIO           shift and go to state 18
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
+
+    tipo                           shift and go to state 14
+    fun1                           shift and go to state 17
+
+state 8
+
+<<<<<<< HEAD
+=======
+    (5) p2 -> funcion . p2
     (4) p2 -> . empty
     (5) p2 -> . funcion p2
     (145) empty -> .
@@ -351,45 +464,15 @@ state 4
     TEXTO           reduce using rule 145 (empty -> .)
     ID              reduce using rule 145 (empty -> .)
     PRINCIPAL       reduce using rule 145 (empty -> .)
-    FUNCION         shift and go to state 11
+    FUNCION         shift and go to state 7
 
-    p2                             shift and go to state 8
-    empty                          shift and go to state 9
-    funcion                        shift and go to state 10
+    empty                          shift and go to state 6
+    funcion                        shift and go to state 8
+    p2                             shift and go to state 19
 
-state 5
+state 9
 
-    (0) S' -> programa .
-
-
-
-state 6
-
-    (136) clases -> CLASE ID . cl1 BIZQ atributos metodos BDER
-    (137) cl1 -> . empty
-    (138) cl1 -> . EXTIENDE ID
-    (145) empty -> .
-
-    EXTIENDE        shift and go to state 14
-    BIZQ            reduce using rule 145 (empty -> .)
-
-    empty                          shift and go to state 12
-    cl1                            shift and go to state 13
-
-state 7
-
-    (3) p1 -> clases p1 .
-
-    FUNCION         reduce using rule 3 (p1 -> clases p1 .)
-    ENTERO          reduce using rule 3 (p1 -> clases p1 .)
-    DECIMAL         reduce using rule 3 (p1 -> clases p1 .)
-    TEXTO           reduce using rule 3 (p1 -> clases p1 .)
-    ID              reduce using rule 3 (p1 -> clases p1 .)
-    PRINCIPAL       reduce using rule 3 (p1 -> clases p1 .)
-
-
-state 8
-
+>>>>>>> origin/master
     (1) programa -> p1 p2 . p3 principal
     (6) p3 -> . empty
     (7) p3 -> . variables p3
@@ -401,6 +484,7 @@ state 8
     (19) tipo -> . ID
 
     PRINCIPAL       reduce using rule 145 (empty -> .)
+<<<<<<< HEAD
     ENTERO          shift and go to state 19
     DECIMAL         shift and go to state 21
     TEXTO           shift and go to state 17
@@ -410,9 +494,21 @@ state 8
     p3                             shift and go to state 20
     tipo                           shift and go to state 18
     empty                          shift and go to state 22
+=======
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
+
+    empty                          shift and go to state 20
+    variables                      shift and go to state 21
+    tipo                           shift and go to state 23
+    p3                             shift and go to state 22
+>>>>>>> origin/master
 
 state 9
 
+<<<<<<< HEAD
     (4) p2 -> empty .
 
     ENTERO          reduce using rule 4 (p2 -> empty .)
@@ -421,15 +517,24 @@ state 9
     ID              reduce using rule 4 (p2 -> empty .)
     PRINCIPAL       reduce using rule 4 (p2 -> empty .)
 
+=======
+    (136) clases -> CLASE ID . cl1 BIZQ atributos metodos BDER
+    (137) cl1 -> . empty
+    (138) cl1 -> . EXTIENDE ID
+    (145) empty -> .
+
+    EXTIENDE        shift and go to state 24
+    BIZQ            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 25
+    cl1                            shift and go to state 26
+>>>>>>> origin/master
 
 state 10
 
-    (5) p2 -> funcion . p2
-    (4) p2 -> . empty
-    (5) p2 -> . funcion p2
-    (145) empty -> .
-    (92) funcion -> . FUNCION fun1 ID parametros BIZQ fun2 BDER
+    (3) p1 -> clases p1 .
 
+<<<<<<< HEAD
     ENTERO          reduce using rule 145 (empty -> .)
     DECIMAL         reduce using rule 145 (empty -> .)
     TEXTO           reduce using rule 145 (empty -> .)
@@ -465,24 +570,50 @@ state 12
     (137) cl1 -> empty .
 
     BIZQ            reduce using rule 137 (cl1 -> empty .)
+=======
+    FUNCION         reduce using rule 3 (p1 -> clases p1 .)
+    ENTERO          reduce using rule 3 (p1 -> clases p1 .)
+    DECIMAL         reduce using rule 3 (p1 -> clases p1 .)
+    TEXTO           reduce using rule 3 (p1 -> clases p1 .)
+    ID              reduce using rule 3 (p1 -> clases p1 .)
+    PRINCIPAL       reduce using rule 3 (p1 -> clases p1 .)
+
+
+state 12
+
+    (18) tipo -> TEXTO .
+
+    ID              reduce using rule 18 (tipo -> TEXTO .)
+>>>>>>> origin/master
 
 
 state 13
 
-    (136) clases -> CLASE ID cl1 . BIZQ atributos metodos BDER
+    (19) tipo -> ID .
 
+<<<<<<< HEAD
     BIZQ            shift and go to state 27
+=======
+    ID              reduce using rule 19 (tipo -> ID .)
+>>>>>>> origin/master
 
 
 state 14
 
+<<<<<<< HEAD
     (138) cl1 -> EXTIENDE . ID
 
     ID              shift and go to state 28
+=======
+    (93) fun1 -> tipo .
+
+    ID              reduce using rule 93 (fun1 -> tipo .)
+>>>>>>> origin/master
 
 
 state 15
 
+<<<<<<< HEAD
     (7) p3 -> variables . p3
     (6) p3 -> . empty
     (7) p3 -> . variables p3
@@ -498,6 +629,11 @@ state 15
     DECIMAL         shift and go to state 21
     TEXTO           shift and go to state 17
     ID              shift and go to state 16
+=======
+    (17) tipo -> DECIMAL .
+
+    ID              reduce using rule 17 (tipo -> DECIMAL .)
+>>>>>>> origin/master
 
     variables                      shift and go to state 15
     empty                          shift and go to state 22
@@ -506,59 +642,52 @@ state 15
 
 state 16
 
+<<<<<<< HEAD
     (19) tipo -> ID .
 
     ID              reduce using rule 19 (tipo -> ID .)
+=======
+    (16) tipo -> ENTERO .
+
+    ID              reduce using rule 16 (tipo -> ENTERO .)
+>>>>>>> origin/master
 
 
 state 17
 
+<<<<<<< HEAD
     (18) tipo -> TEXTO .
 
     ID              reduce using rule 18 (tipo -> TEXTO .)
+=======
+    (92) funcion -> FUNCION fun1 . ID parametros BIZQ fun2 BDER
+
+    ID              shift and go to state 27
+>>>>>>> origin/master
 
 
 state 18
 
+<<<<<<< HEAD
     (20) variables -> tipo . v1 PUNTOYCOMA
     (21) v1 -> . ID v2
 
     ID              shift and go to state 31
+=======
+    (94) fun1 -> VACIO .
+
+    ID              reduce using rule 94 (fun1 -> VACIO .)
+>>>>>>> origin/master
 
     v1                             shift and go to state 30
 
 state 19
 
+<<<<<<< HEAD
     (16) tipo -> ENTERO .
 
     ID              reduce using rule 16 (tipo -> ENTERO .)
-
-
-state 20
-
-    (1) programa -> p1 p2 p3 . principal
-    (8) principal -> . PRINCIPAL pr1 ID parametros BIZQ pr2 BDER
-
-    PRINCIPAL       shift and go to state 33
-
-    principal                      shift and go to state 32
-
-state 21
-
-    (17) tipo -> DECIMAL .
-
-    ID              reduce using rule 17 (tipo -> DECIMAL .)
-
-
-state 22
-
-    (6) p3 -> empty .
-
-    PRINCIPAL       reduce using rule 6 (p3 -> empty .)
-
-
-state 23
-
+=======
     (5) p2 -> funcion p2 .
 
     ENTERO          reduce using rule 5 (p2 -> funcion p2 .)
@@ -566,31 +695,123 @@ state 23
     TEXTO           reduce using rule 5 (p2 -> funcion p2 .)
     ID              reduce using rule 5 (p2 -> funcion p2 .)
     PRINCIPAL       reduce using rule 5 (p2 -> funcion p2 .)
+>>>>>>> origin/master
 
+
+state 20
+
+<<<<<<< HEAD
+    (1) programa -> p1 p2 p3 . principal
+    (8) principal -> . PRINCIPAL pr1 ID parametros BIZQ pr2 BDER
+
+    PRINCIPAL       shift and go to state 33
+=======
+    (6) p3 -> empty .
+
+    PRINCIPAL       reduce using rule 6 (p3 -> empty .)
+>>>>>>> origin/master
+
+    principal                      shift and go to state 32
+
+state 21
+
+<<<<<<< HEAD
+    (17) tipo -> DECIMAL .
+
+    ID              reduce using rule 17 (tipo -> DECIMAL .)
+=======
+    (7) p3 -> variables . p3
+    (6) p3 -> . empty
+    (7) p3 -> . variables p3
+    (145) empty -> .
+    (20) variables -> . tipo v1 PUNTOYCOMA
+    (16) tipo -> . ENTERO
+    (17) tipo -> . DECIMAL
+    (18) tipo -> . TEXTO
+    (19) tipo -> . ID
+
+    PRINCIPAL       reduce using rule 145 (empty -> .)
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
+>>>>>>> origin/master
+
+    empty                          shift and go to state 20
+    tipo                           shift and go to state 23
+    variables                      shift and go to state 21
+    p3                             shift and go to state 28
+
+state 22
+
+<<<<<<< HEAD
+    (6) p3 -> empty .
+
+    PRINCIPAL       reduce using rule 6 (p3 -> empty .)
+=======
+    (1) programa -> p1 p2 p3 . principal
+    (8) principal -> . PRINCIPAL pr1 ID parametros BIZQ pr2 BDER
+
+    PRINCIPAL       shift and go to state 29
+>>>>>>> origin/master
+
+    principal                      shift and go to state 30
+
+state 23
+
+<<<<<<< HEAD
+    (5) p2 -> funcion p2 .
+
+    ENTERO          reduce using rule 5 (p2 -> funcion p2 .)
+    DECIMAL         reduce using rule 5 (p2 -> funcion p2 .)
+    TEXTO           reduce using rule 5 (p2 -> funcion p2 .)
+    ID              reduce using rule 5 (p2 -> funcion p2 .)
+    PRINCIPAL       reduce using rule 5 (p2 -> funcion p2 .)
+=======
+    (20) variables -> tipo . v1 PUNTOYCOMA
+    (21) v1 -> . ID v2
+
+    ID              shift and go to state 32
+>>>>>>> origin/master
+
+    v1                             shift and go to state 31
 
 state 24
 
+<<<<<<< HEAD
     (92) funcion -> FUNCION fun1 . ID parametros BIZQ fun2 BDER
 
     ID              shift and go to state 34
+=======
+    (138) cl1 -> EXTIENDE . ID
+
+    ID              shift and go to state 33
+>>>>>>> origin/master
 
 
 state 25
 
-    (93) fun1 -> tipo .
+    (137) cl1 -> empty .
 
-    ID              reduce using rule 93 (fun1 -> tipo .)
+    BIZQ            reduce using rule 137 (cl1 -> empty .)
 
 
 state 26
 
+<<<<<<< HEAD
     (94) fun1 -> VACIO .
 
     ID              reduce using rule 94 (fun1 -> VACIO .)
+=======
+    (136) clases -> CLASE ID cl1 . BIZQ atributos metodos BDER
+
+    BIZQ            shift and go to state 34
+>>>>>>> origin/master
 
 
 state 27
 
+<<<<<<< HEAD
     (136) clases -> CLASE ID cl1 BIZQ . atributos metodos BDER
     (139) atributos -> . ATRIBUTOS DOSPUNTOS atr1
 
@@ -603,10 +824,25 @@ state 28
     (138) cl1 -> EXTIENDE ID .
 
     BIZQ            reduce using rule 138 (cl1 -> EXTIENDE ID .)
+=======
+    (92) funcion -> FUNCION fun1 ID . parametros BIZQ fun2 BDER
+    (52) parametros -> . PIZQ pa1 PDER
+
+    PIZQ            shift and go to state 36
+
+    parametros                     shift and go to state 35
+
+state 28
+
+    (7) p3 -> variables p3 .
+
+    PRINCIPAL       reduce using rule 7 (p3 -> variables p3 .)
+>>>>>>> origin/master
 
 
 state 29
 
+<<<<<<< HEAD
     (7) p3 -> variables p3 .
 
     PRINCIPAL       reduce using rule 7 (p3 -> variables p3 .)
@@ -637,16 +873,7 @@ state 31
     empty                          shift and go to state 41
     v2                             shift and go to state 39
     v3                             shift and go to state 40
-
-state 32
-
-    (1) programa -> p1 p2 p3 principal .
-
-    $end            reduce using rule 1 (programa -> p1 p2 p3 principal .)
-
-
-state 33
-
+=======
     (8) principal -> PRINCIPAL . pr1 ID parametros BIZQ pr2 BDER
     (9) pr1 -> . tiposimple
     (10) pr1 -> . VACIO
@@ -654,41 +881,101 @@ state 33
     (50) tiposimple -> . DECIMAL
     (51) tiposimple -> . TEXTO
 
+    VACIO           shift and go to state 42
+    ENTERO          shift and go to state 41
+    DECIMAL         shift and go to state 40
+    TEXTO           shift and go to state 39
+
+    pr1                            shift and go to state 38
+    tiposimple                     shift and go to state 37
+
+state 30
+
+    (1) programa -> p1 p2 p3 principal .
+
+    $end            reduce using rule 1 (programa -> p1 p2 p3 principal .)
+>>>>>>> origin/master
+
+state 32
+
+    (20) variables -> tipo v1 . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 43
+
+
+state 33
+
+    (21) v1 -> ID . v2
+    (22) v2 -> . empty
+    (23) v2 -> . IGUAL valordeclaracion v6
+    (24) v2 -> . v3
+    (25) v2 -> . CIZQ CTEENT CDER v4
+    (145) empty -> .
+    (26) v3 -> . COMA v1
+
+<<<<<<< HEAD
     VACIO           shift and go to state 47
     ENTERO          shift and go to state 44
     DECIMAL         shift and go to state 49
     TEXTO           shift and go to state 46
+=======
+    IGUAL           shift and go to state 48
+    CIZQ            shift and go to state 49
+    PUNTOYCOMA      reduce using rule 145 (empty -> .)
+    COMA            shift and go to state 46
+
+    empty                          shift and go to state 44
+    v2                             shift and go to state 45
+    v3                             shift and go to state 47
+
+state 33
+
+    (138) cl1 -> EXTIENDE ID .
+
+    BIZQ            reduce using rule 138 (cl1 -> EXTIENDE ID .)
+>>>>>>> origin/master
 
     tiposimple                     shift and go to state 48
     pr1                            shift and go to state 45
 
 state 34
 
-    (92) funcion -> FUNCION fun1 ID . parametros BIZQ fun2 BDER
-    (52) parametros -> . PIZQ pa1 PDER
+    (136) clases -> CLASE ID cl1 BIZQ . atributos metodos BDER
+    (139) atributos -> . ATRIBUTOS DOSPUNTOS atr1
 
-    PIZQ            shift and go to state 51
+    ATRIBUTOS       shift and go to state 51
 
-    parametros                     shift and go to state 50
+    atributos                      shift and go to state 50
 
 state 35
 
-    (139) atributos -> ATRIBUTOS . DOSPUNTOS atr1
+    (92) funcion -> FUNCION fun1 ID parametros . BIZQ fun2 BDER
 
-    DOSPUNTOS       shift and go to state 52
+    BIZQ            shift and go to state 52
 
 
 state 36
 
-    (136) clases -> CLASE ID cl1 BIZQ atributos . metodos BDER
-    (142) metodos -> . METODOS DOSPUNTOS met1
+    (52) parametros -> PIZQ . pa1 PDER
+    (53) pa1 -> . empty
+    (54) pa1 -> . tiposimple pa2 ID pa3
+    (145) empty -> .
+    (49) tiposimple -> . ENTERO
+    (50) tiposimple -> . DECIMAL
+    (51) tiposimple -> . TEXTO
 
-    METODOS         shift and go to state 54
+    PDER            reduce using rule 145 (empty -> .)
+    ENTERO          shift and go to state 41
+    DECIMAL         shift and go to state 40
+    TEXTO           shift and go to state 39
 
-    metodos                        shift and go to state 53
+    empty                          shift and go to state 53
+    pa1                            shift and go to state 54
+    tiposimple                     shift and go to state 55
 
 state 37
 
+<<<<<<< HEAD
     (20) variables -> tipo v1 PUNTOYCOMA .
 
     ENTERO          reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
@@ -705,43 +992,81 @@ state 37
     LEER            reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
     BDER            reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
     RETORNA         reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+=======
+    (9) pr1 -> tiposimple .
+
+    ID              reduce using rule 9 (pr1 -> tiposimple .)
+>>>>>>> origin/master
 
 
 state 38
 
+<<<<<<< HEAD
     (26) v3 -> COMA . v1
     (21) v1 -> . ID v2
 
     ID              shift and go to state 31
+=======
+    (8) principal -> PRINCIPAL pr1 . ID parametros BIZQ pr2 BDER
+
+    ID              shift and go to state 56
+>>>>>>> origin/master
 
     v1                             shift and go to state 55
 
 state 39
 
+<<<<<<< HEAD
     (21) v1 -> ID v2 .
 
     PUNTOYCOMA      reduce using rule 21 (v1 -> ID v2 .)
+=======
+    (51) tiposimple -> TEXTO .
+
+    AMP             reduce using rule 51 (tiposimple -> TEXTO .)
+    ID              reduce using rule 51 (tiposimple -> TEXTO .)
+>>>>>>> origin/master
 
 
 state 40
 
+<<<<<<< HEAD
     (24) v2 -> v3 .
 
     PUNTOYCOMA      reduce using rule 24 (v2 -> v3 .)
+=======
+    (50) tiposimple -> DECIMAL .
+
+    AMP             reduce using rule 50 (tiposimple -> DECIMAL .)
+    ID              reduce using rule 50 (tiposimple -> DECIMAL .)
+>>>>>>> origin/master
 
 
 state 41
 
+<<<<<<< HEAD
     (22) v2 -> empty .
 
     PUNTOYCOMA      reduce using rule 22 (v2 -> empty .)
+=======
+    (49) tiposimple -> ENTERO .
+
+    AMP             reduce using rule 49 (tiposimple -> ENTERO .)
+    ID              reduce using rule 49 (tiposimple -> ENTERO .)
+>>>>>>> origin/master
 
 
 state 42
 
+<<<<<<< HEAD
     (25) v2 -> CIZQ . CTEENT CDER v4
 
     CTEENT          shift and go to state 56
+=======
+    (10) pr1 -> VACIO .
+
+    ID              reduce using rule 10 (pr1 -> VACIO .)
+>>>>>>> origin/master
 
 
 state 43
@@ -751,74 +1076,132 @@ state 43
     (34) valordeclaracion -> . CTEDEC
     (35) valordeclaracion -> . CTETEXTO
 
+<<<<<<< HEAD
     CTEENT          shift and go to state 58
     CTEDEC          shift and go to state 59
     CTETEXTO        shift and go to state 60
+=======
+    ENTERO          reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    DECIMAL         reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    TEXTO           reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    ID              reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    PRINCIPAL       reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    EJEC            reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    ASIGNA          reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    SI              reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    IMPRIMIR        reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    LEER            reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    BDER            reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    RETORNA         reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+    METODOS         reduce using rule 20 (variables -> tipo v1 PUNTOYCOMA .)
+>>>>>>> origin/master
 
     valordeclaracion               shift and go to state 57
 
 state 44
 
+<<<<<<< HEAD
     (49) tiposimple -> ENTERO .
 
     AMP             reduce using rule 49 (tiposimple -> ENTERO .)
     ID              reduce using rule 49 (tiposimple -> ENTERO .)
+=======
+    (22) v2 -> empty .
+
+    PUNTOYCOMA      reduce using rule 22 (v2 -> empty .)
+>>>>>>> origin/master
 
 
 state 45
 
+<<<<<<< HEAD
     (8) principal -> PRINCIPAL pr1 . ID parametros BIZQ pr2 BDER
 
     ID              shift and go to state 61
+=======
+    (21) v1 -> ID v2 .
+
+    PUNTOYCOMA      reduce using rule 21 (v1 -> ID v2 .)
+>>>>>>> origin/master
 
 
 state 46
 
+<<<<<<< HEAD
     (51) tiposimple -> TEXTO .
 
     AMP             reduce using rule 51 (tiposimple -> TEXTO .)
     ID              reduce using rule 51 (tiposimple -> TEXTO .)
+=======
+    (26) v3 -> COMA . v1
+    (21) v1 -> . ID v2
 
+    ID              shift and go to state 32
+>>>>>>> origin/master
+
+    v1                             shift and go to state 57
 
 state 47
 
+<<<<<<< HEAD
     (10) pr1 -> VACIO .
 
     ID              reduce using rule 10 (pr1 -> VACIO .)
+=======
+    (24) v2 -> v3 .
+
+    PUNTOYCOMA      reduce using rule 24 (v2 -> v3 .)
+>>>>>>> origin/master
 
 
 state 48
 
+<<<<<<< HEAD
     (9) pr1 -> tiposimple .
 
     ID              reduce using rule 9 (pr1 -> tiposimple .)
+=======
+    (23) v2 -> IGUAL . valordeclaracion v6
+    (33) valordeclaracion -> . CTEENT
+    (34) valordeclaracion -> . CTEDEC
+    (35) valordeclaracion -> . CTETEXTO
 
+    CTEENT          shift and go to state 60
+    CTEDEC          shift and go to state 58
+    CTETEXTO        shift and go to state 59
+>>>>>>> origin/master
+
+    valordeclaracion               shift and go to state 61
 
 state 49
 
+<<<<<<< HEAD
     (50) tiposimple -> DECIMAL .
 
     AMP             reduce using rule 50 (tiposimple -> DECIMAL .)
     ID              reduce using rule 50 (tiposimple -> DECIMAL .)
+=======
+    (25) v2 -> CIZQ . CTEENT CDER v4
+
+    CTEENT          shift and go to state 62
+>>>>>>> origin/master
 
 
 state 50
 
-    (92) funcion -> FUNCION fun1 ID parametros . BIZQ fun2 BDER
+    (136) clases -> CLASE ID cl1 BIZQ atributos . metodos BDER
+    (142) metodos -> . METODOS DOSPUNTOS met1
 
-    BIZQ            shift and go to state 62
+    METODOS         shift and go to state 64
 
+    metodos                        shift and go to state 63
 
 state 51
 
-    (52) parametros -> PIZQ . pa1 PDER
-    (53) pa1 -> . empty
-    (54) pa1 -> . tiposimple pa2 ID pa3
-    (145) empty -> .
-    (49) tiposimple -> . ENTERO
-    (50) tiposimple -> . DECIMAL
-    (51) tiposimple -> . TEXTO
+    (139) atributos -> ATRIBUTOS . DOSPUNTOS atr1
 
+<<<<<<< HEAD
     PDER            reduce using rule 145 (empty -> .)
     ENTERO          shift and go to state 44
     DECIMAL         shift and go to state 49
@@ -827,149 +1210,12 @@ state 51
     empty                          shift and go to state 63
     tiposimple                     shift and go to state 64
     pa1                            shift and go to state 65
+=======
+    DOSPUNTOS       shift and go to state 65
+
+>>>>>>> origin/master
 
 state 52
-
-    (139) atributos -> ATRIBUTOS DOSPUNTOS . atr1
-    (140) atr1 -> . empty
-    (141) atr1 -> . variables atr1
-    (145) empty -> .
-    (20) variables -> . tipo v1 PUNTOYCOMA
-    (16) tipo -> . ENTERO
-    (17) tipo -> . DECIMAL
-    (18) tipo -> . TEXTO
-    (19) tipo -> . ID
-
-    METODOS         reduce using rule 145 (empty -> .)
-    ENTERO          shift and go to state 19
-    DECIMAL         shift and go to state 21
-    TEXTO           shift and go to state 17
-    ID              shift and go to state 16
-
-    empty                          shift and go to state 67
-    variables                      shift and go to state 66
-    tipo                           shift and go to state 18
-    atr1                           shift and go to state 68
-
-state 53
-
-    (136) clases -> CLASE ID cl1 BIZQ atributos metodos . BDER
-
-    BDER            shift and go to state 69
-
-
-state 54
-
-    (142) metodos -> METODOS . DOSPUNTOS met1
-
-    DOSPUNTOS       shift and go to state 70
-
-
-state 55
-
-    (26) v3 -> COMA v1 .
-
-    PUNTOYCOMA      reduce using rule 26 (v3 -> COMA v1 .)
-
-
-state 56
-
-    (25) v2 -> CIZQ CTEENT . CDER v4
-
-    CDER            shift and go to state 71
-
-
-state 57
-
-    (23) v2 -> IGUAL valordeclaracion . v6
-    (31) v6 -> . empty
-    (32) v6 -> . v3
-    (145) empty -> .
-    (26) v3 -> . COMA v1
-
-    PUNTOYCOMA      reduce using rule 145 (empty -> .)
-    COMA            shift and go to state 38
-
-    empty                          shift and go to state 72
-    v3                             shift and go to state 73
-    v6                             shift and go to state 74
-
-state 58
-
-    (33) valordeclaracion -> CTEENT .
-
-    COMA            reduce using rule 33 (valordeclaracion -> CTEENT .)
-    PUNTOYCOMA      reduce using rule 33 (valordeclaracion -> CTEENT .)
-    CDER            reduce using rule 33 (valordeclaracion -> CTEENT .)
-    MULT            reduce using rule 33 (valordeclaracion -> CTEENT .)
-    DIV             reduce using rule 33 (valordeclaracion -> CTEENT .)
-    SUMA            reduce using rule 33 (valordeclaracion -> CTEENT .)
-    RESTA           reduce using rule 33 (valordeclaracion -> CTEENT .)
-    MAYQUE          reduce using rule 33 (valordeclaracion -> CTEENT .)
-    MENQUE          reduce using rule 33 (valordeclaracion -> CTEENT .)
-    IGUALQUE        reduce using rule 33 (valordeclaracion -> CTEENT .)
-    DIF             reduce using rule 33 (valordeclaracion -> CTEENT .)
-    MAYIGUALQUE     reduce using rule 33 (valordeclaracion -> CTEENT .)
-    MENIGUALQUE     reduce using rule 33 (valordeclaracion -> CTEENT .)
-    CONDICIONY      reduce using rule 33 (valordeclaracion -> CTEENT .)
-    CONDICIONO      reduce using rule 33 (valordeclaracion -> CTEENT .)
-    PDER            reduce using rule 33 (valordeclaracion -> CTEENT .)
-
-
-state 59
-
-    (34) valordeclaracion -> CTEDEC .
-
-    COMA            reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    PUNTOYCOMA      reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    CDER            reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    MULT            reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    DIV             reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    SUMA            reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    RESTA           reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    MAYQUE          reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    MENQUE          reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    IGUALQUE        reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    DIF             reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    MAYIGUALQUE     reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    MENIGUALQUE     reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    CONDICIONY      reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    CONDICIONO      reduce using rule 34 (valordeclaracion -> CTEDEC .)
-    PDER            reduce using rule 34 (valordeclaracion -> CTEDEC .)
-
-
-state 60
-
-    (35) valordeclaracion -> CTETEXTO .
-
-    COMA            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    PUNTOYCOMA      reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    CDER            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    MULT            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    DIV             reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    SUMA            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    RESTA           reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    MAYQUE          reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    MENQUE          reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    IGUALQUE        reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    DIF             reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    MAYIGUALQUE     reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    MENIGUALQUE     reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    CONDICIONY      reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    CONDICIONO      reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-    PDER            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
-
-
-state 61
-
-    (8) principal -> PRINCIPAL pr1 ID . parametros BIZQ pr2 BDER
-    (52) parametros -> . PIZQ pa1 PDER
-
-    PIZQ            shift and go to state 51
-
-    parametros                     shift and go to state 75
-
-state 62
 
     (92) funcion -> FUNCION fun1 ID parametros BIZQ . fun2 BDER
     (95) fun2 -> . fun21 fun22
@@ -993,8 +1239,324 @@ state 62
     (18) tipo -> . TEXTO
     (19) tipo -> . ID
 
+<<<<<<< HEAD
+    METODOS         reduce using rule 145 (empty -> .)
+    ENTERO          shift and go to state 19
+    DECIMAL         shift and go to state 21
+    TEXTO           shift and go to state 17
+    ID              shift and go to state 16
+
+    empty                          shift and go to state 67
+    variables                      shift and go to state 66
+    tipo                           shift and go to state 18
+    atr1                           shift and go to state 68
+=======
     RETORNA         reduce using rule 145 (empty -> .)
     BDER            reduce using rule 145 (empty -> .)
+    EJEC            shift and go to state 80
+    ASIGNA          shift and go to state 76
+    MIENTRAS        shift and go to state 78
+    SI              shift and go to state 69
+    IMPRIMIR        shift and go to state 79
+    LEER            shift and go to state 71
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
+
+    empty                          shift and go to state 66
+    estatuto                       shift and go to state 67
+    fun2                           shift and go to state 68
+    mientras                       shift and go to state 70
+    fun21                          shift and go to state 72
+    variables                      shift and go to state 73
+    lectura                        shift and go to state 74
+    escritura                      shift and go to state 75
+    si                             shift and go to state 77
+    tipo                           shift and go to state 23
+>>>>>>> origin/master
+
+state 53
+
+    (53) pa1 -> empty .
+
+    PDER            reduce using rule 53 (pa1 -> empty .)
+
+
+state 54
+
+    (52) parametros -> PIZQ pa1 . PDER
+
+    PDER            shift and go to state 81
+
+
+state 55
+
+<<<<<<< HEAD
+    (26) v3 -> COMA v1 .
+
+    PUNTOYCOMA      reduce using rule 26 (v3 -> COMA v1 .)
+
+
+state 56
+
+    (25) v2 -> CIZQ CTEENT . CDER v4
+=======
+    (54) pa1 -> tiposimple . pa2 ID pa3
+    (55) pa2 -> . empty
+    (56) pa2 -> . AMP
+    (145) empty -> .
+>>>>>>> origin/master
+
+    AMP             shift and go to state 83
+    ID              reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 82
+    pa2                            shift and go to state 84
+
+state 57
+
+    (8) principal -> PRINCIPAL pr1 ID . parametros BIZQ pr2 BDER
+    (52) parametros -> . PIZQ pa1 PDER
+
+<<<<<<< HEAD
+    PUNTOYCOMA      reduce using rule 145 (empty -> .)
+    COMA            shift and go to state 38
+
+    empty                          shift and go to state 72
+    v3                             shift and go to state 73
+    v6                             shift and go to state 74
+=======
+    PIZQ            shift and go to state 36
+
+    parametros                     shift and go to state 85
+>>>>>>> origin/master
+
+state 58
+
+    (26) v3 -> COMA v1 .
+
+<<<<<<< HEAD
+    COMA            reduce using rule 33 (valordeclaracion -> CTEENT .)
+    PUNTOYCOMA      reduce using rule 33 (valordeclaracion -> CTEENT .)
+    CDER            reduce using rule 33 (valordeclaracion -> CTEENT .)
+    MULT            reduce using rule 33 (valordeclaracion -> CTEENT .)
+    DIV             reduce using rule 33 (valordeclaracion -> CTEENT .)
+    SUMA            reduce using rule 33 (valordeclaracion -> CTEENT .)
+    RESTA           reduce using rule 33 (valordeclaracion -> CTEENT .)
+    MAYQUE          reduce using rule 33 (valordeclaracion -> CTEENT .)
+    MENQUE          reduce using rule 33 (valordeclaracion -> CTEENT .)
+    IGUALQUE        reduce using rule 33 (valordeclaracion -> CTEENT .)
+    DIF             reduce using rule 33 (valordeclaracion -> CTEENT .)
+    MAYIGUALQUE     reduce using rule 33 (valordeclaracion -> CTEENT .)
+    MENIGUALQUE     reduce using rule 33 (valordeclaracion -> CTEENT .)
+    CONDICIONY      reduce using rule 33 (valordeclaracion -> CTEENT .)
+    CONDICIONO      reduce using rule 33 (valordeclaracion -> CTEENT .)
+    PDER            reduce using rule 33 (valordeclaracion -> CTEENT .)
+=======
+    PUNTOYCOMA      reduce using rule 26 (v3 -> COMA v1 .)
+
+
+state 58
+
+    (34) valordeclaracion -> CTEDEC .
+
+    COMA            reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    CDER            reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    MULT            reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    DIV             reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    SUMA            reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    RESTA           reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    MAYQUE          reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    MENQUE          reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    IGUALQUE        reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    DIF             reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    MAYIGUALQUE     reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    MENIGUALQUE     reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    CONDICIONY      reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    CONDICIONO      reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    PDER            reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    PUNTOYCOMA      reduce using rule 34 (valordeclaracion -> CTEDEC .)
+
+
+state 59
+
+    (35) valordeclaracion -> CTETEXTO .
+
+    COMA            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    CDER            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    MULT            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    DIV             reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    SUMA            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    RESTA           reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    MAYQUE          reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    MENQUE          reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    IGUALQUE        reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    DIF             reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    MAYIGUALQUE     reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    MENIGUALQUE     reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    CONDICIONY      reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    CONDICIONO      reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    PDER            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    PUNTOYCOMA      reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+>>>>>>> origin/master
+
+
+state 60
+
+    (33) valordeclaracion -> CTEENT .
+
+<<<<<<< HEAD
+    COMA            reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    PUNTOYCOMA      reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    CDER            reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    MULT            reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    DIV             reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    SUMA            reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    RESTA           reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    MAYQUE          reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    MENQUE          reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    IGUALQUE        reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    DIF             reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    MAYIGUALQUE     reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    MENIGUALQUE     reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    CONDICIONY      reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    CONDICIONO      reduce using rule 34 (valordeclaracion -> CTEDEC .)
+    PDER            reduce using rule 34 (valordeclaracion -> CTEDEC .)
+=======
+    COMA            reduce using rule 33 (valordeclaracion -> CTEENT .)
+    CDER            reduce using rule 33 (valordeclaracion -> CTEENT .)
+    MULT            reduce using rule 33 (valordeclaracion -> CTEENT .)
+    DIV             reduce using rule 33 (valordeclaracion -> CTEENT .)
+    SUMA            reduce using rule 33 (valordeclaracion -> CTEENT .)
+    RESTA           reduce using rule 33 (valordeclaracion -> CTEENT .)
+    MAYQUE          reduce using rule 33 (valordeclaracion -> CTEENT .)
+    MENQUE          reduce using rule 33 (valordeclaracion -> CTEENT .)
+    IGUALQUE        reduce using rule 33 (valordeclaracion -> CTEENT .)
+    DIF             reduce using rule 33 (valordeclaracion -> CTEENT .)
+    MAYIGUALQUE     reduce using rule 33 (valordeclaracion -> CTEENT .)
+    MENIGUALQUE     reduce using rule 33 (valordeclaracion -> CTEENT .)
+    CONDICIONY      reduce using rule 33 (valordeclaracion -> CTEENT .)
+    CONDICIONO      reduce using rule 33 (valordeclaracion -> CTEENT .)
+    PDER            reduce using rule 33 (valordeclaracion -> CTEENT .)
+    PUNTOYCOMA      reduce using rule 33 (valordeclaracion -> CTEENT .)
+>>>>>>> origin/master
+
+
+state 61
+
+<<<<<<< HEAD
+    (35) valordeclaracion -> CTETEXTO .
+
+    COMA            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    PUNTOYCOMA      reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    CDER            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    MULT            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    DIV             reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    SUMA            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    RESTA           reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    MAYQUE          reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    MENQUE          reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    IGUALQUE        reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    DIF             reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    MAYIGUALQUE     reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    MENIGUALQUE     reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    CONDICIONY      reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    CONDICIONO      reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+    PDER            reduce using rule 35 (valordeclaracion -> CTETEXTO .)
+=======
+    (23) v2 -> IGUAL valordeclaracion . v6
+    (31) v6 -> . empty
+    (32) v6 -> . v3
+    (145) empty -> .
+    (26) v3 -> . COMA v1
+
+    PUNTOYCOMA      reduce using rule 145 (empty -> .)
+    COMA            shift and go to state 46
+>>>>>>> origin/master
+
+    empty                          shift and go to state 86
+    v6                             shift and go to state 87
+    v3                             shift and go to state 88
+
+state 62
+
+    (25) v2 -> CIZQ CTEENT . CDER v4
+
+    CDER            shift and go to state 89
+
+
+state 63
+
+    (136) clases -> CLASE ID cl1 BIZQ atributos metodos . BDER
+
+    BDER            shift and go to state 90
+
+
+state 64
+
+    (142) metodos -> METODOS . DOSPUNTOS met1
+
+    DOSPUNTOS       shift and go to state 91
+
+
+state 65
+
+    (139) atributos -> ATRIBUTOS DOSPUNTOS . atr1
+    (140) atr1 -> . empty
+    (141) atr1 -> . variables atr1
+    (145) empty -> .
+    (20) variables -> . tipo v1 PUNTOYCOMA
+    (16) tipo -> . ENTERO
+    (17) tipo -> . DECIMAL
+    (18) tipo -> . TEXTO
+    (19) tipo -> . ID
+
+    METODOS         reduce using rule 145 (empty -> .)
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
+
+    empty                          shift and go to state 92
+    atr1                           shift and go to state 94
+    variables                      shift and go to state 93
+    tipo                           shift and go to state 23
+
+state 66
+
+    (96) fun21 -> empty .
+
+    RETORNA         reduce using rule 96 (fun21 -> empty .)
+    BDER            reduce using rule 96 (fun21 -> empty .)
+
+
+state 67
+
+    (97) fun21 -> estatuto . fun21
+    (96) fun21 -> . empty
+    (97) fun21 -> . estatuto fun21
+    (145) empty -> .
+    (112) estatuto -> . variables
+    (113) estatuto -> . EJEC llamarfunmet
+    (114) estatuto -> . ASIGNA asignacion
+    (115) estatuto -> . mientras
+    (116) estatuto -> . si
+    (117) estatuto -> . escritura
+    (118) estatuto -> . lectura
+    (20) variables -> . tipo v1 PUNTOYCOMA
+    (111) mientras -> . MIENTRAS PIZQ expresion PDER bloquesimple
+    (133) si -> . SI PIZQ expresion PDER bloque si1
+    (125) escritura -> . IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA
+    (128) lectura -> . LEER PIZQ ID l1 l2 PDER PUNTOYCOMA
+    (16) tipo -> . ENTERO
+    (17) tipo -> . DECIMAL
+    (18) tipo -> . TEXTO
+    (19) tipo -> . ID
+
+    RETORNA         reduce using rule 145 (empty -> .)
+    BDER            reduce using rule 145 (empty -> .)
+<<<<<<< HEAD
     EJEC            shift and go to state 81
     ASIGNA          shift and go to state 80
     MIENTRAS        shift and go to state 85
@@ -1016,16 +1578,39 @@ state 62
     lectura                        shift and go to state 84
     empty                          shift and go to state 86
     si                             shift and go to state 90
+=======
+    EJEC            shift and go to state 80
+    ASIGNA          shift and go to state 76
+    MIENTRAS        shift and go to state 78
+    SI              shift and go to state 69
+    IMPRIMIR        shift and go to state 79
+    LEER            shift and go to state 71
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
 
-state 63
+    fun21                          shift and go to state 95
+    empty                          shift and go to state 66
+    variables                      shift and go to state 73
+    estatuto                       shift and go to state 67
+    lectura                        shift and go to state 74
+    escritura                      shift and go to state 75
+    si                             shift and go to state 77
+    tipo                           shift and go to state 23
+    mientras                       shift and go to state 70
+>>>>>>> origin/master
 
-    (53) pa1 -> empty .
+state 68
 
-    PDER            reduce using rule 53 (pa1 -> empty .)
+    (92) funcion -> FUNCION fun1 ID parametros BIZQ fun2 . BDER
+
+    BDER            shift and go to state 96
 
 
-state 64
+state 69
 
+<<<<<<< HEAD
     (54) pa1 -> tiposimple . pa2 ID pa3
     (55) pa2 -> . empty
     (56) pa2 -> . AMP
@@ -1080,22 +1665,16 @@ state 68
 
     METODOS         reduce using rule 139 (atributos -> ATRIBUTOS DOSPUNTOS atr1 .)
 
+=======
+    (133) si -> SI . PIZQ expresion PDER bloque si1
+>>>>>>> origin/master
 
-state 69
-
-    (136) clases -> CLASE ID cl1 BIZQ atributos metodos BDER .
-
-    CLASE           reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
-    FUNCION         reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
-    ENTERO          reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
-    DECIMAL         reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
-    TEXTO           reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
-    ID              reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
-    PRINCIPAL       reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
+    PIZQ            shift and go to state 97
 
 
 state 70
 
+<<<<<<< HEAD
     (142) metodos -> METODOS DOSPUNTOS . met1
     (143) met1 -> . empty
     (144) met1 -> . funcion met1
@@ -1325,6 +1904,8 @@ state 87
 
 state 88
 
+=======
+>>>>>>> origin/master
     (115) estatuto -> mientras .
 
     EJEC            reduce using rule 115 (estatuto -> mientras .)
@@ -1337,19 +1918,108 @@ state 88
     DECIMAL         reduce using rule 115 (estatuto -> mientras .)
     TEXTO           reduce using rule 115 (estatuto -> mientras .)
     ID              reduce using rule 115 (estatuto -> mientras .)
-    RETORNA         reduce using rule 115 (estatuto -> mientras .)
     BDER            reduce using rule 115 (estatuto -> mientras .)
+    RETORNA         reduce using rule 115 (estatuto -> mientras .)
 
 
+<<<<<<< HEAD
 state 89
+=======
+state 71
+
+    (128) lectura -> LEER . PIZQ ID l1 l2 PDER PUNTOYCOMA
+
+    PIZQ            shift and go to state 98
+
+
+state 72
+
+    (95) fun2 -> fun21 . fun22
+    (98) fun22 -> . empty
+    (99) fun22 -> . RETORNA expresion PUNTOYCOMA
+    (145) empty -> .
+
+    RETORNA         shift and go to state 100
+    BDER            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 99
+    fun22                          shift and go to state 101
+
+state 73
+
+    (112) estatuto -> variables .
+
+    EJEC            reduce using rule 112 (estatuto -> variables .)
+    ASIGNA          reduce using rule 112 (estatuto -> variables .)
+    MIENTRAS        reduce using rule 112 (estatuto -> variables .)
+    SI              reduce using rule 112 (estatuto -> variables .)
+    IMPRIMIR        reduce using rule 112 (estatuto -> variables .)
+    LEER            reduce using rule 112 (estatuto -> variables .)
+    ENTERO          reduce using rule 112 (estatuto -> variables .)
+    DECIMAL         reduce using rule 112 (estatuto -> variables .)
+    TEXTO           reduce using rule 112 (estatuto -> variables .)
+    ID              reduce using rule 112 (estatuto -> variables .)
+    BDER            reduce using rule 112 (estatuto -> variables .)
+    RETORNA         reduce using rule 112 (estatuto -> variables .)
+>>>>>>> origin/master
 
     (125) escritura -> IMPRIMIR . PIZQ expresion e1 PDER PUNTOYCOMA
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 115
 
 
 state 90
 
+=======
+state 74
+
+    (118) estatuto -> lectura .
+
+    EJEC            reduce using rule 118 (estatuto -> lectura .)
+    ASIGNA          reduce using rule 118 (estatuto -> lectura .)
+    MIENTRAS        reduce using rule 118 (estatuto -> lectura .)
+    SI              reduce using rule 118 (estatuto -> lectura .)
+    IMPRIMIR        reduce using rule 118 (estatuto -> lectura .)
+    LEER            reduce using rule 118 (estatuto -> lectura .)
+    ENTERO          reduce using rule 118 (estatuto -> lectura .)
+    DECIMAL         reduce using rule 118 (estatuto -> lectura .)
+    TEXTO           reduce using rule 118 (estatuto -> lectura .)
+    ID              reduce using rule 118 (estatuto -> lectura .)
+    BDER            reduce using rule 118 (estatuto -> lectura .)
+    RETORNA         reduce using rule 118 (estatuto -> lectura .)
+
+
+state 75
+
+    (117) estatuto -> escritura .
+
+    EJEC            reduce using rule 117 (estatuto -> escritura .)
+    ASIGNA          reduce using rule 117 (estatuto -> escritura .)
+    MIENTRAS        reduce using rule 117 (estatuto -> escritura .)
+    SI              reduce using rule 117 (estatuto -> escritura .)
+    IMPRIMIR        reduce using rule 117 (estatuto -> escritura .)
+    LEER            reduce using rule 117 (estatuto -> escritura .)
+    ENTERO          reduce using rule 117 (estatuto -> escritura .)
+    DECIMAL         reduce using rule 117 (estatuto -> escritura .)
+    TEXTO           reduce using rule 117 (estatuto -> escritura .)
+    ID              reduce using rule 117 (estatuto -> escritura .)
+    BDER            reduce using rule 117 (estatuto -> escritura .)
+    RETORNA         reduce using rule 117 (estatuto -> escritura .)
+
+
+state 76
+
+    (114) estatuto -> ASIGNA . asignacion
+    (106) asignacion -> . ID a1 a2 IGUAL expresion PUNTOYCOMA
+
+    ID              shift and go to state 102
+
+    asignacion                     shift and go to state 103
+
+state 77
+
+>>>>>>> origin/master
     (116) estatuto -> si .
 
     EJEC            reduce using rule 116 (estatuto -> si .)
@@ -1362,60 +2032,114 @@ state 90
     DECIMAL         reduce using rule 116 (estatuto -> si .)
     TEXTO           reduce using rule 116 (estatuto -> si .)
     ID              reduce using rule 116 (estatuto -> si .)
-    RETORNA         reduce using rule 116 (estatuto -> si .)
     BDER            reduce using rule 116 (estatuto -> si .)
+    RETORNA         reduce using rule 116 (estatuto -> si .)
 
 
+<<<<<<< HEAD
 state 91
+=======
+state 78
+
+    (111) mientras -> MIENTRAS . PIZQ expresion PDER bloquesimple
+
+    PIZQ            shift and go to state 104
+
+
+state 79
+
+    (125) escritura -> IMPRIMIR . PIZQ expresion e1 PDER PUNTOYCOMA
+
+    PIZQ            shift and go to state 105
+
+
+state 80
+
+    (113) estatuto -> EJEC . llamarfunmet
+    (59) llamarfunmet -> . ID ll1 PIZQ ll2 PDER PUNTOYCOMA
+
+    ID              shift and go to state 106
+
+    llamarfunmet                   shift and go to state 107
+
+state 81
+>>>>>>> origin/master
 
     (55) pa2 -> empty .
 
     ID              reduce using rule 55 (pa2 -> empty .)
 
 
-state 92
+state 82
 
     (54) pa1 -> tiposimple pa2 . ID pa3
 
     ID              shift and go to state 116
 
 
-state 93
+state 83
 
     (56) pa2 -> AMP .
 
     ID              reduce using rule 56 (pa2 -> AMP .)
 
 
-state 94
+state 84
 
     (52) parametros -> PIZQ pa1 PDER .
 
+<<<<<<< HEAD
     BIZQ            reduce using rule 52 (parametros -> PIZQ pa1 PDER .)
+=======
+    ID              shift and go to state 108
+>>>>>>> origin/master
 
 
-state 95
+state 85
 
-    (141) atr1 -> variables atr1 .
+    (8) principal -> PRINCIPAL pr1 ID parametros . BIZQ pr2 BDER
 
-    METODOS         reduce using rule 141 (atr1 -> variables atr1 .)
-
-
-state 96
-
-    (142) metodos -> METODOS DOSPUNTOS met1 .
-
-    BDER            reduce using rule 142 (metodos -> METODOS DOSPUNTOS met1 .)
+    BIZQ            shift and go to state 109
 
 
-state 97
+state 86
 
+    (31) v6 -> empty .
+
+    PUNTOYCOMA      reduce using rule 31 (v6 -> empty .)
+
+
+state 87
+
+<<<<<<< HEAD
     (144) met1 -> funcion . met1
     (143) met1 -> . empty
     (144) met1 -> . funcion met1
-    (145) empty -> .
-    (92) funcion -> . FUNCION fun1 ID parametros BIZQ fun2 BDER
+=======
+    (23) v2 -> IGUAL valordeclaracion v6 .
 
+    PUNTOYCOMA      reduce using rule 23 (v2 -> IGUAL valordeclaracion v6 .)
+
+
+state 88
+
+    (32) v6 -> v3 .
+
+    PUNTOYCOMA      reduce using rule 32 (v6 -> v3 .)
+
+
+state 89
+
+    (25) v2 -> CIZQ CTEENT CDER . v4
+    (27) v4 -> . v6
+    (28) v4 -> . IGUAL CIZQ valordeclaracion v5 CDER v6
+    (31) v6 -> . empty
+    (32) v6 -> . v3
+>>>>>>> origin/master
+    (145) empty -> .
+    (26) v3 -> . COMA v1
+
+<<<<<<< HEAD
     BDER            reduce using rule 145 (empty -> .)
     FUNCION         shift and go to state 11
 
@@ -1431,19 +2155,57 @@ state 98
 
 
 state 99
+=======
+    IGUAL           shift and go to state 112
+    PUNTOYCOMA      reduce using rule 145 (empty -> .)
+    COMA            shift and go to state 46
 
-    (27) v4 -> v6 .
+    empty                          shift and go to state 86
+    v4                             shift and go to state 110
+    v6                             shift and go to state 111
+    v3                             shift and go to state 88
 
-    PUNTOYCOMA      reduce using rule 27 (v4 -> v6 .)
+state 90
+
+    (136) clases -> CLASE ID cl1 BIZQ atributos metodos BDER .
+
+    CLASE           reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
+    FUNCION         reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
+    ENTERO          reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
+    DECIMAL         reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
+    TEXTO           reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
+    ID              reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
+    PRINCIPAL       reduce using rule 136 (clases -> CLASE ID cl1 BIZQ atributos metodos BDER .)
 
 
+state 91
+>>>>>>> origin/master
+
+    (142) metodos -> METODOS DOSPUNTOS . met1
+    (143) met1 -> . empty
+    (144) met1 -> . funcion met1
+    (145) empty -> .
+    (92) funcion -> . FUNCION fun1 ID parametros BIZQ fun2 BDER
+
+    BDER            reduce using rule 145 (empty -> .)
+    FUNCION         shift and go to state 7
+
+    empty                          shift and go to state 113
+    funcion                        shift and go to state 114
+    met1                           shift and go to state 115
+
+<<<<<<< HEAD
 state 100
+=======
+state 92
+>>>>>>> origin/master
 
-    (28) v4 -> IGUAL . CIZQ valordeclaracion v5 CDER v6
+    (140) atr1 -> empty .
 
-    CIZQ            shift and go to state 118
+    METODOS         reduce using rule 140 (atr1 -> empty .)
 
 
+<<<<<<< HEAD
 state 101
 
     (25) v2 -> CIZQ CTEENT CDER v4 .
@@ -1452,29 +2214,21 @@ state 101
 
 
 state 102
+=======
+state 93
+>>>>>>> origin/master
 
-    (8) principal -> PRINCIPAL pr1 ID parametros BIZQ . pr2 BDER
-    (11) pr2 -> . pr21 pr22
-    (12) pr21 -> . empty
-    (13) pr21 -> . estatuto pr21
+    (141) atr1 -> variables . atr1
+    (140) atr1 -> . empty
+    (141) atr1 -> . variables atr1
     (145) empty -> .
-    (112) estatuto -> . variables
-    (113) estatuto -> . EJEC llamarfunmet
-    (114) estatuto -> . ASIGNA asignacion
-    (115) estatuto -> . mientras
-    (116) estatuto -> . si
-    (117) estatuto -> . escritura
-    (118) estatuto -> . lectura
     (20) variables -> . tipo v1 PUNTOYCOMA
-    (111) mientras -> . MIENTRAS PIZQ expresion PDER bloquesimple
-    (133) si -> . SI PIZQ expresion PDER bloque si1
-    (125) escritura -> . IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA
-    (128) lectura -> . LEER PIZQ ID l1 l2 PDER PUNTOYCOMA
     (16) tipo -> . ENTERO
     (17) tipo -> . DECIMAL
     (18) tipo -> . TEXTO
     (19) tipo -> . ID
 
+<<<<<<< HEAD
     RETORNA         reduce using rule 145 (empty -> .)
     BDER            reduce using rule 145 (empty -> .)
     EJEC            shift and go to state 81
@@ -1498,9 +2252,39 @@ state 102
     lectura                        shift and go to state 84
     empty                          shift and go to state 122
     si                             shift and go to state 90
+=======
+    METODOS         reduce using rule 145 (empty -> .)
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
+>>>>>>> origin/master
 
-state 103
+    empty                          shift and go to state 92
+    atr1                           shift and go to state 116
+    variables                      shift and go to state 93
+    tipo                           shift and go to state 23
 
+<<<<<<< HEAD
+=======
+state 94
+
+    (139) atributos -> ATRIBUTOS DOSPUNTOS atr1 .
+
+    METODOS         reduce using rule 139 (atributos -> ATRIBUTOS DOSPUNTOS atr1 .)
+
+
+state 95
+
+    (97) fun21 -> estatuto fun21 .
+
+    RETORNA         reduce using rule 97 (fun21 -> estatuto fun21 .)
+    BDER            reduce using rule 97 (fun21 -> estatuto fun21 .)
+
+
+state 96
+
+>>>>>>> origin/master
     (92) funcion -> FUNCION fun1 ID parametros BIZQ fun2 BDER .
 
     FUNCION         reduce using rule 92 (funcion -> FUNCION fun1 ID parametros BIZQ fun2 BDER .)
@@ -1512,7 +2296,11 @@ state 103
     PRINCIPAL       reduce using rule 92 (funcion -> FUNCION fun1 ID parametros BIZQ fun2 BDER .)
 
 
+<<<<<<< HEAD
 state 104
+=======
+state 97
+>>>>>>> origin/master
 
     (133) si -> SI PIZQ . expresion PDER bloque si1
     (66) expresion -> . declaracion ex1
@@ -1526,14 +2314,21 @@ state 104
     (91) f1 -> . RESTA
     (145) empty -> .
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
+=======
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+>>>>>>> origin/master
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
 
+<<<<<<< HEAD
     exp                            shift and go to state 125
     factor                         shift and go to state 131
     empty                          shift and go to state 126
@@ -1552,10 +2347,26 @@ state 105
     PUNTO           shift and go to state 134
     CIZQ            reduce using rule 145 (empty -> .)
     IGUAL           reduce using rule 145 (empty -> .)
+=======
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    expresion                      shift and go to state 123
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
+
+state 98
+
+    (128) lectura -> LEER PIZQ . ID l1 l2 PDER PUNTOYCOMA
+
+    ID              shift and go to state 127
+>>>>>>> origin/master
 
     empty                          shift and go to state 133
     a1                             shift and go to state 135
 
+<<<<<<< HEAD
 state 106
 
     (114) estatuto -> ASIGNA asignacion .
@@ -1575,12 +2386,50 @@ state 106
 
 
 state 107
+=======
+state 99
 
-    (59) llamarfunmet -> ID . ll1 PIZQ ll2 PDER PUNTOYCOMA
-    (60) ll1 -> . empty
-    (61) ll1 -> . PUNTO ID
+    (98) fun22 -> empty .
+
+    BDER            reduce using rule 98 (fun22 -> empty .)
+
+
+state 100
+
+    (99) fun22 -> RETORNA . expresion PUNTOYCOMA
+    (66) expresion -> . declaracion ex1
+    (70) declaracion -> . exp de1
+    (79) exp -> . termino exp1
+    (83) termino -> . factor t1
+    (87) factor -> . f1 valor
+    (88) factor -> . PIZQ expresion PDER
+    (89) f1 -> . empty
+    (90) f1 -> . SUMA
+    (91) f1 -> . RESTA
     (145) empty -> .
 
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+    ID              reduce using rule 145 (empty -> .)
+    CTEENT          reduce using rule 145 (empty -> .)
+    CTEDEC          reduce using rule 145 (empty -> .)
+    CTETEXTO        reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    expresion                      shift and go to state 128
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
+
+state 101
+>>>>>>> origin/master
+
+    (95) fun2 -> fun21 fun22 .
+
+<<<<<<< HEAD
     PUNTO           shift and go to state 138
     PIZQ            reduce using rule 145 (empty -> .)
 
@@ -1588,23 +2437,26 @@ state 107
     ll1                            shift and go to state 137
 
 state 108
-
-    (113) estatuto -> EJEC llamarfunmet .
-
-    EJEC            reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
-    ASIGNA          reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
-    MIENTRAS        reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
-    SI              reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
-    IMPRIMIR        reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
-    LEER            reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
-    ENTERO          reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
-    DECIMAL         reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
-    TEXTO           reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
-    ID              reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
-    RETORNA         reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
-    BDER            reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+=======
+    BDER            reduce using rule 95 (fun2 -> fun21 fun22 .)
 
 
+state 102
+>>>>>>> origin/master
+
+    (106) asignacion -> ID . a1 a2 IGUAL expresion PUNTOYCOMA
+    (107) a1 -> . empty
+    (108) a1 -> . PUNTO ID
+    (145) empty -> .
+
+    PUNTO           shift and go to state 130
+    CIZQ            reduce using rule 145 (empty -> .)
+    IGUAL           reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 129
+    a1                             shift and go to state 131
+
+<<<<<<< HEAD
 state 109
 
     (97) fun21 -> estatuto fun21 .
@@ -1688,13 +2540,57 @@ state 113
     declaracion                    shift and go to state 132
 
 state 114
+=======
+state 103
 
-    (128) lectura -> LEER PIZQ . ID l1 l2 PDER PUNTOYCOMA
+    (114) estatuto -> ASIGNA asignacion .
 
-    ID              shift and go to state 141
+    EJEC            reduce using rule 114 (estatuto -> ASIGNA asignacion .)
+    ASIGNA          reduce using rule 114 (estatuto -> ASIGNA asignacion .)
+    MIENTRAS        reduce using rule 114 (estatuto -> ASIGNA asignacion .)
+    SI              reduce using rule 114 (estatuto -> ASIGNA asignacion .)
+    IMPRIMIR        reduce using rule 114 (estatuto -> ASIGNA asignacion .)
+    LEER            reduce using rule 114 (estatuto -> ASIGNA asignacion .)
+    ENTERO          reduce using rule 114 (estatuto -> ASIGNA asignacion .)
+    DECIMAL         reduce using rule 114 (estatuto -> ASIGNA asignacion .)
+    TEXTO           reduce using rule 114 (estatuto -> ASIGNA asignacion .)
+    ID              reduce using rule 114 (estatuto -> ASIGNA asignacion .)
+    BDER            reduce using rule 114 (estatuto -> ASIGNA asignacion .)
+    RETORNA         reduce using rule 114 (estatuto -> ASIGNA asignacion .)
 
 
-state 115
+state 104
+>>>>>>> origin/master
+
+    (111) mientras -> MIENTRAS PIZQ . expresion PDER bloquesimple
+    (66) expresion -> . declaracion ex1
+    (70) declaracion -> . exp de1
+    (79) exp -> . termino exp1
+    (83) termino -> . factor t1
+    (87) factor -> . f1 valor
+    (88) factor -> . PIZQ expresion PDER
+    (89) f1 -> . empty
+    (90) f1 -> . SUMA
+    (91) f1 -> . RESTA
+    (145) empty -> .
+
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+    ID              reduce using rule 145 (empty -> .)
+    CTEENT          reduce using rule 145 (empty -> .)
+    CTEDEC          reduce using rule 145 (empty -> .)
+    CTETEXTO        reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    expresion                      shift and go to state 132
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
+
+state 105
 
     (125) escritura -> IMPRIMIR PIZQ . expresion e1 PDER PUNTOYCOMA
     (66) expresion -> . declaracion ex1
@@ -1708,14 +2604,21 @@ state 115
     (91) f1 -> . RESTA
     (145) empty -> .
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
+=======
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+>>>>>>> origin/master
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
 
+<<<<<<< HEAD
     exp                            shift and go to state 125
     factor                         shift and go to state 131
     empty                          shift and go to state 126
@@ -1723,43 +2626,75 @@ state 115
     expresion                      shift and go to state 142
     f1                             shift and go to state 128
     declaracion                    shift and go to state 132
+=======
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    expresion                      shift and go to state 133
+    f1                             shift and go to state 121
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
+>>>>>>> origin/master
 
-state 116
+state 106
+
+    (59) llamarfunmet -> ID . ll1 PIZQ ll2 PDER PUNTOYCOMA
+    (60) ll1 -> . empty
+    (61) ll1 -> . PUNTO ID
+    (145) empty -> .
+
+    PUNTO           shift and go to state 136
+    PIZQ            reduce using rule 145 (empty -> .)
+
+<<<<<<< HEAD
+    empty                          shift and go to state 143
+    pa3                            shift and go to state 144
+=======
+    empty                          shift and go to state 134
+    ll1                            shift and go to state 135
+>>>>>>> origin/master
+
+state 107
+
+    (113) estatuto -> EJEC llamarfunmet .
+
+    EJEC            reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+    ASIGNA          reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+    MIENTRAS        reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+    SI              reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+    IMPRIMIR        reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+    LEER            reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+    ENTERO          reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+    DECIMAL         reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+    TEXTO           reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+    ID              reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+    BDER            reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+    RETORNA         reduce using rule 113 (estatuto -> EJEC llamarfunmet .)
+
+
+state 108
 
     (54) pa1 -> tiposimple pa2 ID . pa3
     (57) pa3 -> . empty
     (58) pa3 -> . COMA pa1
     (145) empty -> .
 
-    COMA            shift and go to state 145
-    PDER            reduce using rule 145 (empty -> .)
-
-    empty                          shift and go to state 143
-    pa3                            shift and go to state 144
-
-state 117
-
-    (144) met1 -> funcion met1 .
-
-    BDER            reduce using rule 144 (met1 -> funcion met1 .)
-
-
-state 118
-
-    (28) v4 -> IGUAL CIZQ . valordeclaracion v5 CDER v6
-    (33) valordeclaracion -> . CTEENT
-    (34) valordeclaracion -> . CTEDEC
-    (35) valordeclaracion -> . CTETEXTO
-
+<<<<<<< HEAD
     CTEENT          shift and go to state 58
     CTEDEC          shift and go to state 59
     CTETEXTO        shift and go to state 60
+=======
+    COMA            shift and go to state 139
+    PDER            reduce using rule 145 (empty -> .)
+>>>>>>> origin/master
 
-    valordeclaracion               shift and go to state 146
+    empty                          shift and go to state 137
+    pa3                            shift and go to state 138
 
-state 119
+state 109
 
-    (13) pr21 -> estatuto . pr21
+    (8) principal -> PRINCIPAL pr1 ID parametros BIZQ . pr2 BDER
+    (11) pr2 -> . pr21 pr22
     (12) pr21 -> . empty
     (13) pr21 -> . estatuto pr21
     (145) empty -> .
@@ -1782,6 +2717,7 @@ state 119
 
     RETORNA         reduce using rule 145 (empty -> .)
     BDER            reduce using rule 145 (empty -> .)
+<<<<<<< HEAD
     EJEC            shift and go to state 81
     ASIGNA          shift and go to state 80
     MIENTRAS        shift and go to state 85
@@ -1802,9 +2738,33 @@ state 119
     estatuto                       shift and go to state 119
     lectura                        shift and go to state 84
     mientras                       shift and go to state 88
+=======
+    EJEC            shift and go to state 80
+    ASIGNA          shift and go to state 76
+    MIENTRAS        shift and go to state 78
+    SI              shift and go to state 69
+    IMPRIMIR        shift and go to state 79
+    LEER            shift and go to state 71
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
 
-state 120
+    empty                          shift and go to state 140
+    pr2                            shift and go to state 142
+    estatuto                       shift and go to state 141
+    mientras                       shift and go to state 70
+    variables                      shift and go to state 73
+    lectura                        shift and go to state 74
+    escritura                      shift and go to state 75
+    si                             shift and go to state 77
+    tipo                           shift and go to state 23
+    pr21                           shift and go to state 143
+>>>>>>> origin/master
 
+state 110
+
+<<<<<<< HEAD
     (11) pr2 -> pr21 . pr22
     (14) pr22 -> . empty
     (15) pr22 -> . RETORNA expresion PUNTOYCOMA
@@ -1812,27 +2772,66 @@ state 120
 
     RETORNA         shift and go to state 149
     BDER            reduce using rule 145 (empty -> .)
+=======
+    (25) v2 -> CIZQ CTEENT CDER v4 .
+
+    PUNTOYCOMA      reduce using rule 25 (v2 -> CIZQ CTEENT CDER v4 .)
+>>>>>>> origin/master
 
     empty                          shift and go to state 148
     pr22                           shift and go to state 150
 
-state 121
+state 111
 
-    (8) principal -> PRINCIPAL pr1 ID parametros BIZQ pr2 . BDER
+    (27) v4 -> v6 .
 
+<<<<<<< HEAD
     BDER            shift and go to state 151
+=======
+    PUNTOYCOMA      reduce using rule 27 (v4 -> v6 .)
+>>>>>>> origin/master
 
 
-state 122
+state 112
 
+<<<<<<< HEAD
     (12) pr21 -> empty .
 
     RETORNA         reduce using rule 12 (pr21 -> empty .)
     BDER            reduce using rule 12 (pr21 -> empty .)
 
+=======
+    (28) v4 -> IGUAL . CIZQ valordeclaracion v5 CDER v6
 
-state 123
+    CIZQ            shift and go to state 144
 
+
+state 113
+
+    (143) met1 -> empty .
+
+    BDER            reduce using rule 143 (met1 -> empty .)
+
+
+state 114
+
+    (144) met1 -> funcion . met1
+    (143) met1 -> . empty
+    (144) met1 -> . funcion met1
+    (145) empty -> .
+    (92) funcion -> . FUNCION fun1 ID parametros BIZQ fun2 BDER
+
+    BDER            reduce using rule 145 (empty -> .)
+    FUNCION         shift and go to state 7
+
+    empty                          shift and go to state 113
+    funcion                        shift and go to state 114
+    met1                           shift and go to state 145
+>>>>>>> origin/master
+
+state 115
+
+<<<<<<< HEAD
     (91) f1 -> RESTA .
 
     ID              reduce using rule 91 (f1 -> RESTA .)
@@ -1840,8 +2839,69 @@ state 123
     CTEDEC          reduce using rule 91 (f1 -> RESTA .)
     CTETEXTO        reduce using rule 91 (f1 -> RESTA .)
 
+=======
+    (142) metodos -> METODOS DOSPUNTOS met1 .
 
-state 124
+    BDER            reduce using rule 142 (metodos -> METODOS DOSPUNTOS met1 .)
+
+
+state 116
+
+    (141) atr1 -> variables atr1 .
+
+    METODOS         reduce using rule 141 (atr1 -> variables atr1 .)
+
+
+state 117
+
+    (66) expresion -> declaracion . ex1
+    (67) ex1 -> . empty
+    (68) ex1 -> . CONDICIONY expresion
+    (69) ex1 -> . CONDICIONO expresion
+    (145) empty -> .
+
+    CONDICIONY      shift and go to state 149
+    CONDICIONO      shift and go to state 148
+    PDER            reduce using rule 145 (empty -> .)
+    PUNTOYCOMA      reduce using rule 145 (empty -> .)
+    COMA            reduce using rule 145 (empty -> .)
+    CDER            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 146
+    ex1                            shift and go to state 147
+
+state 118
+
+    (70) declaracion -> exp . de1
+    (71) de1 -> . empty
+    (72) de1 -> . de2 exp
+    (145) empty -> .
+    (73) de2 -> . MAYQUE
+    (74) de2 -> . MENQUE
+    (75) de2 -> . IGUALQUE
+    (76) de2 -> . DIF
+    (77) de2 -> . MAYIGUALQUE
+    (78) de2 -> . MENIGUALQUE
+
+    CONDICIONY      reduce using rule 145 (empty -> .)
+    CONDICIONO      reduce using rule 145 (empty -> .)
+    PDER            reduce using rule 145 (empty -> .)
+    PUNTOYCOMA      reduce using rule 145 (empty -> .)
+    COMA            reduce using rule 145 (empty -> .)
+    CDER            reduce using rule 145 (empty -> .)
+    MAYQUE          shift and go to state 152
+    MENQUE          shift and go to state 157
+    IGUALQUE        shift and go to state 154
+    DIF             shift and go to state 151
+    MAYIGUALQUE     shift and go to state 156
+    MENIGUALQUE     shift and go to state 155
+
+    empty                          shift and go to state 150
+    de2                            shift and go to state 158
+    de1                            shift and go to state 153
+>>>>>>> origin/master
+
+state 119
 
     (133) si -> SI PIZQ expresion . PDER bloque si1
 
@@ -1861,6 +2921,19 @@ state 125
     (77) de2 -> . MAYIGUALQUE
     (78) de2 -> . MENIGUALQUE
 
+<<<<<<< HEAD
+=======
+    MULT            shift and go to state 160
+    DIV             shift and go to state 162
+    SUMA            reduce using rule 145 (empty -> .)
+    RESTA           reduce using rule 145 (empty -> .)
+    MAYQUE          reduce using rule 145 (empty -> .)
+    MENQUE          reduce using rule 145 (empty -> .)
+    IGUALQUE        reduce using rule 145 (empty -> .)
+    DIF             reduce using rule 145 (empty -> .)
+    MAYIGUALQUE     reduce using rule 145 (empty -> .)
+    MENIGUALQUE     reduce using rule 145 (empty -> .)
+>>>>>>> origin/master
     CONDICIONY      reduce using rule 145 (empty -> .)
     CONDICIONO      reduce using rule 145 (empty -> .)
     PDER            reduce using rule 145 (empty -> .)
@@ -1874,6 +2947,7 @@ state 125
     MAYIGUALQUE     shift and go to state 158
     MENIGUALQUE     shift and go to state 155
 
+<<<<<<< HEAD
     empty                          shift and go to state 153
     de2                            shift and go to state 160
     de1                            shift and go to state 157
@@ -1899,6 +2973,22 @@ state 127
 
 
 state 128
+=======
+    empty                          shift and go to state 159
+    t1                             shift and go to state 161
+
+state 120
+
+    (91) f1 -> RESTA .
+
+    ID              reduce using rule 91 (f1 -> RESTA .)
+    CTEENT          reduce using rule 91 (f1 -> RESTA .)
+    CTEDEC          reduce using rule 91 (f1 -> RESTA .)
+    CTETEXTO        reduce using rule 91 (f1 -> RESTA .)
+
+
+state 121
+>>>>>>> origin/master
 
     (87) factor -> f1 . valor
     (36) valor -> . valordeclaracion
@@ -1907,6 +2997,7 @@ state 128
     (34) valordeclaracion -> . CTEDEC
     (35) valordeclaracion -> . CTETEXTO
 
+<<<<<<< HEAD
     ID              shift and go to state 164
     CTEENT          shift and go to state 58
     CTEDEC          shift and go to state 59
@@ -1916,6 +3007,17 @@ state 128
     valor                          shift and go to state 162
 
 state 129
+=======
+    ID              shift and go to state 163
+    CTEENT          shift and go to state 60
+    CTEDEC          shift and go to state 58
+    CTETEXTO        shift and go to state 59
+
+    valor                          shift and go to state 165
+    valordeclaracion               shift and go to state 164
+
+state 122
+>>>>>>> origin/master
 
     (79) exp -> termino . exp1
     (80) exp1 -> . empty
@@ -1941,7 +3043,28 @@ state 129
     empty                          shift and go to state 165
     exp1                           shift and go to state 168
 
+<<<<<<< HEAD
 state 130
+=======
+state 123
+
+    (133) si -> SI PIZQ expresion . PDER bloque si1
+
+    PDER            shift and go to state 166
+
+
+state 124
+
+    (90) f1 -> SUMA .
+
+    ID              reduce using rule 90 (f1 -> SUMA .)
+    CTEENT          reduce using rule 90 (f1 -> SUMA .)
+    CTEDEC          reduce using rule 90 (f1 -> SUMA .)
+    CTETEXTO        reduce using rule 90 (f1 -> SUMA .)
+
+
+state 125
+>>>>>>> origin/master
 
     (88) factor -> PIZQ . expresion PDER
     (66) expresion -> . declaracion ex1
@@ -1955,14 +3078,21 @@ state 130
     (91) f1 -> . RESTA
     (145) empty -> .
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
+=======
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+>>>>>>> origin/master
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
 
+<<<<<<< HEAD
     exp                            shift and go to state 125
     factor                         shift and go to state 131
     empty                          shift and go to state 126
@@ -2013,11 +3143,63 @@ state 132
     PUNTOYCOMA      reduce using rule 145 (empty -> .)
     COMA            reduce using rule 145 (empty -> .)
     CDER            reduce using rule 145 (empty -> .)
+=======
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    expresion                      shift and go to state 167
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
 
-    empty                          shift and go to state 174
-    ex1                            shift and go to state 177
+state 126
 
-state 133
+    (79) exp -> termino . exp1
+    (80) exp1 -> . empty
+    (81) exp1 -> . SUMA exp
+    (82) exp1 -> . RESTA exp
+    (145) empty -> .
+
+    SUMA            shift and go to state 170
+    RESTA           shift and go to state 171
+    MAYQUE          reduce using rule 145 (empty -> .)
+    MENQUE          reduce using rule 145 (empty -> .)
+    IGUALQUE        reduce using rule 145 (empty -> .)
+    DIF             reduce using rule 145 (empty -> .)
+    MAYIGUALQUE     reduce using rule 145 (empty -> .)
+    MENIGUALQUE     reduce using rule 145 (empty -> .)
+    CONDICIONY      reduce using rule 145 (empty -> .)
+    CONDICIONO      reduce using rule 145 (empty -> .)
+    PDER            reduce using rule 145 (empty -> .)
+    PUNTOYCOMA      reduce using rule 145 (empty -> .)
+    COMA            reduce using rule 145 (empty -> .)
+    CDER            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 168
+    exp1                           shift and go to state 169
+
+state 127
+
+    (128) lectura -> LEER PIZQ ID . l1 l2 PDER PUNTOYCOMA
+    (129) l1 -> . empty
+    (130) l1 -> . PUNTO ID
+    (145) empty -> .
+
+    PUNTO           shift and go to state 174
+    CIZQ            reduce using rule 145 (empty -> .)
+    PDER            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 172
+    l1                             shift and go to state 173
+
+state 128
+
+    (99) fun22 -> RETORNA expresion . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 175
+
+
+state 129
 
     (107) a1 -> empty .
 
@@ -2025,11 +3207,67 @@ state 133
     IGUAL           reduce using rule 107 (a1 -> empty .)
 
 
-state 134
+state 130
 
     (108) a1 -> PUNTO . ID
 
+    ID              shift and go to state 176
+
+
+state 131
+
+    (106) asignacion -> ID a1 . a2 IGUAL expresion PUNTOYCOMA
+    (109) a2 -> . empty
+    (110) a2 -> . CIZQ expresion CDER
+    (145) empty -> .
+
+    CIZQ            shift and go to state 178
+    IGUAL           reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 177
+    a2                             shift and go to state 179
+
+state 132
+
+    (111) mientras -> MIENTRAS PIZQ expresion . PDER bloquesimple
+
+    PDER            shift and go to state 180
+>>>>>>> origin/master
+
+    empty                          shift and go to state 174
+    ex1                            shift and go to state 177
+
+state 133
+
+<<<<<<< HEAD
+    (107) a1 -> empty .
+
+    CIZQ            reduce using rule 107 (a1 -> empty .)
+    IGUAL           reduce using rule 107 (a1 -> empty .)
+=======
+    (125) escritura -> IMPRIMIR PIZQ expresion . e1 PDER PUNTOYCOMA
+    (126) e1 -> . empty
+    (127) e1 -> . COMA expresion e1
+    (145) empty -> .
+
+    COMA            shift and go to state 183
+    PDER            reduce using rule 145 (empty -> .)
+>>>>>>> origin/master
+
+    empty                          shift and go to state 181
+    e1                             shift and go to state 182
+
+state 134
+
+<<<<<<< HEAD
+    (108) a1 -> PUNTO . ID
+
     ID              shift and go to state 178
+=======
+    (60) ll1 -> empty .
+
+    PIZQ            reduce using rule 60 (ll1 -> empty .)
+>>>>>>> origin/master
 
 
 state 135
@@ -2039,35 +3277,52 @@ state 135
     (110) a2 -> . CIZQ expresion CDER
     (145) empty -> .
 
+<<<<<<< HEAD
     CIZQ            shift and go to state 181
     IGUAL           reduce using rule 145 (empty -> .)
+=======
+    PIZQ            shift and go to state 184
+>>>>>>> origin/master
 
     empty                          shift and go to state 179
     a2                             shift and go to state 180
 
 state 136
 
-    (60) ll1 -> empty .
+    (61) ll1 -> PUNTO . ID
 
-    PIZQ            reduce using rule 60 (ll1 -> empty .)
+    ID              shift and go to state 185
 
 
 state 137
 
+<<<<<<< HEAD
     (59) llamarfunmet -> ID ll1 . PIZQ ll2 PDER PUNTOYCOMA
 
     PIZQ            shift and go to state 182
+=======
+    (57) pa3 -> empty .
+
+    PDER            reduce using rule 57 (pa3 -> empty .)
+>>>>>>> origin/master
 
 
 state 138
 
+<<<<<<< HEAD
     (61) ll1 -> PUNTO . ID
 
     ID              shift and go to state 183
+=======
+    (54) pa1 -> tiposimple pa2 ID pa3 .
+
+    PDER            reduce using rule 54 (pa1 -> tiposimple pa2 ID pa3 .)
+>>>>>>> origin/master
 
 
 state 139
 
+<<<<<<< HEAD
     (99) fun22 -> RETORNA expresion . PUNTOYCOMA
 
     PUNTOYCOMA      shift and go to state 184
@@ -2078,15 +3333,57 @@ state 140
     (111) mientras -> MIENTRAS PIZQ expresion . PDER bloquesimple
 
     PDER            shift and go to state 185
+=======
+    (58) pa3 -> COMA . pa1
+    (53) pa1 -> . empty
+    (54) pa1 -> . tiposimple pa2 ID pa3
+    (145) empty -> .
+    (49) tiposimple -> . ENTERO
+    (50) tiposimple -> . DECIMAL
+    (51) tiposimple -> . TEXTO
+
+    PDER            reduce using rule 145 (empty -> .)
+    ENTERO          shift and go to state 41
+    DECIMAL         shift and go to state 40
+    TEXTO           shift and go to state 39
+
+    empty                          shift and go to state 53
+    pa1                            shift and go to state 186
+    tiposimple                     shift and go to state 55
+
+state 140
+
+    (12) pr21 -> empty .
+
+    RETORNA         reduce using rule 12 (pr21 -> empty .)
+    BDER            reduce using rule 12 (pr21 -> empty .)
+>>>>>>> origin/master
 
 
 state 141
 
-    (128) lectura -> LEER PIZQ ID . l1 l2 PDER PUNTOYCOMA
-    (129) l1 -> . empty
-    (130) l1 -> . PUNTO ID
+    (13) pr21 -> estatuto . pr21
+    (12) pr21 -> . empty
+    (13) pr21 -> . estatuto pr21
     (145) empty -> .
+    (112) estatuto -> . variables
+    (113) estatuto -> . EJEC llamarfunmet
+    (114) estatuto -> . ASIGNA asignacion
+    (115) estatuto -> . mientras
+    (116) estatuto -> . si
+    (117) estatuto -> . escritura
+    (118) estatuto -> . lectura
+    (20) variables -> . tipo v1 PUNTOYCOMA
+    (111) mientras -> . MIENTRAS PIZQ expresion PDER bloquesimple
+    (133) si -> . SI PIZQ expresion PDER bloque si1
+    (125) escritura -> . IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA
+    (128) lectura -> . LEER PIZQ ID l1 l2 PDER PUNTOYCOMA
+    (16) tipo -> . ENTERO
+    (17) tipo -> . DECIMAL
+    (18) tipo -> . TEXTO
+    (19) tipo -> . ID
 
+<<<<<<< HEAD
     PUNTO           shift and go to state 187
     CIZQ            reduce using rule 145 (empty -> .)
     PDER            reduce using rule 145 (empty -> .)
@@ -2103,34 +3400,83 @@ state 142
 
     COMA            shift and go to state 190
     PDER            reduce using rule 145 (empty -> .)
+=======
+    RETORNA         reduce using rule 145 (empty -> .)
+    BDER            reduce using rule 145 (empty -> .)
+    EJEC            shift and go to state 80
+    ASIGNA          shift and go to state 76
+    MIENTRAS        shift and go to state 78
+    SI              shift and go to state 69
+    IMPRIMIR        shift and go to state 79
+    LEER            shift and go to state 71
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
+
+    empty                          shift and go to state 140
+    variables                      shift and go to state 73
+    estatuto                       shift and go to state 141
+    lectura                        shift and go to state 74
+    escritura                      shift and go to state 75
+    si                             shift and go to state 77
+    pr21                           shift and go to state 187
+    tipo                           shift and go to state 23
+    mientras                       shift and go to state 70
+
+state 142
+
+    (8) principal -> PRINCIPAL pr1 ID parametros BIZQ pr2 . BDER
+
+    BDER            shift and go to state 188
+>>>>>>> origin/master
 
     empty                          shift and go to state 189
     e1                             shift and go to state 191
 
 state 143
 
+<<<<<<< HEAD
     (57) pa3 -> empty .
 
     PDER            reduce using rule 57 (pa3 -> empty .)
+=======
+    (11) pr2 -> pr21 . pr22
+    (14) pr22 -> . empty
+    (15) pr22 -> . RETORNA expresion PUNTOYCOMA
+    (145) empty -> .
 
+    RETORNA         shift and go to state 191
+    BDER            reduce using rule 145 (empty -> .)
+>>>>>>> origin/master
+
+    empty                          shift and go to state 189
+    pr22                           shift and go to state 190
 
 state 144
 
+<<<<<<< HEAD
     (54) pa1 -> tiposimple pa2 ID pa3 .
 
     PDER            reduce using rule 54 (pa1 -> tiposimple pa2 ID pa3 .)
+=======
+    (28) v4 -> IGUAL CIZQ . valordeclaracion v5 CDER v6
+    (33) valordeclaracion -> . CTEENT
+    (34) valordeclaracion -> . CTEDEC
+    (35) valordeclaracion -> . CTETEXTO
 
+    CTEENT          shift and go to state 60
+    CTEDEC          shift and go to state 58
+    CTETEXTO        shift and go to state 59
+>>>>>>> origin/master
+
+    valordeclaracion               shift and go to state 192
 
 state 145
 
-    (58) pa3 -> COMA . pa1
-    (53) pa1 -> . empty
-    (54) pa1 -> . tiposimple pa2 ID pa3
-    (145) empty -> .
-    (49) tiposimple -> . ENTERO
-    (50) tiposimple -> . DECIMAL
-    (51) tiposimple -> . TEXTO
+    (144) met1 -> funcion met1 .
 
+<<<<<<< HEAD
     PDER            reduce using rule 145 (empty -> .)
     ENTERO          shift and go to state 44
     DECIMAL         shift and go to state 49
@@ -2139,30 +3485,42 @@ state 145
     empty                          shift and go to state 63
     tiposimple                     shift and go to state 64
     pa1                            shift and go to state 192
+=======
+    BDER            reduce using rule 144 (met1 -> funcion met1 .)
+
+>>>>>>> origin/master
 
 state 146
 
-    (28) v4 -> IGUAL CIZQ valordeclaracion . v5 CDER v6
-    (29) v5 -> . empty
-    (30) v5 -> . COMA valordeclaracion v5
-    (145) empty -> .
+    (67) ex1 -> empty .
 
+<<<<<<< HEAD
     COMA            shift and go to state 195
     CDER            reduce using rule 145 (empty -> .)
 
     empty                          shift and go to state 193
     v5                             shift and go to state 194
+=======
+    PDER            reduce using rule 67 (ex1 -> empty .)
+    PUNTOYCOMA      reduce using rule 67 (ex1 -> empty .)
+    COMA            reduce using rule 67 (ex1 -> empty .)
+    CDER            reduce using rule 67 (ex1 -> empty .)
+
+>>>>>>> origin/master
 
 state 147
 
-    (13) pr21 -> estatuto pr21 .
+    (66) expresion -> declaracion ex1 .
 
-    RETORNA         reduce using rule 13 (pr21 -> estatuto pr21 .)
-    BDER            reduce using rule 13 (pr21 -> estatuto pr21 .)
+    PDER            reduce using rule 66 (expresion -> declaracion ex1 .)
+    PUNTOYCOMA      reduce using rule 66 (expresion -> declaracion ex1 .)
+    COMA            reduce using rule 66 (expresion -> declaracion ex1 .)
+    CDER            reduce using rule 66 (expresion -> declaracion ex1 .)
 
 
 state 148
 
+<<<<<<< HEAD
     (14) pr22 -> empty .
 
     BDER            reduce using rule 14 (pr22 -> empty .)
@@ -2171,6 +3529,8 @@ state 148
 state 149
 
     (15) pr22 -> RETORNA . expresion PUNTOYCOMA
+=======
+    (69) ex1 -> CONDICIONO . expresion
     (66) expresion -> . declaracion ex1
     (70) declaracion -> . exp de1
     (79) exp -> . termino exp1
@@ -2182,14 +3542,52 @@ state 149
     (91) f1 -> . RESTA
     (145) empty -> .
 
-    PIZQ            shift and go to state 130
-    SUMA            shift and go to state 127
-    RESTA           shift and go to state 123
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
 
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    expresion                      shift and go to state 193
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
+
+state 149
+
+    (68) ex1 -> CONDICIONY . expresion
+>>>>>>> origin/master
+    (66) expresion -> . declaracion ex1
+    (70) declaracion -> . exp de1
+    (79) exp -> . termino exp1
+    (83) termino -> . factor t1
+    (87) factor -> . f1 valor
+    (88) factor -> . PIZQ expresion PDER
+    (89) f1 -> . empty
+    (90) f1 -> . SUMA
+    (91) f1 -> . RESTA
+    (145) empty -> .
+
+<<<<<<< HEAD
+    PIZQ            shift and go to state 130
+    SUMA            shift and go to state 127
+    RESTA           shift and go to state 123
+=======
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+>>>>>>> origin/master
+    ID              reduce using rule 145 (empty -> .)
+    CTEENT          reduce using rule 145 (empty -> .)
+    CTEDEC          reduce using rule 145 (empty -> .)
+    CTETEXTO        reduce using rule 145 (empty -> .)
+
+<<<<<<< HEAD
     exp                            shift and go to state 125
     factor                         shift and go to state 131
     empty                          shift and go to state 126
@@ -2244,6 +3642,76 @@ state 154
     CTEENT          reduce using rule 74 (de2 -> MENQUE .)
     CTEDEC          reduce using rule 74 (de2 -> MENQUE .)
     CTETEXTO        reduce using rule 74 (de2 -> MENQUE .)
+=======
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    expresion                      shift and go to state 194
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
+
+state 150
+
+    (71) de1 -> empty .
+
+    CONDICIONY      reduce using rule 71 (de1 -> empty .)
+    CONDICIONO      reduce using rule 71 (de1 -> empty .)
+    PDER            reduce using rule 71 (de1 -> empty .)
+    PUNTOYCOMA      reduce using rule 71 (de1 -> empty .)
+    COMA            reduce using rule 71 (de1 -> empty .)
+    CDER            reduce using rule 71 (de1 -> empty .)
+
+
+state 151
+
+    (76) de2 -> DIF .
+
+    PIZQ            reduce using rule 76 (de2 -> DIF .)
+    SUMA            reduce using rule 76 (de2 -> DIF .)
+    RESTA           reduce using rule 76 (de2 -> DIF .)
+    ID              reduce using rule 76 (de2 -> DIF .)
+    CTEENT          reduce using rule 76 (de2 -> DIF .)
+    CTEDEC          reduce using rule 76 (de2 -> DIF .)
+    CTETEXTO        reduce using rule 76 (de2 -> DIF .)
+
+
+state 152
+
+    (73) de2 -> MAYQUE .
+
+    PIZQ            reduce using rule 73 (de2 -> MAYQUE .)
+    SUMA            reduce using rule 73 (de2 -> MAYQUE .)
+    RESTA           reduce using rule 73 (de2 -> MAYQUE .)
+    ID              reduce using rule 73 (de2 -> MAYQUE .)
+    CTEENT          reduce using rule 73 (de2 -> MAYQUE .)
+    CTEDEC          reduce using rule 73 (de2 -> MAYQUE .)
+    CTETEXTO        reduce using rule 73 (de2 -> MAYQUE .)
+
+
+state 153
+
+    (70) declaracion -> exp de1 .
+
+    CONDICIONY      reduce using rule 70 (declaracion -> exp de1 .)
+    CONDICIONO      reduce using rule 70 (declaracion -> exp de1 .)
+    COMA            reduce using rule 70 (declaracion -> exp de1 .)
+    PDER            reduce using rule 70 (declaracion -> exp de1 .)
+    PUNTOYCOMA      reduce using rule 70 (declaracion -> exp de1 .)
+    CDER            reduce using rule 70 (declaracion -> exp de1 .)
+
+
+state 154
+
+    (75) de2 -> IGUALQUE .
+
+    PIZQ            reduce using rule 75 (de2 -> IGUALQUE .)
+    SUMA            reduce using rule 75 (de2 -> IGUALQUE .)
+    RESTA           reduce using rule 75 (de2 -> IGUALQUE .)
+    ID              reduce using rule 75 (de2 -> IGUALQUE .)
+    CTEENT          reduce using rule 75 (de2 -> IGUALQUE .)
+    CTEDEC          reduce using rule 75 (de2 -> IGUALQUE .)
+    CTETEXTO        reduce using rule 75 (de2 -> IGUALQUE .)
 
 
 state 155
@@ -2261,6 +3729,90 @@ state 155
 
 state 156
 
+    (77) de2 -> MAYIGUALQUE .
+
+    PIZQ            reduce using rule 77 (de2 -> MAYIGUALQUE .)
+    SUMA            reduce using rule 77 (de2 -> MAYIGUALQUE .)
+    RESTA           reduce using rule 77 (de2 -> MAYIGUALQUE .)
+    ID              reduce using rule 77 (de2 -> MAYIGUALQUE .)
+    CTEENT          reduce using rule 77 (de2 -> MAYIGUALQUE .)
+    CTEDEC          reduce using rule 77 (de2 -> MAYIGUALQUE .)
+    CTETEXTO        reduce using rule 77 (de2 -> MAYIGUALQUE .)
+
+
+state 157
+
+    (74) de2 -> MENQUE .
+
+    PIZQ            reduce using rule 74 (de2 -> MENQUE .)
+    SUMA            reduce using rule 74 (de2 -> MENQUE .)
+    RESTA           reduce using rule 74 (de2 -> MENQUE .)
+    ID              reduce using rule 74 (de2 -> MENQUE .)
+    CTEENT          reduce using rule 74 (de2 -> MENQUE .)
+    CTEDEC          reduce using rule 74 (de2 -> MENQUE .)
+    CTETEXTO        reduce using rule 74 (de2 -> MENQUE .)
+
+
+state 158
+
+    (72) de1 -> de2 . exp
+    (79) exp -> . termino exp1
+    (83) termino -> . factor t1
+    (87) factor -> . f1 valor
+    (88) factor -> . PIZQ expresion PDER
+    (89) f1 -> . empty
+    (90) f1 -> . SUMA
+    (91) f1 -> . RESTA
+    (145) empty -> .
+
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+    ID              reduce using rule 145 (empty -> .)
+    CTEENT          reduce using rule 145 (empty -> .)
+    CTEDEC          reduce using rule 145 (empty -> .)
+    CTETEXTO        reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 122
+    factor                         shift and go to state 119
+    exp                            shift and go to state 195
+    f1                             shift and go to state 121
+    termino                        shift and go to state 126
+>>>>>>> origin/master
+
+state 159
+
+    (78) de2 -> MENIGUALQUE .
+
+<<<<<<< HEAD
+    PIZQ            reduce using rule 78 (de2 -> MENIGUALQUE .)
+    SUMA            reduce using rule 78 (de2 -> MENIGUALQUE .)
+    RESTA           reduce using rule 78 (de2 -> MENIGUALQUE .)
+    ID              reduce using rule 78 (de2 -> MENIGUALQUE .)
+    CTEENT          reduce using rule 78 (de2 -> MENIGUALQUE .)
+    CTEDEC          reduce using rule 78 (de2 -> MENIGUALQUE .)
+    CTETEXTO        reduce using rule 78 (de2 -> MENIGUALQUE .)
+=======
+    SUMA            reduce using rule 84 (t1 -> empty .)
+    RESTA           reduce using rule 84 (t1 -> empty .)
+    MAYQUE          reduce using rule 84 (t1 -> empty .)
+    MENQUE          reduce using rule 84 (t1 -> empty .)
+    IGUALQUE        reduce using rule 84 (t1 -> empty .)
+    DIF             reduce using rule 84 (t1 -> empty .)
+    MAYIGUALQUE     reduce using rule 84 (t1 -> empty .)
+    MENIGUALQUE     reduce using rule 84 (t1 -> empty .)
+    CONDICIONY      reduce using rule 84 (t1 -> empty .)
+    CONDICIONO      reduce using rule 84 (t1 -> empty .)
+    PDER            reduce using rule 84 (t1 -> empty .)
+    PUNTOYCOMA      reduce using rule 84 (t1 -> empty .)
+    COMA            reduce using rule 84 (t1 -> empty .)
+    CDER            reduce using rule 84 (t1 -> empty .)
+>>>>>>> origin/master
+
+
+state 160
+
+<<<<<<< HEAD
     (76) de2 -> DIF .
 
     PIZQ            reduce using rule 76 (de2 -> DIF .)
@@ -2271,21 +3823,62 @@ state 156
     CTEDEC          reduce using rule 76 (de2 -> DIF .)
     CTETEXTO        reduce using rule 76 (de2 -> DIF .)
 
+=======
+    (85) t1 -> MULT . termino
+    (83) termino -> . factor t1
+    (87) factor -> . f1 valor
+    (88) factor -> . PIZQ expresion PDER
+    (89) f1 -> . empty
+    (90) f1 -> . SUMA
+    (91) f1 -> . RESTA
+    (145) empty -> .
 
-state 157
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+    ID              reduce using rule 145 (empty -> .)
+    CTEENT          reduce using rule 145 (empty -> .)
+    CTEDEC          reduce using rule 145 (empty -> .)
+    CTETEXTO        reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 122
+    factor                         shift and go to state 119
+    f1                             shift and go to state 121
+    termino                        shift and go to state 196
+>>>>>>> origin/master
+
+state 161
 
     (70) declaracion -> exp de1 .
 
+<<<<<<< HEAD
     CONDICIONY      reduce using rule 70 (declaracion -> exp de1 .)
     CONDICIONO      reduce using rule 70 (declaracion -> exp de1 .)
     PDER            reduce using rule 70 (declaracion -> exp de1 .)
     PUNTOYCOMA      reduce using rule 70 (declaracion -> exp de1 .)
     COMA            reduce using rule 70 (declaracion -> exp de1 .)
     CDER            reduce using rule 70 (declaracion -> exp de1 .)
+=======
+    SUMA            reduce using rule 83 (termino -> factor t1 .)
+    RESTA           reduce using rule 83 (termino -> factor t1 .)
+    MAYQUE          reduce using rule 83 (termino -> factor t1 .)
+    MENQUE          reduce using rule 83 (termino -> factor t1 .)
+    IGUALQUE        reduce using rule 83 (termino -> factor t1 .)
+    DIF             reduce using rule 83 (termino -> factor t1 .)
+    MAYIGUALQUE     reduce using rule 83 (termino -> factor t1 .)
+    MENIGUALQUE     reduce using rule 83 (termino -> factor t1 .)
+    CONDICIONY      reduce using rule 83 (termino -> factor t1 .)
+    CONDICIONO      reduce using rule 83 (termino -> factor t1 .)
+    PDER            reduce using rule 83 (termino -> factor t1 .)
+    PUNTOYCOMA      reduce using rule 83 (termino -> factor t1 .)
+    COMA            reduce using rule 83 (termino -> factor t1 .)
+    CDER            reduce using rule 83 (termino -> factor t1 .)
+>>>>>>> origin/master
 
 
-state 158
+state 162
 
+<<<<<<< HEAD
     (77) de2 -> MAYIGUALQUE .
 
     PIZQ            reduce using rule 77 (de2 -> MAYIGUALQUE .)
@@ -2314,6 +3907,9 @@ state 160
 
     (72) de1 -> de2 . exp
     (79) exp -> . termino exp1
+=======
+    (86) t1 -> DIV . termino
+>>>>>>> origin/master
     (83) termino -> . factor t1
     (87) factor -> . f1 valor
     (88) factor -> . PIZQ expresion PDER
@@ -2322,14 +3918,21 @@ state 160
     (91) f1 -> . RESTA
     (145) empty -> .
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
+=======
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+>>>>>>> origin/master
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
 
+<<<<<<< HEAD
     empty                          shift and go to state 126
     f1                             shift and go to state 128
     termino                        shift and go to state 129
@@ -2337,9 +3940,52 @@ state 160
     factor                         shift and go to state 131
 
 state 161
+=======
+    empty                          shift and go to state 122
+    factor                         shift and go to state 119
+    f1                             shift and go to state 121
+    termino                        shift and go to state 197
+
+state 163
+
+    (37) valor -> ID . va1
+    (38) va1 -> . empty
+    (39) va1 -> . PIZQ expresion va2 PDER
+    (40) va1 -> . CIZQ CTEENT CDER va3
+    (41) va1 -> . va4
+    (145) empty -> .
+    (46) va4 -> . PUNTO ID va5
+
+    PIZQ            shift and go to state 203
+    CIZQ            shift and go to state 202
+    MULT            reduce using rule 145 (empty -> .)
+    DIV             reduce using rule 145 (empty -> .)
+    SUMA            reduce using rule 145 (empty -> .)
+    RESTA           reduce using rule 145 (empty -> .)
+    MAYQUE          reduce using rule 145 (empty -> .)
+    MENQUE          reduce using rule 145 (empty -> .)
+    IGUALQUE        reduce using rule 145 (empty -> .)
+    DIF             reduce using rule 145 (empty -> .)
+    MAYIGUALQUE     reduce using rule 145 (empty -> .)
+    MENIGUALQUE     reduce using rule 145 (empty -> .)
+    CONDICIONY      reduce using rule 145 (empty -> .)
+    CONDICIONO      reduce using rule 145 (empty -> .)
+    PDER            reduce using rule 145 (empty -> .)
+    PUNTOYCOMA      reduce using rule 145 (empty -> .)
+    COMA            reduce using rule 145 (empty -> .)
+    CDER            reduce using rule 145 (empty -> .)
+    PUNTO           shift and go to state 200
+
+    empty                          shift and go to state 198
+    va1                            shift and go to state 199
+    va4                            shift and go to state 201
+
+state 164
+>>>>>>> origin/master
 
     (73) de2 -> MAYQUE .
 
+<<<<<<< HEAD
     PIZQ            reduce using rule 73 (de2 -> MAYQUE .)
     SUMA            reduce using rule 73 (de2 -> MAYQUE .)
     RESTA           reduce using rule 73 (de2 -> MAYQUE .)
@@ -2350,6 +3996,27 @@ state 161
 
 
 state 162
+=======
+    MULT            reduce using rule 36 (valor -> valordeclaracion .)
+    DIV             reduce using rule 36 (valor -> valordeclaracion .)
+    SUMA            reduce using rule 36 (valor -> valordeclaracion .)
+    RESTA           reduce using rule 36 (valor -> valordeclaracion .)
+    MAYQUE          reduce using rule 36 (valor -> valordeclaracion .)
+    MENQUE          reduce using rule 36 (valor -> valordeclaracion .)
+    IGUALQUE        reduce using rule 36 (valor -> valordeclaracion .)
+    DIF             reduce using rule 36 (valor -> valordeclaracion .)
+    MAYIGUALQUE     reduce using rule 36 (valor -> valordeclaracion .)
+    MENIGUALQUE     reduce using rule 36 (valor -> valordeclaracion .)
+    CONDICIONY      reduce using rule 36 (valor -> valordeclaracion .)
+    CONDICIONO      reduce using rule 36 (valor -> valordeclaracion .)
+    PDER            reduce using rule 36 (valor -> valordeclaracion .)
+    PUNTOYCOMA      reduce using rule 36 (valor -> valordeclaracion .)
+    COMA            reduce using rule 36 (valor -> valordeclaracion .)
+    CDER            reduce using rule 36 (valor -> valordeclaracion .)
+
+
+state 165
+>>>>>>> origin/master
 
     (87) factor -> f1 valor .
 
@@ -2365,12 +4032,13 @@ state 162
     MENIGUALQUE     reduce using rule 87 (factor -> f1 valor .)
     CONDICIONY      reduce using rule 87 (factor -> f1 valor .)
     CONDICIONO      reduce using rule 87 (factor -> f1 valor .)
-    COMA            reduce using rule 87 (factor -> f1 valor .)
-    PDER            reduce using rule 87 (factor -> f1 valor .)
-    PUNTOYCOMA      reduce using rule 87 (factor -> f1 valor .)
     CDER            reduce using rule 87 (factor -> f1 valor .)
+    PDER            reduce using rule 87 (factor -> f1 valor .)
+    COMA            reduce using rule 87 (factor -> f1 valor .)
+    PUNTOYCOMA      reduce using rule 87 (factor -> f1 valor .)
 
 
+<<<<<<< HEAD
 state 163
 
     (36) valor -> valordeclaracion .
@@ -2394,15 +4062,14 @@ state 163
 
 
 state 164
+=======
+state 166
+>>>>>>> origin/master
 
-    (37) valor -> ID . va1
-    (38) va1 -> . empty
-    (39) va1 -> . PIZQ expresion va2 PDER
-    (40) va1 -> . CIZQ CTEENT CDER va3
-    (41) va1 -> . va4
-    (145) empty -> .
-    (46) va4 -> . PUNTO ID va5
+    (133) si -> SI PIZQ expresion PDER . bloque si1
+    (100) bloque -> . BIZQ b1 BDER
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 205
     CIZQ            shift and go to state 202
     MULT            reduce using rule 145 (empty -> .)
@@ -2422,12 +4089,27 @@ state 164
     COMA            reduce using rule 145 (empty -> .)
     CDER            reduce using rule 145 (empty -> .)
     PUNTO           shift and go to state 201
+=======
+    BIZQ            shift and go to state 205
+
+    bloque                         shift and go to state 204
+
+state 167
+
+    (88) factor -> PIZQ expresion . PDER
+
+    PDER            shift and go to state 206
+>>>>>>> origin/master
 
     empty                          shift and go to state 204
     va4                            shift and go to state 200
     va1                            shift and go to state 203
 
+<<<<<<< HEAD
 state 165
+=======
+state 168
+>>>>>>> origin/master
 
     (80) exp1 -> empty .
 
@@ -2445,6 +4127,7 @@ state 165
     CDER            reduce using rule 80 (exp1 -> empty .)
 
 
+<<<<<<< HEAD
 state 166
 
     (82) exp1 -> RESTA . exp
@@ -2472,6 +4155,27 @@ state 166
     factor                         shift and go to state 131
 
 state 167
+=======
+state 169
+
+    (79) exp -> termino exp1 .
+
+    MAYQUE          reduce using rule 79 (exp -> termino exp1 .)
+    MENQUE          reduce using rule 79 (exp -> termino exp1 .)
+    IGUALQUE        reduce using rule 79 (exp -> termino exp1 .)
+    DIF             reduce using rule 79 (exp -> termino exp1 .)
+    MAYIGUALQUE     reduce using rule 79 (exp -> termino exp1 .)
+    MENIGUALQUE     reduce using rule 79 (exp -> termino exp1 .)
+    CONDICIONY      reduce using rule 79 (exp -> termino exp1 .)
+    CONDICIONO      reduce using rule 79 (exp -> termino exp1 .)
+    PDER            reduce using rule 79 (exp -> termino exp1 .)
+    PUNTOYCOMA      reduce using rule 79 (exp -> termino exp1 .)
+    COMA            reduce using rule 79 (exp -> termino exp1 .)
+    CDER            reduce using rule 79 (exp -> termino exp1 .)
+
+
+state 170
+>>>>>>> origin/master
 
     (81) exp1 -> SUMA . exp
     (79) exp -> . termino exp1
@@ -2483,14 +4187,21 @@ state 167
     (91) f1 -> . RESTA
     (145) empty -> .
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
+=======
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+>>>>>>> origin/master
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
 
+<<<<<<< HEAD
     empty                          shift and go to state 126
     f1                             shift and go to state 128
     termino                        shift and go to state 129
@@ -2569,6 +4280,18 @@ state 171
 state 172
 
     (86) t1 -> DIV . termino
+=======
+    empty                          shift and go to state 122
+    factor                         shift and go to state 119
+    exp                            shift and go to state 207
+    f1                             shift and go to state 121
+    termino                        shift and go to state 126
+
+state 171
+
+    (82) exp1 -> RESTA . exp
+    (79) exp -> . termino exp1
+>>>>>>> origin/master
     (83) termino -> . factor t1
     (87) factor -> . f1 valor
     (88) factor -> . PIZQ expresion PDER
@@ -2577,14 +4300,21 @@ state 172
     (91) f1 -> . RESTA
     (145) empty -> .
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
+=======
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+>>>>>>> origin/master
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
 
+<<<<<<< HEAD
     empty                          shift and go to state 126
     termino                        shift and go to state 210
     f1                             shift and go to state 128
@@ -2618,10 +4348,45 @@ state 174
     PUNTOYCOMA      reduce using rule 67 (ex1 -> empty .)
     COMA            reduce using rule 67 (ex1 -> empty .)
     CDER            reduce using rule 67 (ex1 -> empty .)
+=======
+    empty                          shift and go to state 122
+    factor                         shift and go to state 119
+    exp                            shift and go to state 208
+    f1                             shift and go to state 121
+    termino                        shift and go to state 126
+
+state 172
+
+    (129) l1 -> empty .
+
+    CIZQ            reduce using rule 129 (l1 -> empty .)
+    PDER            reduce using rule 129 (l1 -> empty .)
+
+
+state 173
+
+    (128) lectura -> LEER PIZQ ID l1 . l2 PDER PUNTOYCOMA
+    (131) l2 -> . empty
+    (132) l2 -> . CIZQ expresion CDER
+    (145) empty -> .
+
+    CIZQ            shift and go to state 211
+    PDER            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 209
+    l2                             shift and go to state 210
+
+state 174
+
+    (130) l1 -> PUNTO . ID
+
+    ID              shift and go to state 212
+>>>>>>> origin/master
 
 
 state 175
 
+<<<<<<< HEAD
     (69) ex1 -> CONDICIONO . expresion
     (66) expresion -> . declaracion ex1
     (70) declaracion -> . exp de1
@@ -2641,6 +4406,11 @@ state 175
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
+=======
+    (99) fun22 -> RETORNA expresion PUNTOYCOMA .
+
+    BDER            reduce using rule 99 (fun22 -> RETORNA expresion PUNTOYCOMA .)
+>>>>>>> origin/master
 
     exp                            shift and go to state 125
     factor                         shift and go to state 131
@@ -2652,6 +4422,7 @@ state 175
 
 state 176
 
+<<<<<<< HEAD
     (68) ex1 -> CONDICIONY . expresion
     (66) expresion -> . declaracion ex1
     (70) declaracion -> . exp de1
@@ -2688,10 +4459,24 @@ state 177
     COMA            reduce using rule 66 (expresion -> declaracion ex1 .)
     PUNTOYCOMA      reduce using rule 66 (expresion -> declaracion ex1 .)
     CDER            reduce using rule 66 (expresion -> declaracion ex1 .)
+=======
+    (108) a1 -> PUNTO ID .
+
+    CIZQ            reduce using rule 108 (a1 -> PUNTO ID .)
+    IGUAL           reduce using rule 108 (a1 -> PUNTO ID .)
+
+
+state 177
+
+    (109) a2 -> empty .
+
+    IGUAL           reduce using rule 109 (a2 -> empty .)
+>>>>>>> origin/master
 
 
 state 178
 
+<<<<<<< HEAD
     (108) a1 -> PUNTO ID .
 
     CIZQ            reduce using rule 108 (a1 -> PUNTO ID .)
@@ -2714,6 +4499,8 @@ state 180
 
 state 181
 
+=======
+>>>>>>> origin/master
     (110) a2 -> CIZQ . expresion CDER
     (66) expresion -> . declaracion ex1
     (70) declaracion -> . exp de1
@@ -2726,14 +4513,21 @@ state 181
     (91) f1 -> . RESTA
     (145) empty -> .
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
+=======
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+>>>>>>> origin/master
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
 
+<<<<<<< HEAD
     exp                            shift and go to state 125
     factor                         shift and go to state 131
     empty                          shift and go to state 126
@@ -2741,13 +4535,49 @@ state 181
     expresion                      shift and go to state 214
     f1                             shift and go to state 128
     declaracion                    shift and go to state 132
+=======
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    expresion                      shift and go to state 213
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
+
+state 179
+
+    (106) asignacion -> ID a1 a2 . IGUAL expresion PUNTOYCOMA
+
+    IGUAL           shift and go to state 214
+
+
+state 180
+
+    (111) mientras -> MIENTRAS PIZQ expresion PDER . bloquesimple
+    (103) bloquesimple -> . BIZQ bs1 BDER
+
+    BIZQ            shift and go to state 216
+
+    bloquesimple                   shift and go to state 215
+
+state 181
+
+    (126) e1 -> empty .
+
+    PDER            reduce using rule 126 (e1 -> empty .)
+
+>>>>>>> origin/master
 
 state 182
 
-    (59) llamarfunmet -> ID ll1 PIZQ . ll2 PDER PUNTOYCOMA
-    (62) ll2 -> . empty
-    (63) ll2 -> . expresion ll3
-    (145) empty -> .
+    (125) escritura -> IMPRIMIR PIZQ expresion e1 . PDER PUNTOYCOMA
+
+    PDER            shift and go to state 217
+
+
+state 183
+
+    (127) e1 -> COMA . expresion e1
     (66) expresion -> . declaracion ex1
     (70) declaracion -> . exp de1
     (79) exp -> . termino exp1
@@ -2757,12 +4587,16 @@ state 182
     (89) f1 -> . empty
     (90) f1 -> . SUMA
     (91) f1 -> . RESTA
+    (145) empty -> .
 
-    PDER            reduce using rule 145 (empty -> .)
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
@@ -2781,10 +4615,20 @@ state 183
     (61) ll1 -> PUNTO ID .
 
     PIZQ            reduce using rule 61 (ll1 -> PUNTO ID .)
+=======
+>>>>>>> origin/master
 
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    expresion                      shift and go to state 218
+    f1                             shift and go to state 121
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
 
 state 184
 
+<<<<<<< HEAD
     (99) fun22 -> RETORNA expresion PUNTOYCOMA .
 
     BDER            reduce using rule 99 (fun22 -> RETORNA expresion PUNTOYCOMA .)
@@ -2805,22 +4649,89 @@ state 186
 
     CIZQ            reduce using rule 129 (l1 -> empty .)
     PDER            reduce using rule 129 (l1 -> empty .)
+=======
+    (59) llamarfunmet -> ID ll1 PIZQ . ll2 PDER PUNTOYCOMA
+    (62) ll2 -> . empty
+    (63) ll2 -> . expresion ll3
+    (145) empty -> .
+    (66) expresion -> . declaracion ex1
+    (70) declaracion -> . exp de1
+    (79) exp -> . termino exp1
+    (83) termino -> . factor t1
+    (87) factor -> . f1 valor
+    (88) factor -> . PIZQ expresion PDER
+    (89) f1 -> . empty
+    (90) f1 -> . SUMA
+    (91) f1 -> . RESTA
+
+    PDER            reduce using rule 145 (empty -> .)
+    ID              reduce using rule 145 (empty -> .)
+    CTEENT          reduce using rule 145 (empty -> .)
+    CTEDEC          reduce using rule 145 (empty -> .)
+    CTETEXTO        reduce using rule 145 (empty -> .)
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+
+    empty                          shift and go to state 219
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    ll2                            shift and go to state 221
+    expresion                      shift and go to state 220
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
+
+state 185
+
+    (61) ll1 -> PUNTO ID .
+
+    PIZQ            reduce using rule 61 (ll1 -> PUNTO ID .)
+
+
+state 186
+
+    (58) pa3 -> COMA pa1 .
+
+    PDER            reduce using rule 58 (pa3 -> COMA pa1 .)
+>>>>>>> origin/master
 
 
 state 187
 
+<<<<<<< HEAD
     (130) l1 -> PUNTO . ID
+=======
+    (13) pr21 -> estatuto pr21 .
 
-    ID              shift and go to state 220
+    RETORNA         reduce using rule 13 (pr21 -> estatuto pr21 .)
+    BDER            reduce using rule 13 (pr21 -> estatuto pr21 .)
 
 
 state 188
 
-    (128) lectura -> LEER PIZQ ID l1 . l2 PDER PUNTOYCOMA
-    (131) l2 -> . empty
-    (132) l2 -> . CIZQ expresion CDER
-    (145) empty -> .
+    (8) principal -> PRINCIPAL pr1 ID parametros BIZQ pr2 BDER .
+>>>>>>> origin/master
 
+    $end            reduce using rule 8 (principal -> PRINCIPAL pr1 ID parametros BIZQ pr2 BDER .)
+
+
+<<<<<<< HEAD
+state 188
+=======
+state 189
+
+    (14) pr22 -> empty .
+
+    BDER            reduce using rule 14 (pr22 -> empty .)
+
+
+state 190
+>>>>>>> origin/master
+
+    (11) pr2 -> pr21 pr22 .
+
+<<<<<<< HEAD
     CIZQ            shift and go to state 223
     PDER            reduce using rule 145 (empty -> .)
 
@@ -2832,8 +4743,43 @@ state 189
     (126) e1 -> empty .
 
     PDER            reduce using rule 126 (e1 -> empty .)
+=======
+    BDER            reduce using rule 11 (pr2 -> pr21 pr22 .)
 
 
+state 191
+
+    (15) pr22 -> RETORNA . expresion PUNTOYCOMA
+    (66) expresion -> . declaracion ex1
+    (70) declaracion -> . exp de1
+    (79) exp -> . termino exp1
+    (83) termino -> . factor t1
+    (87) factor -> . f1 valor
+    (88) factor -> . PIZQ expresion PDER
+    (89) f1 -> . empty
+    (90) f1 -> . SUMA
+    (91) f1 -> . RESTA
+    (145) empty -> .
+
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+    ID              reduce using rule 145 (empty -> .)
+    CTEENT          reduce using rule 145 (empty -> .)
+    CTEDEC          reduce using rule 145 (empty -> .)
+    CTETEXTO        reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    expresion                      shift and go to state 222
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
+>>>>>>> origin/master
+
+
+<<<<<<< HEAD
 state 190
 
     (127) e1 -> COMA . expresion e1
@@ -2876,24 +4822,48 @@ state 192
     (58) pa3 -> COMA pa1 .
 
     PDER            reduce using rule 58 (pa3 -> COMA pa1 .)
+=======
+    (28) v4 -> IGUAL CIZQ valordeclaracion . v5 CDER v6
+    (29) v5 -> . empty
+    (30) v5 -> . COMA valordeclaracion v5
+    (145) empty -> .
 
+    COMA            shift and go to state 224
+    CDER            reduce using rule 145 (empty -> .)
+>>>>>>> origin/master
+
+    empty                          shift and go to state 223
+    v5                             shift and go to state 225
 
 state 193
 
-    (29) v5 -> empty .
+    (69) ex1 -> CONDICIONO expresion .
 
-    CDER            reduce using rule 29 (v5 -> empty .)
+    PDER            reduce using rule 69 (ex1 -> CONDICIONO expresion .)
+    PUNTOYCOMA      reduce using rule 69 (ex1 -> CONDICIONO expresion .)
+    COMA            reduce using rule 69 (ex1 -> CONDICIONO expresion .)
+    CDER            reduce using rule 69 (ex1 -> CONDICIONO expresion .)
 
 
 state 194
 
+<<<<<<< HEAD
     (28) v4 -> IGUAL CIZQ valordeclaracion v5 . CDER v6
 
     CDER            shift and go to state 226
+=======
+    (68) ex1 -> CONDICIONY expresion .
+
+    PDER            reduce using rule 68 (ex1 -> CONDICIONY expresion .)
+    PUNTOYCOMA      reduce using rule 68 (ex1 -> CONDICIONY expresion .)
+    COMA            reduce using rule 68 (ex1 -> CONDICIONY expresion .)
+    CDER            reduce using rule 68 (ex1 -> CONDICIONY expresion .)
+>>>>>>> origin/master
 
 
 state 195
 
+<<<<<<< HEAD
     (30) v5 -> COMA . valordeclaracion v5
     (33) valordeclaracion -> . CTEENT
     (34) valordeclaracion -> . CTEDEC
@@ -2902,18 +4872,42 @@ state 195
     CTEENT          shift and go to state 58
     CTEDEC          shift and go to state 59
     CTETEXTO        shift and go to state 60
+=======
+    (72) de1 -> de2 exp .
+
+    CONDICIONY      reduce using rule 72 (de1 -> de2 exp .)
+    CONDICIONO      reduce using rule 72 (de1 -> de2 exp .)
+    PDER            reduce using rule 72 (de1 -> de2 exp .)
+    PUNTOYCOMA      reduce using rule 72 (de1 -> de2 exp .)
+    COMA            reduce using rule 72 (de1 -> de2 exp .)
+    CDER            reduce using rule 72 (de1 -> de2 exp .)
+>>>>>>> origin/master
 
     valordeclaracion               shift and go to state 227
 
 state 196
 
-    (15) pr22 -> RETORNA expresion . PUNTOYCOMA
+    (85) t1 -> MULT termino .
 
-    PUNTOYCOMA      shift and go to state 228
+    SUMA            reduce using rule 85 (t1 -> MULT termino .)
+    RESTA           reduce using rule 85 (t1 -> MULT termino .)
+    MAYQUE          reduce using rule 85 (t1 -> MULT termino .)
+    MENQUE          reduce using rule 85 (t1 -> MULT termino .)
+    IGUALQUE        reduce using rule 85 (t1 -> MULT termino .)
+    DIF             reduce using rule 85 (t1 -> MULT termino .)
+    MAYIGUALQUE     reduce using rule 85 (t1 -> MULT termino .)
+    MENIGUALQUE     reduce using rule 85 (t1 -> MULT termino .)
+    CONDICIONY      reduce using rule 85 (t1 -> MULT termino .)
+    CONDICIONO      reduce using rule 85 (t1 -> MULT termino .)
+    PDER            reduce using rule 85 (t1 -> MULT termino .)
+    PUNTOYCOMA      reduce using rule 85 (t1 -> MULT termino .)
+    COMA            reduce using rule 85 (t1 -> MULT termino .)
+    CDER            reduce using rule 85 (t1 -> MULT termino .)
 
 
 state 197
 
+<<<<<<< HEAD
     (133) si -> SI PIZQ expresion PDER bloque . si1
     (134) si1 -> . empty
     (135) si1 -> . O bloque
@@ -2991,10 +4985,29 @@ state 199
     PUNTOYCOMA      reduce using rule 72 (de1 -> de2 exp .)
     COMA            reduce using rule 72 (de1 -> de2 exp .)
     CDER            reduce using rule 72 (de1 -> de2 exp .)
+=======
+    (86) t1 -> DIV termino .
+
+    SUMA            reduce using rule 86 (t1 -> DIV termino .)
+    RESTA           reduce using rule 86 (t1 -> DIV termino .)
+    MAYQUE          reduce using rule 86 (t1 -> DIV termino .)
+    MENQUE          reduce using rule 86 (t1 -> DIV termino .)
+    IGUALQUE        reduce using rule 86 (t1 -> DIV termino .)
+    DIF             reduce using rule 86 (t1 -> DIV termino .)
+    MAYIGUALQUE     reduce using rule 86 (t1 -> DIV termino .)
+    MENIGUALQUE     reduce using rule 86 (t1 -> DIV termino .)
+    CONDICIONY      reduce using rule 86 (t1 -> DIV termino .)
+    CONDICIONO      reduce using rule 86 (t1 -> DIV termino .)
+    PDER            reduce using rule 86 (t1 -> DIV termino .)
+    PUNTOYCOMA      reduce using rule 86 (t1 -> DIV termino .)
+    COMA            reduce using rule 86 (t1 -> DIV termino .)
+    CDER            reduce using rule 86 (t1 -> DIV termino .)
+>>>>>>> origin/master
 
 
-state 200
+state 198
 
+<<<<<<< HEAD
     (41) va1 -> va4 .
 
     MULT            reduce using rule 41 (va1 -> va4 .)
@@ -3013,9 +5026,29 @@ state 200
     PUNTOYCOMA      reduce using rule 41 (va1 -> va4 .)
     COMA            reduce using rule 41 (va1 -> va4 .)
     CDER            reduce using rule 41 (va1 -> va4 .)
+=======
+    (38) va1 -> empty .
+
+    MULT            reduce using rule 38 (va1 -> empty .)
+    DIV             reduce using rule 38 (va1 -> empty .)
+    SUMA            reduce using rule 38 (va1 -> empty .)
+    RESTA           reduce using rule 38 (va1 -> empty .)
+    MAYQUE          reduce using rule 38 (va1 -> empty .)
+    MENQUE          reduce using rule 38 (va1 -> empty .)
+    IGUALQUE        reduce using rule 38 (va1 -> empty .)
+    DIF             reduce using rule 38 (va1 -> empty .)
+    MAYIGUALQUE     reduce using rule 38 (va1 -> empty .)
+    MENIGUALQUE     reduce using rule 38 (va1 -> empty .)
+    CONDICIONY      reduce using rule 38 (va1 -> empty .)
+    CONDICIONO      reduce using rule 38 (va1 -> empty .)
+    PDER            reduce using rule 38 (va1 -> empty .)
+    PUNTOYCOMA      reduce using rule 38 (va1 -> empty .)
+    COMA            reduce using rule 38 (va1 -> empty .)
+    CDER            reduce using rule 38 (va1 -> empty .)
+>>>>>>> origin/master
 
 
-state 201
+state 199
 
     (46) va4 -> PUNTO . ID va5
 
@@ -3051,6 +5084,7 @@ state 203
     CDER            reduce using rule 37 (valor -> ID va1 .)
 
 
+<<<<<<< HEAD
 state 204
 
     (38) va1 -> empty .
@@ -3075,6 +5109,46 @@ state 204
 
 state 205
 
+=======
+state 200
+
+    (46) va4 -> PUNTO . ID va5
+
+    ID              shift and go to state 226
+
+
+state 201
+
+    (41) va1 -> va4 .
+
+    MULT            reduce using rule 41 (va1 -> va4 .)
+    DIV             reduce using rule 41 (va1 -> va4 .)
+    SUMA            reduce using rule 41 (va1 -> va4 .)
+    RESTA           reduce using rule 41 (va1 -> va4 .)
+    MAYQUE          reduce using rule 41 (va1 -> va4 .)
+    MENQUE          reduce using rule 41 (va1 -> va4 .)
+    IGUALQUE        reduce using rule 41 (va1 -> va4 .)
+    DIF             reduce using rule 41 (va1 -> va4 .)
+    MAYIGUALQUE     reduce using rule 41 (va1 -> va4 .)
+    MENIGUALQUE     reduce using rule 41 (va1 -> va4 .)
+    CONDICIONY      reduce using rule 41 (va1 -> va4 .)
+    CONDICIONO      reduce using rule 41 (va1 -> va4 .)
+    PDER            reduce using rule 41 (va1 -> va4 .)
+    PUNTOYCOMA      reduce using rule 41 (va1 -> va4 .)
+    COMA            reduce using rule 41 (va1 -> va4 .)
+    CDER            reduce using rule 41 (va1 -> va4 .)
+
+
+state 202
+
+    (40) va1 -> CIZQ . CTEENT CDER va3
+
+    CTEENT          shift and go to state 227
+
+
+state 203
+
+>>>>>>> origin/master
     (39) va1 -> PIZQ . expresion va2 PDER
     (66) expresion -> . declaracion ex1
     (70) declaracion -> . exp de1
@@ -3087,14 +5161,21 @@ state 205
     (91) f1 -> . RESTA
     (145) empty -> .
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
+=======
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+>>>>>>> origin/master
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
 
+<<<<<<< HEAD
     exp                            shift and go to state 125
     factor                         shift and go to state 131
     empty                          shift and go to state 126
@@ -3119,8 +5200,19 @@ state 206
     PUNTOYCOMA      reduce using rule 82 (exp1 -> RESTA exp .)
     COMA            reduce using rule 82 (exp1 -> RESTA exp .)
     CDER            reduce using rule 82 (exp1 -> RESTA exp .)
+=======
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    factor                         shift and go to state 119
+    expresion                      shift and go to state 228
+    termino                        shift and go to state 126
+>>>>>>> origin/master
 
+state 204
 
+<<<<<<< HEAD
 state 207
 
     (81) exp1 -> SUMA exp .
@@ -3137,10 +5229,82 @@ state 207
     PUNTOYCOMA      reduce using rule 81 (exp1 -> SUMA exp .)
     COMA            reduce using rule 81 (exp1 -> SUMA exp .)
     CDER            reduce using rule 81 (exp1 -> SUMA exp .)
+=======
+    (133) si -> SI PIZQ expresion PDER bloque . si1
+    (134) si1 -> . empty
+    (135) si1 -> . O bloque
+    (145) empty -> .
 
+    O               shift and go to state 231
+    EJEC            reduce using rule 145 (empty -> .)
+    ASIGNA          reduce using rule 145 (empty -> .)
+    MIENTRAS        reduce using rule 145 (empty -> .)
+    SI              reduce using rule 145 (empty -> .)
+    IMPRIMIR        reduce using rule 145 (empty -> .)
+    LEER            reduce using rule 145 (empty -> .)
+    ENTERO          reduce using rule 145 (empty -> .)
+    DECIMAL         reduce using rule 145 (empty -> .)
+    TEXTO           reduce using rule 145 (empty -> .)
+    ID              reduce using rule 145 (empty -> .)
+    RETORNA         reduce using rule 145 (empty -> .)
+    BDER            reduce using rule 145 (empty -> .)
+>>>>>>> origin/master
 
+    empty                          shift and go to state 229
+    si1                            shift and go to state 230
+
+<<<<<<< HEAD
 state 208
 
+=======
+state 205
+
+    (100) bloque -> BIZQ . b1 BDER
+    (101) b1 -> . empty
+    (102) b1 -> . estatuto b1
+    (145) empty -> .
+    (112) estatuto -> . variables
+    (113) estatuto -> . EJEC llamarfunmet
+    (114) estatuto -> . ASIGNA asignacion
+    (115) estatuto -> . mientras
+    (116) estatuto -> . si
+    (117) estatuto -> . escritura
+    (118) estatuto -> . lectura
+    (20) variables -> . tipo v1 PUNTOYCOMA
+    (111) mientras -> . MIENTRAS PIZQ expresion PDER bloquesimple
+    (133) si -> . SI PIZQ expresion PDER bloque si1
+    (125) escritura -> . IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA
+    (128) lectura -> . LEER PIZQ ID l1 l2 PDER PUNTOYCOMA
+    (16) tipo -> . ENTERO
+    (17) tipo -> . DECIMAL
+    (18) tipo -> . TEXTO
+    (19) tipo -> . ID
+
+    BDER            reduce using rule 145 (empty -> .)
+    EJEC            shift and go to state 80
+    ASIGNA          shift and go to state 76
+    MIENTRAS        shift and go to state 78
+    SI              shift and go to state 69
+    IMPRIMIR        shift and go to state 79
+    LEER            shift and go to state 71
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
+
+    b1                             shift and go to state 232
+    empty                          shift and go to state 233
+    variables                      shift and go to state 73
+    estatuto                       shift and go to state 234
+    lectura                        shift and go to state 74
+    escritura                      shift and go to state 75
+    si                             shift and go to state 77
+    tipo                           shift and go to state 23
+    mientras                       shift and go to state 70
+
+state 206
+
+>>>>>>> origin/master
     (88) factor -> PIZQ expresion PDER .
 
     MULT            reduce using rule 88 (factor -> PIZQ expresion PDER .)
@@ -3155,6 +5319,7 @@ state 208
     MENIGUALQUE     reduce using rule 88 (factor -> PIZQ expresion PDER .)
     CONDICIONY      reduce using rule 88 (factor -> PIZQ expresion PDER .)
     CONDICIONO      reduce using rule 88 (factor -> PIZQ expresion PDER .)
+<<<<<<< HEAD
     COMA            reduce using rule 88 (factor -> PIZQ expresion PDER .)
     PDER            reduce using rule 88 (factor -> PIZQ expresion PDER .)
     PUNTOYCOMA      reduce using rule 88 (factor -> PIZQ expresion PDER .)
@@ -3222,8 +5387,67 @@ state 212
 
 
 state 213
+=======
+    CDER            reduce using rule 88 (factor -> PIZQ expresion PDER .)
+    PDER            reduce using rule 88 (factor -> PIZQ expresion PDER .)
+    COMA            reduce using rule 88 (factor -> PIZQ expresion PDER .)
+    PUNTOYCOMA      reduce using rule 88 (factor -> PIZQ expresion PDER .)
 
-    (106) asignacion -> ID a1 a2 IGUAL . expresion PUNTOYCOMA
+
+state 207
+
+    (81) exp1 -> SUMA exp .
+
+    MAYQUE          reduce using rule 81 (exp1 -> SUMA exp .)
+    MENQUE          reduce using rule 81 (exp1 -> SUMA exp .)
+    IGUALQUE        reduce using rule 81 (exp1 -> SUMA exp .)
+    DIF             reduce using rule 81 (exp1 -> SUMA exp .)
+    MAYIGUALQUE     reduce using rule 81 (exp1 -> SUMA exp .)
+    MENIGUALQUE     reduce using rule 81 (exp1 -> SUMA exp .)
+    CONDICIONY      reduce using rule 81 (exp1 -> SUMA exp .)
+    CONDICIONO      reduce using rule 81 (exp1 -> SUMA exp .)
+    PDER            reduce using rule 81 (exp1 -> SUMA exp .)
+    PUNTOYCOMA      reduce using rule 81 (exp1 -> SUMA exp .)
+    COMA            reduce using rule 81 (exp1 -> SUMA exp .)
+    CDER            reduce using rule 81 (exp1 -> SUMA exp .)
+
+
+state 208
+
+    (82) exp1 -> RESTA exp .
+
+    MAYQUE          reduce using rule 82 (exp1 -> RESTA exp .)
+    MENQUE          reduce using rule 82 (exp1 -> RESTA exp .)
+    IGUALQUE        reduce using rule 82 (exp1 -> RESTA exp .)
+    DIF             reduce using rule 82 (exp1 -> RESTA exp .)
+    MAYIGUALQUE     reduce using rule 82 (exp1 -> RESTA exp .)
+    MENIGUALQUE     reduce using rule 82 (exp1 -> RESTA exp .)
+    CONDICIONY      reduce using rule 82 (exp1 -> RESTA exp .)
+    CONDICIONO      reduce using rule 82 (exp1 -> RESTA exp .)
+    PDER            reduce using rule 82 (exp1 -> RESTA exp .)
+    PUNTOYCOMA      reduce using rule 82 (exp1 -> RESTA exp .)
+    COMA            reduce using rule 82 (exp1 -> RESTA exp .)
+    CDER            reduce using rule 82 (exp1 -> RESTA exp .)
+
+
+state 209
+
+    (131) l2 -> empty .
+
+    PDER            reduce using rule 131 (l2 -> empty .)
+
+
+state 210
+
+    (128) lectura -> LEER PIZQ ID l1 l2 . PDER PUNTOYCOMA
+
+    PDER            shift and go to state 235
+
+
+state 211
+>>>>>>> origin/master
+
+    (132) l2 -> CIZQ . expresion CDER
     (66) expresion -> . declaracion ex1
     (70) declaracion -> . exp de1
     (79) exp -> . termino exp1
@@ -3235,14 +5459,21 @@ state 213
     (91) f1 -> . RESTA
     (145) empty -> .
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
+=======
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+>>>>>>> origin/master
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
 
+<<<<<<< HEAD
     exp                            shift and go to state 125
     factor                         shift and go to state 131
     empty                          shift and go to state 126
@@ -3252,12 +5483,24 @@ state 213
     declaracion                    shift and go to state 132
 
 state 214
+=======
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    expresion                      shift and go to state 236
+    factor                         shift and go to state 119
+    termino                        shift and go to state 126
+
+state 212
+>>>>>>> origin/master
 
     (110) a2 -> CIZQ expresion . CDER
 
     CDER            shift and go to state 239
 
 
+<<<<<<< HEAD
 state 215
 
     (62) ll2 -> empty .
@@ -3324,6 +5567,46 @@ state 218
     lectura                        shift and go to state 249
 
 state 219
+=======
+state 213
+
+    (110) a2 -> CIZQ expresion . CDER
+
+    CDER            shift and go to state 237
+
+
+state 214
+
+    (106) asignacion -> ID a1 a2 IGUAL . expresion PUNTOYCOMA
+    (66) expresion -> . declaracion ex1
+    (70) declaracion -> . exp de1
+    (79) exp -> . termino exp1
+    (83) termino -> . factor t1
+    (87) factor -> . f1 valor
+    (88) factor -> . PIZQ expresion PDER
+    (89) f1 -> . empty
+    (90) f1 -> . SUMA
+    (91) f1 -> . RESTA
+    (145) empty -> .
+
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+    ID              reduce using rule 145 (empty -> .)
+    CTEENT          reduce using rule 145 (empty -> .)
+    CTEDEC          reduce using rule 145 (empty -> .)
+    CTETEXTO        reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    factor                         shift and go to state 119
+    expresion                      shift and go to state 238
+    termino                        shift and go to state 126
+
+state 215
+>>>>>>> origin/master
 
     (111) mientras -> MIENTRAS PIZQ expresion PDER bloquesimple .
 
@@ -3337,11 +5620,15 @@ state 219
     DECIMAL         reduce using rule 111 (mientras -> MIENTRAS PIZQ expresion PDER bloquesimple .)
     TEXTO           reduce using rule 111 (mientras -> MIENTRAS PIZQ expresion PDER bloquesimple .)
     ID              reduce using rule 111 (mientras -> MIENTRAS PIZQ expresion PDER bloquesimple .)
-    BDER            reduce using rule 111 (mientras -> MIENTRAS PIZQ expresion PDER bloquesimple .)
     RETORNA         reduce using rule 111 (mientras -> MIENTRAS PIZQ expresion PDER bloquesimple .)
+    BDER            reduce using rule 111 (mientras -> MIENTRAS PIZQ expresion PDER bloquesimple .)
 
 
+<<<<<<< HEAD
 state 220
+=======
+state 216
+>>>>>>> origin/master
 
     (130) l1 -> PUNTO ID .
 
@@ -3377,6 +5664,7 @@ state 223
     (91) f1 -> . RESTA
     (145) empty -> .
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
@@ -3394,12 +5682,39 @@ state 223
     declaracion                    shift and go to state 132
 
 state 224
+=======
+    BDER            reduce using rule 145 (empty -> .)
+    EJEC            shift and go to state 246
+    ASIGNA          shift and go to state 244
+    MIENTRAS        shift and go to state 78
+    SI              shift and go to state 69
+    IMPRIMIR        shift and go to state 79
+    LEER            shift and go to state 71
+
+    empty                          shift and go to state 239
+    lectura                        shift and go to state 240
+    escritura                      shift and go to state 243
+    si                             shift and go to state 245
+    estatutosimple                 shift and go to state 247
+    mientras                       shift and go to state 241
+    bs1                            shift and go to state 242
+
+state 217
+
+    (125) escritura -> IMPRIMIR PIZQ expresion e1 PDER . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 248
+
+
+state 218
+>>>>>>> origin/master
 
     (127) e1 -> COMA expresion . e1
     (126) e1 -> . empty
     (127) e1 -> . COMA expresion e1
     (145) empty -> .
 
+<<<<<<< HEAD
     COMA            shift and go to state 190
     PDER            reduce using rule 145 (empty -> .)
 
@@ -3414,13 +5729,34 @@ state 225
 
 
 state 226
+=======
+    COMA            shift and go to state 183
+    PDER            reduce using rule 145 (empty -> .)
 
-    (28) v4 -> IGUAL CIZQ valordeclaracion v5 CDER . v6
-    (31) v6 -> . empty
-    (32) v6 -> . v3
+    empty                          shift and go to state 181
+    e1                             shift and go to state 249
+
+state 219
+>>>>>>> origin/master
+
+    (62) ll2 -> empty .
+    (89) f1 -> empty .
+
+    PDER            reduce using rule 62 (ll2 -> empty .)
+    ID              reduce using rule 89 (f1 -> empty .)
+    CTEENT          reduce using rule 89 (f1 -> empty .)
+    CTEDEC          reduce using rule 89 (f1 -> empty .)
+    CTETEXTO        reduce using rule 89 (f1 -> empty .)
+
+
+state 220
+
+    (63) ll2 -> expresion . ll3
+    (64) ll3 -> . empty
+    (65) ll3 -> . COMA expresion ll3
     (145) empty -> .
-    (26) v3 -> . COMA v1
 
+<<<<<<< HEAD
     PUNTOYCOMA      reduce using rule 145 (empty -> .)
     COMA            shift and go to state 38
 
@@ -3440,16 +5776,24 @@ state 227
 
     empty                          shift and go to state 193
     v5                             shift and go to state 258
+=======
+    COMA            shift and go to state 251
+    PDER            reduce using rule 145 (empty -> .)
 
-state 228
+    empty                          shift and go to state 250
+    ll3                            shift and go to state 252
+>>>>>>> origin/master
 
-    (15) pr22 -> RETORNA expresion PUNTOYCOMA .
+state 221
 
-    BDER            reduce using rule 15 (pr22 -> RETORNA expresion PUNTOYCOMA .)
+    (59) llamarfunmet -> ID ll1 PIZQ ll2 . PDER PUNTOYCOMA
+
+    PDER            shift and go to state 253
 
 
-state 229
+state 222
 
+<<<<<<< HEAD
     (134) si1 -> empty .
 
     EJEC            reduce using rule 134 (si1 -> empty .)
@@ -3464,10 +5808,16 @@ state 229
     ID              reduce using rule 134 (si1 -> empty .)
     RETORNA         reduce using rule 134 (si1 -> empty .)
     BDER            reduce using rule 134 (si1 -> empty .)
+=======
+    (15) pr22 -> RETORNA expresion . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 254
+>>>>>>> origin/master
 
 
-state 230
+state 223
 
+<<<<<<< HEAD
     (133) si -> SI PIZQ expresion PDER bloque si1 .
 
     EJEC            reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
@@ -3482,26 +5832,79 @@ state 230
     ID              reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
     BDER            reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
     RETORNA         reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+=======
+    (29) v5 -> empty .
+
+    CDER            reduce using rule 29 (v5 -> empty .)
+>>>>>>> origin/master
 
 
-state 231
+state 224
+
+    (30) v5 -> COMA . valordeclaracion v5
+    (33) valordeclaracion -> . CTEENT
+    (34) valordeclaracion -> . CTEDEC
+    (35) valordeclaracion -> . CTETEXTO
+
+    CTEENT          shift and go to state 60
+    CTEDEC          shift and go to state 58
+    CTETEXTO        shift and go to state 59
+
+    valordeclaracion               shift and go to state 255
+
+state 225
+
+    (28) v4 -> IGUAL CIZQ valordeclaracion v5 . CDER v6
+
+    CDER            shift and go to state 256
+
+
+state 226
 
     (135) si1 -> O . bloque
     (100) bloque -> . BIZQ b1 BDER
 
+<<<<<<< HEAD
     BIZQ            shift and go to state 198
 
     bloque                         shift and go to state 259
+=======
+    PIZQ            shift and go to state 259
+    MULT            reduce using rule 145 (empty -> .)
+    DIV             reduce using rule 145 (empty -> .)
+    SUMA            reduce using rule 145 (empty -> .)
+    RESTA           reduce using rule 145 (empty -> .)
+    MAYQUE          reduce using rule 145 (empty -> .)
+    MENQUE          reduce using rule 145 (empty -> .)
+    IGUALQUE        reduce using rule 145 (empty -> .)
+    DIF             reduce using rule 145 (empty -> .)
+    MAYIGUALQUE     reduce using rule 145 (empty -> .)
+    MENIGUALQUE     reduce using rule 145 (empty -> .)
+    CONDICIONY      reduce using rule 145 (empty -> .)
+    CONDICIONO      reduce using rule 145 (empty -> .)
+    PDER            reduce using rule 145 (empty -> .)
+    PUNTOYCOMA      reduce using rule 145 (empty -> .)
+    COMA            reduce using rule 145 (empty -> .)
+    CDER            reduce using rule 145 (empty -> .)
 
-state 232
+    va5                            shift and go to state 257
+    empty                          shift and go to state 258
+>>>>>>> origin/master
+
+state 227
 
     (100) bloque -> BIZQ b1 . BDER
 
+<<<<<<< HEAD
     BDER            shift and go to state 260
+=======
+    CDER            shift and go to state 260
+>>>>>>> origin/master
 
 
-state 233
+state 228
 
+<<<<<<< HEAD
     (102) b1 -> estatuto . b1
     (101) b1 -> . empty
     (102) b1 -> . estatuto b1
@@ -3589,10 +5992,13 @@ state 236
 
 state 237
 
+=======
+>>>>>>> origin/master
     (39) va1 -> PIZQ expresion . va2 PDER
     (42) va2 -> . empty
     (43) va2 -> . COMA expresion va2
     (145) empty -> .
+<<<<<<< HEAD
 
     COMA            shift and go to state 268
     PDER            reduce using rule 145 (empty -> .)
@@ -3601,42 +6007,129 @@ state 237
     va2                            shift and go to state 267
 
 state 238
+=======
+
+    COMA            shift and go to state 263
+    PDER            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 261
+    va2                            shift and go to state 262
+
+state 229
+>>>>>>> origin/master
 
     (106) asignacion -> ID a1 a2 IGUAL expresion . PUNTOYCOMA
 
     PUNTOYCOMA      shift and go to state 269
 
 
-state 239
+state 230
 
     (110) a2 -> CIZQ expresion CDER .
 
+<<<<<<< HEAD
     IGUAL           reduce using rule 110 (a2 -> CIZQ expresion CDER .)
+=======
+    EJEC            reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+    ASIGNA          reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+    MIENTRAS        reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+    SI              reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+    IMPRIMIR        reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+    LEER            reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+    ENTERO          reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+    DECIMAL         reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+    TEXTO           reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+    ID              reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+    RETORNA         reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+    BDER            reduce using rule 133 (si -> SI PIZQ expresion PDER bloque si1 .)
+>>>>>>> origin/master
 
 
-state 240
+state 231
 
+<<<<<<< HEAD
     (59) llamarfunmet -> ID ll1 PIZQ ll2 PDER . PUNTOYCOMA
 
     PUNTOYCOMA      shift and go to state 270
 
+=======
+    (135) si1 -> O . bloque
+    (100) bloque -> . BIZQ b1 BDER
 
-state 241
+    BIZQ            shift and go to state 205
 
-    (64) ll3 -> empty .
+    bloque                         shift and go to state 264
+>>>>>>> origin/master
 
-    PDER            reduce using rule 64 (ll3 -> empty .)
+state 232
 
+    (100) bloque -> BIZQ b1 . BDER
 
-state 242
-
-    (63) ll2 -> expresion ll3 .
-
-    PDER            reduce using rule 63 (ll2 -> expresion ll3 .)
+    BDER            shift and go to state 265
 
 
-state 243
+state 233
 
+    (101) b1 -> empty .
+
+    BDER            reduce using rule 101 (b1 -> empty .)
+
+
+state 234
+
+    (102) b1 -> estatuto . b1
+    (101) b1 -> . empty
+    (102) b1 -> . estatuto b1
+    (145) empty -> .
+    (112) estatuto -> . variables
+    (113) estatuto -> . EJEC llamarfunmet
+    (114) estatuto -> . ASIGNA asignacion
+    (115) estatuto -> . mientras
+    (116) estatuto -> . si
+    (117) estatuto -> . escritura
+    (118) estatuto -> . lectura
+    (20) variables -> . tipo v1 PUNTOYCOMA
+    (111) mientras -> . MIENTRAS PIZQ expresion PDER bloquesimple
+    (133) si -> . SI PIZQ expresion PDER bloque si1
+    (125) escritura -> . IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA
+    (128) lectura -> . LEER PIZQ ID l1 l2 PDER PUNTOYCOMA
+    (16) tipo -> . ENTERO
+    (17) tipo -> . DECIMAL
+    (18) tipo -> . TEXTO
+    (19) tipo -> . ID
+
+    BDER            reduce using rule 145 (empty -> .)
+    EJEC            shift and go to state 80
+    ASIGNA          shift and go to state 76
+    MIENTRAS        shift and go to state 78
+    SI              shift and go to state 69
+    IMPRIMIR        shift and go to state 79
+    LEER            shift and go to state 71
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
+
+    b1                             shift and go to state 266
+    empty                          shift and go to state 233
+    variables                      shift and go to state 73
+    estatuto                       shift and go to state 234
+    lectura                        shift and go to state 74
+    escritura                      shift and go to state 75
+    si                             shift and go to state 77
+    tipo                           shift and go to state 23
+    mientras                       shift and go to state 70
+
+state 235
+
+    (128) lectura -> LEER PIZQ ID l1 l2 PDER . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 267
+
+
+state 236
+
+<<<<<<< HEAD
     (65) ll3 -> COMA . expresion ll3
     (66) expresion -> . declaracion ex1
     (70) declaracion -> . exp de1
@@ -3656,6 +6149,11 @@ state 243
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
+=======
+    (132) l2 -> CIZQ expresion . CDER
+
+    CDER            shift and go to state 268
+>>>>>>> origin/master
 
     exp                            shift and go to state 125
     factor                         shift and go to state 131
@@ -3665,16 +6163,29 @@ state 243
     f1                             shift and go to state 128
     declaracion                    shift and go to state 132
 
-state 244
+state 237
 
     (103) bloquesimple -> BIZQ bs1 . BDER
 
     BDER            shift and go to state 272
 
 
-state 245
+state 238
 
+<<<<<<< HEAD
     (123) estatutosimple -> escritura .
+=======
+    (106) asignacion -> ID a1 a2 IGUAL expresion . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 269
+
+
+state 239
+
+    (104) bs1 -> empty .
+
+    BDER            reduce using rule 104 (bs1 -> empty .)
+>>>>>>> origin/master
 
     EJEC            reduce using rule 123 (estatutosimple -> escritura .)
     ASIGNA          reduce using rule 123 (estatutosimple -> escritura .)
@@ -3688,6 +6199,7 @@ state 245
     ID              reduce using rule 123 (estatutosimple -> escritura .)
     BDER            reduce using rule 123 (estatutosimple -> escritura .)
 
+<<<<<<< HEAD
 
 state 246
 
@@ -3711,6 +6223,23 @@ state 246
     (17) tipo -> . DECIMAL
     (18) tipo -> . TEXTO
     (19) tipo -> . ID
+=======
+state 240
+
+    (124) estatutosimple -> lectura .
+
+    EJEC            reduce using rule 124 (estatutosimple -> lectura .)
+    ASIGNA          reduce using rule 124 (estatutosimple -> lectura .)
+    MIENTRAS        reduce using rule 124 (estatutosimple -> lectura .)
+    SI              reduce using rule 124 (estatutosimple -> lectura .)
+    IMPRIMIR        reduce using rule 124 (estatutosimple -> lectura .)
+    LEER            reduce using rule 124 (estatutosimple -> lectura .)
+    ENTERO          reduce using rule 124 (estatutosimple -> lectura .)
+    DECIMAL         reduce using rule 124 (estatutosimple -> lectura .)
+    TEXTO           reduce using rule 124 (estatutosimple -> lectura .)
+    ID              reduce using rule 124 (estatutosimple -> lectura .)
+    BDER            reduce using rule 124 (estatutosimple -> lectura .)
+>>>>>>> origin/master
 
     BDER            reduce using rule 145 (empty -> .)
     EJEC            shift and go to state 81
@@ -3734,7 +6263,11 @@ state 246
     lectura                        shift and go to state 84
     mientras                       shift and go to state 88
 
+<<<<<<< HEAD
 state 247
+=======
+state 241
+>>>>>>> origin/master
 
     (120) estatutosimple -> ASIGNA . asignacion
     (106) asignacion -> . ID a1 a2 IGUAL expresion PUNTOYCOMA
@@ -3743,32 +6276,43 @@ state 247
 
     asignacion                     shift and go to state 274
 
+<<<<<<< HEAD
 state 248
+=======
+state 242
+>>>>>>> origin/master
 
-    (119) estatutosimple -> EJEC . llamarfunmet
-    (59) llamarfunmet -> . ID ll1 PIZQ ll2 PDER PUNTOYCOMA
+    (103) bloquesimple -> BIZQ bs1 . BDER
 
+<<<<<<< HEAD
     ID              shift and go to state 107
 
     llamarfunmet                   shift and go to state 275
 
 state 249
-
-    (124) estatutosimple -> lectura .
-
-    EJEC            reduce using rule 124 (estatutosimple -> lectura .)
-    ASIGNA          reduce using rule 124 (estatutosimple -> lectura .)
-    MIENTRAS        reduce using rule 124 (estatutosimple -> lectura .)
-    SI              reduce using rule 124 (estatutosimple -> lectura .)
-    IMPRIMIR        reduce using rule 124 (estatutosimple -> lectura .)
-    LEER            reduce using rule 124 (estatutosimple -> lectura .)
-    ENTERO          reduce using rule 124 (estatutosimple -> lectura .)
-    DECIMAL         reduce using rule 124 (estatutosimple -> lectura .)
-    TEXTO           reduce using rule 124 (estatutosimple -> lectura .)
-    ID              reduce using rule 124 (estatutosimple -> lectura .)
-    BDER            reduce using rule 124 (estatutosimple -> lectura .)
+=======
+    BDER            shift and go to state 270
 
 
+state 243
+>>>>>>> origin/master
+
+    (123) estatutosimple -> escritura .
+
+    EJEC            reduce using rule 123 (estatutosimple -> escritura .)
+    ASIGNA          reduce using rule 123 (estatutosimple -> escritura .)
+    MIENTRAS        reduce using rule 123 (estatutosimple -> escritura .)
+    SI              reduce using rule 123 (estatutosimple -> escritura .)
+    IMPRIMIR        reduce using rule 123 (estatutosimple -> escritura .)
+    LEER            reduce using rule 123 (estatutosimple -> escritura .)
+    ENTERO          reduce using rule 123 (estatutosimple -> escritura .)
+    DECIMAL         reduce using rule 123 (estatutosimple -> escritura .)
+    TEXTO           reduce using rule 123 (estatutosimple -> escritura .)
+    ID              reduce using rule 123 (estatutosimple -> escritura .)
+    BDER            reduce using rule 123 (estatutosimple -> escritura .)
+
+
+<<<<<<< HEAD
 state 250
 
     (104) bs1 -> empty .
@@ -3777,6 +6321,18 @@ state 250
 
 
 state 251
+=======
+state 244
+
+    (120) estatutosimple -> ASIGNA . asignacion
+    (106) asignacion -> . ID a1 a2 IGUAL expresion PUNTOYCOMA
+
+    ID              shift and go to state 102
+
+    asignacion                     shift and go to state 271
+
+state 245
+>>>>>>> origin/master
 
     (122) estatutosimple -> si .
 
@@ -3793,6 +6349,7 @@ state 251
     BDER            reduce using rule 122 (estatutosimple -> si .)
 
 
+<<<<<<< HEAD
 state 252
 
     (121) estatutosimple -> mientras .
@@ -3811,28 +6368,55 @@ state 252
 
 
 state 253
+=======
+state 246
+
+    (119) estatutosimple -> EJEC . llamarfunmet
+    (59) llamarfunmet -> . ID ll1 PIZQ ll2 PDER PUNTOYCOMA
+
+    ID              shift and go to state 106
+
+    llamarfunmet                   shift and go to state 272
+
+state 247
+>>>>>>> origin/master
 
     (128) lectura -> LEER PIZQ ID l1 l2 PDER . PUNTOYCOMA
 
     PUNTOYCOMA      shift and go to state 276
 
+<<<<<<< HEAD
+=======
+    BDER            reduce using rule 145 (empty -> .)
+    EJEC            shift and go to state 80
+    ASIGNA          shift and go to state 76
+    MIENTRAS        shift and go to state 78
+    SI              shift and go to state 69
+    IMPRIMIR        shift and go to state 79
+    LEER            shift and go to state 71
+    ENTERO          shift and go to state 16
+    DECIMAL         shift and go to state 15
+    TEXTO           shift and go to state 12
+    ID              shift and go to state 13
 
-state 254
+    b1                             shift and go to state 273
+    empty                          shift and go to state 233
+    variables                      shift and go to state 73
+    estatuto                       shift and go to state 234
+    lectura                        shift and go to state 74
+    escritura                      shift and go to state 75
+    si                             shift and go to state 77
+    tipo                           shift and go to state 23
+    mientras                       shift and go to state 70
+>>>>>>> origin/master
 
+state 248
+
+<<<<<<< HEAD
     (132) l2 -> CIZQ expresion . CDER
 
     CDER            shift and go to state 277
-
-
-state 255
-
-    (127) e1 -> COMA expresion e1 .
-
-    PDER            reduce using rule 127 (e1 -> COMA expresion e1 .)
-
-
-state 256
-
+=======
     (125) escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .
 
     EJEC            reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
@@ -3847,26 +6431,136 @@ state 256
     ID              reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
     RETORNA         reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
     BDER            reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+>>>>>>> origin/master
 
 
-state 257
+state 249
 
+    (127) e1 -> COMA expresion e1 .
+
+    PDER            reduce using rule 127 (e1 -> COMA expresion e1 .)
+
+
+state 250
+
+<<<<<<< HEAD
+    (125) escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .
+
+    EJEC            reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+    ASIGNA          reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+    SI              reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+    IMPRIMIR        reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+    LEER            reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+    ENTERO          reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+    DECIMAL         reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+    TEXTO           reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+    ID              reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+    RETORNA         reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+    BDER            reduce using rule 125 (escritura -> IMPRIMIR PIZQ expresion e1 PDER PUNTOYCOMA .)
+=======
+    (64) ll3 -> empty .
+
+    PDER            reduce using rule 64 (ll3 -> empty .)
+>>>>>>> origin/master
+
+
+state 251
+
+<<<<<<< HEAD
     (28) v4 -> IGUAL CIZQ valordeclaracion v5 CDER v6 .
 
     PUNTOYCOMA      reduce using rule 28 (v4 -> IGUAL CIZQ valordeclaracion v5 CDER v6 .)
+=======
+    (65) ll3 -> COMA . expresion ll3
+    (66) expresion -> . declaracion ex1
+    (70) declaracion -> . exp de1
+    (79) exp -> . termino exp1
+    (83) termino -> . factor t1
+    (87) factor -> . f1 valor
+    (88) factor -> . PIZQ expresion PDER
+    (89) f1 -> . empty
+    (90) f1 -> . SUMA
+    (91) f1 -> . RESTA
+    (145) empty -> .
 
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+    ID              reduce using rule 145 (empty -> .)
+    CTEENT          reduce using rule 145 (empty -> .)
+    CTEDEC          reduce using rule 145 (empty -> .)
+    CTETEXTO        reduce using rule 145 (empty -> .)
+>>>>>>> origin/master
 
-state 258
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    factor                         shift and go to state 119
+    expresion                      shift and go to state 274
+    termino                        shift and go to state 126
 
+state 252
+
+<<<<<<< HEAD
     (30) v5 -> COMA valordeclaracion v5 .
 
     CDER            reduce using rule 30 (v5 -> COMA valordeclaracion v5 .)
+=======
+    (63) ll2 -> expresion ll3 .
+
+    PDER            reduce using rule 63 (ll2 -> expresion ll3 .)
+>>>>>>> origin/master
 
 
-state 259
+state 253
+
+    (59) llamarfunmet -> ID ll1 PIZQ ll2 PDER . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 275
+
+
+state 254
+
+    (15) pr22 -> RETORNA expresion PUNTOYCOMA .
+
+    BDER            reduce using rule 15 (pr22 -> RETORNA expresion PUNTOYCOMA .)
+
+
+state 255
+
+    (30) v5 -> COMA valordeclaracion . v5
+    (29) v5 -> . empty
+    (30) v5 -> . COMA valordeclaracion v5
+    (145) empty -> .
+
+    COMA            shift and go to state 224
+    CDER            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 223
+    v5                             shift and go to state 276
+
+state 256
+
+    (28) v4 -> IGUAL CIZQ valordeclaracion v5 CDER . v6
+    (31) v6 -> . empty
+    (32) v6 -> . v3
+    (145) empty -> .
+    (26) v3 -> . COMA v1
+
+    PUNTOYCOMA      reduce using rule 145 (empty -> .)
+    COMA            shift and go to state 46
+
+    empty                          shift and go to state 86
+    v6                             shift and go to state 277
+    v3                             shift and go to state 88
+
+state 257
 
     (135) si1 -> O bloque .
 
+<<<<<<< HEAD
     EJEC            reduce using rule 135 (si1 -> O bloque .)
     ASIGNA          reduce using rule 135 (si1 -> O bloque .)
     MIENTRAS        reduce using rule 135 (si1 -> O bloque .)
@@ -3879,9 +6573,27 @@ state 259
     ID              reduce using rule 135 (si1 -> O bloque .)
     RETORNA         reduce using rule 135 (si1 -> O bloque .)
     BDER            reduce using rule 135 (si1 -> O bloque .)
+=======
+    MULT            reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    DIV             reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    SUMA            reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    RESTA           reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    MAYQUE          reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    MENQUE          reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    IGUALQUE        reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    DIF             reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    MAYIGUALQUE     reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    MENIGUALQUE     reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    CONDICIONY      reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    CONDICIONO      reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    PDER            reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    PUNTOYCOMA      reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    COMA            reduce using rule 46 (va4 -> PUNTO ID va5 .)
+    CDER            reduce using rule 46 (va4 -> PUNTO ID va5 .)
+>>>>>>> origin/master
 
 
-state 260
+state 258
 
     (100) bloque -> BIZQ b1 BDER .
 
@@ -3929,6 +6641,7 @@ state 262
     CDER            reduce using rule 47 (va5 -> empty .)
 
 
+<<<<<<< HEAD
 state 263
 
     (46) va4 -> PUNTO ID va5 .
@@ -3952,6 +6665,9 @@ state 263
 
 
 state 264
+=======
+state 259
+>>>>>>> origin/master
 
     (48) va5 -> PIZQ . expresion va2 PDER
     (66) expresion -> . declaracion ex1
@@ -3965,14 +6681,21 @@ state 264
     (91) f1 -> . RESTA
     (145) empty -> .
 
+<<<<<<< HEAD
     PIZQ            shift and go to state 130
     SUMA            shift and go to state 127
     RESTA           shift and go to state 123
+=======
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+>>>>>>> origin/master
     ID              reduce using rule 145 (empty -> .)
     CTEENT          reduce using rule 145 (empty -> .)
     CTEDEC          reduce using rule 145 (empty -> .)
     CTETEXTO        reduce using rule 145 (empty -> .)
 
+<<<<<<< HEAD
     exp                            shift and go to state 125
     factor                         shift and go to state 131
     empty                          shift and go to state 126
@@ -3982,6 +6705,17 @@ state 264
     declaracion                    shift and go to state 132
 
 state 265
+=======
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    factor                         shift and go to state 119
+    expresion                      shift and go to state 278
+    termino                        shift and go to state 126
+
+state 260
+>>>>>>> origin/master
 
     (40) va1 -> CIZQ CTEENT CDER . va3
     (44) va3 -> . empty
@@ -4005,6 +6739,7 @@ state 265
     PUNTOYCOMA      reduce using rule 145 (empty -> .)
     COMA            reduce using rule 145 (empty -> .)
     CDER            reduce using rule 145 (empty -> .)
+<<<<<<< HEAD
     PUNTO           shift and go to state 201
 
     empty                          shift and go to state 279
@@ -4012,20 +6747,66 @@ state 265
     va3                            shift and go to state 281
 
 state 266
+=======
+    PUNTO           shift and go to state 200
+
+    va3                            shift and go to state 279
+    empty                          shift and go to state 280
+    va4                            shift and go to state 281
+
+state 261
+>>>>>>> origin/master
 
     (42) va2 -> empty .
 
     PDER            reduce using rule 42 (va2 -> empty .)
 
 
+<<<<<<< HEAD
 state 267
+=======
+state 262
+>>>>>>> origin/master
 
     (39) va1 -> PIZQ expresion va2 . PDER
 
     PDER            shift and go to state 282
 
+<<<<<<< HEAD
+=======
 
-state 268
+state 263
+
+    (43) va2 -> COMA . expresion va2
+    (66) expresion -> . declaracion ex1
+    (70) declaracion -> . exp de1
+    (79) exp -> . termino exp1
+    (83) termino -> . factor t1
+    (87) factor -> . f1 valor
+    (88) factor -> . PIZQ expresion PDER
+    (89) f1 -> . empty
+    (90) f1 -> . SUMA
+    (91) f1 -> . RESTA
+    (145) empty -> .
+
+    PIZQ            shift and go to state 125
+    SUMA            shift and go to state 124
+    RESTA           shift and go to state 120
+    ID              reduce using rule 145 (empty -> .)
+    CTEENT          reduce using rule 145 (empty -> .)
+    CTEDEC          reduce using rule 145 (empty -> .)
+    CTETEXTO        reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 122
+    declaracion                    shift and go to state 117
+    exp                            shift and go to state 118
+    f1                             shift and go to state 121
+    factor                         shift and go to state 119
+    expresion                      shift and go to state 283
+    termino                        shift and go to state 126
+>>>>>>> origin/master
+
+state 264
 
     (43) va2 -> COMA . expresion va2
     (66) expresion -> . declaracion ex1
@@ -4055,8 +6836,28 @@ state 268
     f1                             shift and go to state 128
     declaracion                    shift and go to state 132
 
-state 269
+state 265
 
+    (100) bloque -> BIZQ b1 BDER .
+
+    EJEC            reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    ASIGNA          reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    MIENTRAS        reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    SI              reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    IMPRIMIR        reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    LEER            reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    ENTERO          reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    DECIMAL         reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    TEXTO           reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    ID              reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    RETORNA         reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    BDER            reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+    O               reduce using rule 100 (bloque -> BIZQ b1 BDER .)
+
+
+state 266
+
+<<<<<<< HEAD
     (106) asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .
 
     EJEC            reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
@@ -4071,12 +6872,18 @@ state 269
     ID              reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
     BDER            reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
     RETORNA         reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+=======
+    (102) b1 -> estatuto b1 .
+
+    BDER            reduce using rule 102 (b1 -> estatuto b1 .)
+>>>>>>> origin/master
 
 
-state 270
+state 267
 
-    (59) llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .
+    (128) lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .
 
+<<<<<<< HEAD
     EJEC            reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
     ASIGNA          reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
     MIENTRAS        reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
@@ -4089,22 +6896,58 @@ state 270
     ID              reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
     RETORNA         reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
     BDER            reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+=======
+    EJEC            reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+    ASIGNA          reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+    SI              reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+    IMPRIMIR        reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+    LEER            reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+    ENTERO          reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+    DECIMAL         reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+    TEXTO           reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+    ID              reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+    RETORNA         reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+    BDER            reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+>>>>>>> origin/master
 
 
-state 271
+state 268
+
+    (132) l2 -> CIZQ expresion CDER .
+
+    PDER            reduce using rule 132 (l2 -> CIZQ expresion CDER .)
+
+
+state 269
 
     (65) ll3 -> COMA expresion . ll3
     (64) ll3 -> . empty
     (65) ll3 -> . COMA expresion ll3
     (145) empty -> .
 
+<<<<<<< HEAD
     COMA            shift and go to state 243
     PDER            reduce using rule 145 (empty -> .)
+=======
+    EJEC            reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+    ASIGNA          reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+    SI              reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+    IMPRIMIR        reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+    LEER            reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+    ENTERO          reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+    DECIMAL         reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+    TEXTO           reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+    ID              reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+    BDER            reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+    RETORNA         reduce using rule 106 (asignacion -> ID a1 a2 IGUAL expresion PUNTOYCOMA .)
+>>>>>>> origin/master
 
     empty                          shift and go to state 241
     ll3                            shift and go to state 284
 
-state 272
+state 270
 
     (103) bloquesimple -> BIZQ bs1 BDER .
 
@@ -4122,14 +6965,30 @@ state 272
     BDER            reduce using rule 103 (bloquesimple -> BIZQ bs1 BDER .)
 
 
-state 273
+state 271
 
+<<<<<<< HEAD
     (105) bs1 -> estatutosimple b1 .
 
     BDER            reduce using rule 105 (bs1 -> estatutosimple b1 .)
+=======
+    (120) estatutosimple -> ASIGNA asignacion .
+
+    EJEC            reduce using rule 120 (estatutosimple -> ASIGNA asignacion .)
+    ASIGNA          reduce using rule 120 (estatutosimple -> ASIGNA asignacion .)
+    MIENTRAS        reduce using rule 120 (estatutosimple -> ASIGNA asignacion .)
+    SI              reduce using rule 120 (estatutosimple -> ASIGNA asignacion .)
+    IMPRIMIR        reduce using rule 120 (estatutosimple -> ASIGNA asignacion .)
+    LEER            reduce using rule 120 (estatutosimple -> ASIGNA asignacion .)
+    ENTERO          reduce using rule 120 (estatutosimple -> ASIGNA asignacion .)
+    DECIMAL         reduce using rule 120 (estatutosimple -> ASIGNA asignacion .)
+    TEXTO           reduce using rule 120 (estatutosimple -> ASIGNA asignacion .)
+    ID              reduce using rule 120 (estatutosimple -> ASIGNA asignacion .)
+    BDER            reduce using rule 120 (estatutosimple -> ASIGNA asignacion .)
+>>>>>>> origin/master
 
 
-state 274
+state 272
 
     (120) estatutosimple -> ASIGNA asignacion .
 
@@ -4163,6 +7022,7 @@ state 275
     BDER            reduce using rule 119 (estatutosimple -> EJEC llamarfunmet .)
 
 
+<<<<<<< HEAD
 state 276
 
     (128) lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .
@@ -4179,13 +7039,64 @@ state 276
     ID              reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
     BDER            reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
     RETORNA         reduce using rule 128 (lectura -> LEER PIZQ ID l1 l2 PDER PUNTOYCOMA .)
+=======
+state 273
+
+    (105) bs1 -> estatutosimple b1 .
+
+    BDER            reduce using rule 105 (bs1 -> estatutosimple b1 .)
+
+
+state 274
+
+    (65) ll3 -> COMA expresion . ll3
+    (64) ll3 -> . empty
+    (65) ll3 -> . COMA expresion ll3
+    (145) empty -> .
+
+    COMA            shift and go to state 251
+    PDER            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 250
+    ll3                            shift and go to state 284
+
+state 275
+
+    (59) llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .
+
+    EJEC            reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+    ASIGNA          reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+    SI              reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+    IMPRIMIR        reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+    LEER            reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+    ENTERO          reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+    DECIMAL         reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+    TEXTO           reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+    ID              reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+    BDER            reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+    RETORNA         reduce using rule 59 (llamarfunmet -> ID ll1 PIZQ ll2 PDER PUNTOYCOMA .)
+
+
+state 276
+
+    (30) v5 -> COMA valordeclaracion v5 .
+
+    CDER            reduce using rule 30 (v5 -> COMA valordeclaracion v5 .)
+>>>>>>> origin/master
 
 
 state 277
 
+<<<<<<< HEAD
     (132) l2 -> CIZQ expresion CDER .
 
     PDER            reduce using rule 132 (l2 -> CIZQ expresion CDER .)
+=======
+    (28) v4 -> IGUAL CIZQ valordeclaracion v5 CDER v6 .
+
+    PUNTOYCOMA      reduce using rule 28 (v4 -> IGUAL CIZQ valordeclaracion v5 CDER v6 .)
+>>>>>>> origin/master
 
 
 state 278
@@ -4195,14 +7106,46 @@ state 278
     (43) va2 -> . COMA expresion va2
     (145) empty -> .
 
+<<<<<<< HEAD
     COMA            shift and go to state 268
     PDER            reduce using rule 145 (empty -> .)
 
     empty                          shift and go to state 266
+=======
+    COMA            shift and go to state 263
+    PDER            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 261
+>>>>>>> origin/master
     va2                            shift and go to state 285
 
 state 279
 
+<<<<<<< HEAD
+=======
+    (40) va1 -> CIZQ CTEENT CDER va3 .
+
+    MULT            reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    DIV             reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    SUMA            reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    RESTA           reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    MAYQUE          reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    MENQUE          reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    IGUALQUE        reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    DIF             reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    MAYIGUALQUE     reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    MENIGUALQUE     reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    CONDICIONY      reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    CONDICIONO      reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    PDER            reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    PUNTOYCOMA      reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    COMA            reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+    CDER            reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+
+
+state 280
+
+>>>>>>> origin/master
     (44) va3 -> empty .
 
     MULT            reduce using rule 44 (va3 -> empty .)
@@ -4247,8 +7190,9 @@ state 280
 
 state 281
 
-    (40) va1 -> CIZQ CTEENT CDER va3 .
+    (45) va3 -> va4 .
 
+<<<<<<< HEAD
     MULT            reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
     DIV             reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
     SUMA            reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
@@ -4265,6 +7209,24 @@ state 281
     PUNTOYCOMA      reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
     COMA            reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
     CDER            reduce using rule 40 (va1 -> CIZQ CTEENT CDER va3 .)
+=======
+    MULT            reduce using rule 45 (va3 -> va4 .)
+    DIV             reduce using rule 45 (va3 -> va4 .)
+    SUMA            reduce using rule 45 (va3 -> va4 .)
+    RESTA           reduce using rule 45 (va3 -> va4 .)
+    MAYQUE          reduce using rule 45 (va3 -> va4 .)
+    MENQUE          reduce using rule 45 (va3 -> va4 .)
+    IGUALQUE        reduce using rule 45 (va3 -> va4 .)
+    DIF             reduce using rule 45 (va3 -> va4 .)
+    MAYIGUALQUE     reduce using rule 45 (va3 -> va4 .)
+    MENIGUALQUE     reduce using rule 45 (va3 -> va4 .)
+    CONDICIONY      reduce using rule 45 (va3 -> va4 .)
+    CONDICIONO      reduce using rule 45 (va3 -> va4 .)
+    PDER            reduce using rule 45 (va3 -> va4 .)
+    PUNTOYCOMA      reduce using rule 45 (va3 -> va4 .)
+    COMA            reduce using rule 45 (va3 -> va4 .)
+    CDER            reduce using rule 45 (va3 -> va4 .)
+>>>>>>> origin/master
 
 
 state 282
@@ -4296,10 +7258,17 @@ state 283
     (43) va2 -> . COMA expresion va2
     (145) empty -> .
 
+<<<<<<< HEAD
     COMA            shift and go to state 268
     PDER            reduce using rule 145 (empty -> .)
 
     empty                          shift and go to state 266
+=======
+    COMA            shift and go to state 263
+    PDER            reduce using rule 145 (empty -> .)
+
+    empty                          shift and go to state 261
+>>>>>>> origin/master
     va2                            shift and go to state 286
 
 state 284
