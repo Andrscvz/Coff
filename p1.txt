@@ -11,6 +11,7 @@ clase coff extiende andres{
 }
 
 funcion entero suma1(entero x){
+	decimal y = 0;
 	ejec suma1(x);
 	asigna x = x + 1;
 	retorna x;
