@@ -1,4 +1,0 @@
-
-principal vacio inicio(){
-	entero viejo;
-}
