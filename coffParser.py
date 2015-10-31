@@ -276,6 +276,8 @@ class coffParser ( Parser ):
 
     grammarFileName = "java-escape"
 
+    tipoActual = None
+
     atn = ATNDeserializer().deserialize(serializedATN())
 
     decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
@@ -1094,6 +1096,8 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 211
+            self.tipoActual = str(self.getCurrentToken().text)
+            print (str(self.getCurrentToken().text))
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << coffParser.ENTERO) | (1 << coffParser.DECIMAL) | (1 << coffParser.TEXTO) | (1 << coffParser.ID))) != 0)):
                 self._errHandler.recoverInline(self)
