@@ -276,7 +276,17 @@ class coffParser ( Parser ):
 
     grammarFileName = "java-escape"
 
-    tipoActual = None
+    tipoVariableActual = None
+
+    idVariableActual = None
+
+    tipoActualFuncion = None
+
+    dirProcs = {}
+
+    scopeProcs = 0
+
+    tablaVariables = {}
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
@@ -1096,7 +1106,7 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 211
-            self.tipoActual = str(self.getCurrentToken().text)
+            self.tipoVariableActual = str(self.getCurrentToken().text)
             print (str(self.getCurrentToken().text))
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << coffParser.ENTERO) | (1 << coffParser.DECIMAL) | (1 << coffParser.TEXTO) | (1 << coffParser.ID))) != 0)):
@@ -1196,6 +1206,8 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 217
+            self.tipoVariableActual = str(self.getCurrentToken().text)
+            print (str(self.getCurrentToken().text))
             self.match(coffParser.ID)
             self.state = 218
             self.v2()
@@ -4684,6 +4696,12 @@ class coffParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 547
             self.match(coffParser.CLASE)
+
+            self.dirProcs[str(self.getCurrentToken().text),0] = [self.scopeProcs,""]
+            self.scopeProcs = self.scopeProcs + 1
+            print (str( self.dirProcs[str(self.getCurrentToken().text),0]))
+
+
             self.state = 548
             self.match(coffParser.ID)
             self.state = 549
