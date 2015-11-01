@@ -1,8 +1,9 @@
 # Generated from java-escape by ANTLR 4.5
 # encoding: utf-8
 from __future__ import print_function
+import sys
 from antlr4 import *
-from cubo_semantico import *
+from cuboSemantico import *
 from io import StringIO
 package = globals().get("__package__", None)
 ischild = len(package)>0 if package is not None else False
@@ -286,6 +287,12 @@ class coffParser ( Parser ):
     dirProcs = {}
 
     scopeProcs = 0
+
+    metodoTof = 1
+
+    claseRef = 0
+
+    globalTof = 0
 
     tablaVariables = {}
 
@@ -620,6 +627,9 @@ class coffParser ( Parser ):
             if token in [coffParser.FUNCION]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 167
+                ##########################
+                self.metodoTof = 0
+                ##########################
                 self.funcion()
                 self.state = 168
                 self.p2()
@@ -677,10 +687,15 @@ class coffParser ( Parser ):
             if token in [coffParser.ENTERO, coffParser.DECIMAL, coffParser.TEXTO, coffParser.ID]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 173
+                
+                #####################################
+                self.globalTof = 1
                 self.variables()
+                self.globalTof = 0
+                #####################################
+
                 self.state = 174
                 self.p3()
-
             elif token in [coffParser.PRINCIPAL]:
                 self.enterOuterAlt(localctx, 2)
 
@@ -751,6 +766,18 @@ class coffParser ( Parser ):
             self.state = 180
             self.pr1()
             self.state = 181
+
+            ########################################
+            self.idVariableActual = str(self.getCurrentToken().text)
+            self.scopeProcs = self.scopeProcs + 1
+            self.dirProcs[self.idVariableActual,0] = [self.scopeProcs,self.tipoVariableActual]
+            print("")
+            for keys,values in self.dirProcs.items():
+                print(str(keys))
+                print(str(values))
+            print("")
+            #########################################
+
             self.match(coffParser.ID)
             self.state = 182
             self.parametros()
@@ -894,6 +921,11 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 193
+
+            ########################################
+            self.tipoVariableActual = str(self.getCurrentToken().text)
+            #########################################
+
             self.match(coffParser.VACIO)
         except RecognitionException as re:
             localctx.exception = re
@@ -1107,8 +1139,9 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 211
+            ############################################
             self.tipoVariableActual = str(self.getCurrentToken().text)
-            print (str(self.getCurrentToken().text))
+            ############################################
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << coffParser.ENTERO) | (1 << coffParser.DECIMAL) | (1 << coffParser.TEXTO) | (1 << coffParser.ID))) != 0)):
                 self._errHandler.recoverInline(self)
@@ -1207,8 +1240,32 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 217
-            self.tipoVariableActual = str(self.getCurrentToken().text)
-            print (str(self.getCurrentToken().text))
+            ########################################################
+            self.idVariableActual = str(self.getCurrentToken().text)
+
+
+            if self.globalTof:
+                if (self.idVariableActual, 0) in self.tablaVariables:
+                    print("Error")
+                    sys.exit()
+                    return
+                else:
+                    self.tablaVariables[self.idVariableActual,0] = self.tipoVariableActual
+            else:
+                if (self.idVariableActual, self.scopeProcs) in self.tablaVariables:
+                    print("Error")
+                    sys.exit()
+                    return
+                else:
+                    self.tablaVariables[self.idVariableActual,self.scopeProcs] = self.tipoVariableActual
+
+            print("")
+            for keys,values in self.tablaVariables.items():
+                print(str(keys))
+                print(str(values))
+            print("")
+            ########################################################
+
             self.match(coffParser.ID)
             self.state = 218
             self.v2()
@@ -2034,6 +2091,11 @@ class coffParser ( Parser ):
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << coffParser.ENTERO) | (1 << coffParser.DECIMAL) | (1 << coffParser.TEXTO))) != 0)):
                 self._errHandler.recoverInline(self)
             else:
+                
+                ############################################################
+                self.tipoVariableActual = str(self.getCurrentToken().text)
+                #############################################################
+
                 self.consume()
         except RecognitionException as re:
             localctx.exception = re
@@ -2190,6 +2252,19 @@ class coffParser ( Parser ):
             self.state = 310
             self.pa2()
             self.state = 311
+
+            ##########################################################
+            self.idVariableActual = str(self.getCurrentToken().text)
+
+            self.tablaVariables[self.idVariableActual,self.scopeProcs] = self.tipoVariableActual 
+
+            print("")
+            for keys,values in self.tablaVariables.items():
+                print(str(keys))
+                print(str(values))
+            print("")
+            ########################################################
+            
             self.match(coffParser.ID)
             self.state = 312
             self.pa3()
@@ -3230,6 +3305,24 @@ class coffParser ( Parser ):
             self.state = 404
             self.fun1()
             self.state = 405
+
+            ########################################
+            self.scopeProcs = self.scopeProcs + 1
+            self.idVariableActual = str(self.getCurrentToken().text)
+
+            if self.metodoTof:
+                self.dirProcs[self.idVariableActual,self.claseRef] = [self.scopeProcs,self.tipoVariableActual]
+            else:
+                self.dirProcs[self.idVariableActual,0] = [self.scopeProcs,self.tipoVariableActual]
+                
+            
+            print("")
+            for keys,values in self.dirProcs.items():
+                print(str(keys))
+                print(str(values))
+            print("")
+            #########################################
+
             self.match(coffParser.ID)
             self.state = 406
             self.parametros()
@@ -3373,6 +3466,11 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 417
+
+            ########################################
+            self.tipoVariableActual = str(self.getCurrentToken().text)
+            #########################################
+
             self.match(coffParser.VACIO)
         except RecognitionException as re:
             localctx.exception = re
@@ -4698,10 +4796,16 @@ class coffParser ( Parser ):
             self.state = 547
             self.match(coffParser.CLASE)
 
-            self.dirProcs[str(self.getCurrentToken().text),0] = [self.scopeProcs,""]
+            ########################################
             self.scopeProcs = self.scopeProcs + 1
-            print (str( self.dirProcs[str(self.getCurrentToken().text),0]))
-
+            self.claseRef = self.scopeProcs
+            self.dirProcs[str(self.getCurrentToken().text),0] = [self.scopeProcs,""]
+            print("")
+            for keys,values in self.dirProcs.items():
+                print(str(keys))
+                print(str(values))
+            print("")
+            #########################################
 
             self.state = 548
             self.match(coffParser.ID)

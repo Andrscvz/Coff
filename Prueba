@@ -2,7 +2,7 @@
 clase coff extiende andres{
 	atributos:
 		texto a = 0;
-		entero b = 0;
+		entero a = 0;
 	metodos:
 		funcion vacio manuel(entero c, decimal &d){
 			leer(x);
