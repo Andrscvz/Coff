@@ -18,6 +18,7 @@ clase coff extiende andres{
 
 
 
+
 funcion entero suma1(entero e, texto f){
 	decimal g = 0;
 	ejec suma1(f);
@@ -31,19 +32,16 @@ texto i[10] = ["a","b"];
 principal vacio inicio(){
 	entero j, q = 3;
 	
-	asigna j = suma1(viejo);
-	
-	
-	
+	asigna j = suma1(i);
 	coff k;
 
-	asigna k.a = 3;
+	asigna k[jjj] = 3;
 
 	ejec suma1(n);
 	
 	ejec k.manuel(1,2); 
 	
-	asigna h = mm.manuel(1,2);
+	asigna k.a = suma1(n);
 	
 	si(viejo == 1 && 1 + (1*viejo)){
 	

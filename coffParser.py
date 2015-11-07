@@ -296,6 +296,14 @@ class coffParser ( Parser ):
 
     tablaVariables = {}
 
+<<<<<<< HEAD
+=======
+    checkifAttributeBelongsClassID = None
+
+    lookForObjectClassObjectType = None
+    lookForObjectClassClassID = None
+
+>>>>>>> 695431802d735b13531c86c65eed0306ffa52d37
     atn = ATNDeserializer().deserialize(serializedATN())
 
     decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
@@ -1697,17 +1705,29 @@ class coffParser ( Parser ):
         try:
             self.state = 261
             token = self._input.LA(1)
+<<<<<<< HEAD
+=======
+
+    #############################################################################################
+            
+>>>>>>> 695431802d735b13531c86c65eed0306ffa52d37
             if token in [coffParser.CTEENT, coffParser.CTEDEC, coffParser.CTETEXTO]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 258
                 self.valordeclaracion()
 
             elif token in [coffParser.ID]:
+<<<<<<< HEAD
+=======
+                self.ejecToken = str(self.getCurrentToken().text)   
+                print(self.ejecToken)        
+>>>>>>> 695431802d735b13531c86c65eed0306ffa52d37
                 self.enterOuterAlt(localctx, 2)
                 self.state = 259
                 self.match(coffParser.ID)
                 self.state = 260
                 self.va1()
+                
 
             else:
                 raise NoViableAltException(self)
@@ -1778,15 +1798,29 @@ class coffParser ( Parser ):
         try:
             self.state = 274
             token = self._input.LA(1)
+
+
+
+
+            
             if token in [coffParser.PUNTO]:
+                #self.idVariableActual = self.ejecToken  
+                #print(self.idVariableActual) 
+
+                #self.checkIfVariableExists()  
                 self.enterOuterAlt(localctx, 1)
                 self.state = 263
                 self.va4()
 
             elif token in [coffParser.PIZQ]:
+                
                 self.enterOuterAlt(localctx, 2)
                 self.state = 264
                 self.match(coffParser.PIZQ)
+                self.idVariableActual = self.ejecToken  
+                if (self.ejecToken, 0) not in self.dirProcs:
+                    print("Error, la funcion "+self.ejecToken+" no ha sido declarada")
+                    sys.exit()
                 self.state = 265
                 self.expresion()
                 self.state = 266
@@ -1972,6 +2006,12 @@ class coffParser ( Parser ):
             self.state = 287
             self.match(coffParser.PUNTO)
             self.state = 288
+<<<<<<< HEAD
+=======
+            self.tokenActual = str(self.getCurrentToken().text)
+            self.lookForMethodClass()
+            #self.checkIfVariableExists()
+>>>>>>> 695431802d735b13531c86c65eed0306ffa52d37
             self.match(coffParser.ID)
             self.state = 289
             self.va5()
@@ -2472,6 +2512,15 @@ class coffParser ( Parser ):
                 listener.exitLl1(self)
 
 
+<<<<<<< HEAD
+=======
+    def lookForMethodClass(self):  
+        self.lookForObjectClassObjectType = self.tablaVariables[self.ejecToken,self.scopeProcs] #contiene el tipo del objeto
+        self.lookForObjectClassClassID = self.dirProcs[self.lookForObjectClassObjectType,0][0]; #contiene el id de la clase
+        if(self.tokenActual, self.lookForObjectClassClassID) not in self.dirProcs: #tokenActual contiene el nombre del metodo
+            print("Error, el metodo "+self.tokenActual+" no es compatible con la clase de "+self.ejecToken)
+            sys.exit()
+>>>>>>> 695431802d735b13531c86c65eed0306ffa52d37
 
 
     def ll1(self):
@@ -3906,6 +3955,24 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 455
+<<<<<<< HEAD
+=======
+
+            self.idVariableActual = str(self.getCurrentToken().text)
+            self.ejecToken = self.idVariableActual
+            
+            #print("")
+            #for keys,values in self.tablaVariables.items():
+            #    print(str(keys[1]))
+            #    #print(str(values))
+            #print("")
+
+            self.checkIfVariableExists()
+
+
+
+
+>>>>>>> 695431802d735b13531c86c65eed0306ffa52d37
             self.match(coffParser.ID)
             self.state = 456
             self.a1()
@@ -3949,6 +4016,14 @@ class coffParser ( Parser ):
                 listener.exitA1(self)
 
 
+    def checkIfAttributeBelongs(self):
+        #idVariableActual contiene el atributo
+        #ejecToken contiene el id de la instancia de la clase
+        self.ejecToken= self.tablaVariables[self.ejecToken,self.scopeProcs]
+        self.checkifAttributeBelongsClassID = self.dirProcs[self.ejecToken, 0][0] 
+        if (self.idVariableActual, self.checkifAttributeBelongsClassID)  not in self.tablaVariables:
+                print("Error, el atributo "+self.idVariableActual+" no pertenece a la clase "+self.ejecToken)
+                sys.exit()
 
 
     def a1(self):
@@ -3962,12 +4037,17 @@ class coffParser ( Parser ):
                 self.enterOuterAlt(localctx, 1)
                 self.state = 462
                 self.match(coffParser.PUNTO)
+<<<<<<< HEAD
+=======
+                self.idVariableActual = str(self.getCurrentToken().text)
+
+                self.checkIfAttributeBelongs()
+>>>>>>> 695431802d735b13531c86c65eed0306ffa52d37
                 self.state = 463
                 self.match(coffParser.ID)
-
             elif token in [coffParser.CIZQ, coffParser.IGUAL]:
-                self.enterOuterAlt(localctx, 2)
 
+                self.enterOuterAlt(localctx, 2)
 
             else:
                 raise NoViableAltException(self)
@@ -4609,6 +4689,7 @@ class coffParser ( Parser ):
             if token in [coffParser.CIZQ]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 528
+                print(str(str.))
                 self.match(coffParser.CIZQ)
                 self.state = 529
                 self.expresion()
