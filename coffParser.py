@@ -94,11 +94,11 @@ def serializedATN():
         buf.write(u"\2\u00a1\u00a2\5\n\6\2\u00a2\3\3\2\2\2\u00a3\u00a4\5")
         buf.write(u"\u0090I\2\u00a4\u00a5\5\4\3\2\u00a5\u00a8\3\2\2\2\u00a6")
         buf.write(u"\u00a8\3\2\2\2\u00a7\u00a3\3\2\2\2\u00a7\u00a6\3\2\2")
-        buf.write(u"\2\u00a8\5\3\2\2\2\u00a9\u00aa\5`\61\2\u00aa\u00ab\5")
-        buf.write(u"\6\4\2\u00ab\u00ae\3\2\2\2\u00ac\u00ae\3\2\2\2\u00ad")
+        buf.write(u"\2\u00a8\5\3\2\2\2\u00a9\u00aa\5\32\16\2\u00aa\u00ab")
+        buf.write(u"\5\6\4\2\u00ab\u00ae\3\2\2\2\u00ac\u00ae\3\2\2\2\u00ad")
         buf.write(u"\u00a9\3\2\2\2\u00ad\u00ac\3\2\2\2\u00ae\7\3\2\2\2\u00af")
-        buf.write(u"\u00b0\5\32\16\2\u00b0\u00b1\5\b\5\2\u00b1\u00b4\3\2")
-        buf.write(u"\2\2\u00b2\u00b4\3\2\2\2\u00b3\u00af\3\2\2\2\u00b3\u00b2")
+        buf.write(u"\u00b0\5`\61\2\u00b0\u00b1\5\b\5\2\u00b1\u00b4\3\2\2")
+        buf.write(u"\2\u00b2\u00b4\3\2\2\2\u00b3\u00af\3\2\2\2\u00b3\u00b2")
         buf.write(u"\3\2\2\2\u00b4\t\3\2\2\2\u00b5\u00b6\7\20\2\2\u00b6\u00b7")
         buf.write(u"\5\f\7\2\u00b7\u00b8\7-\2\2\u00b8\u00b9\58\35\2\u00b9")
         buf.write(u"\u00ba\7\27\2\2\u00ba\u00bb\5\22\n\2\u00bb\u00bc\7\30")
@@ -276,8 +276,6 @@ def serializedATN():
 
 class coffParser ( Parser ):
 
-
-
     grammarFileName = "java-escape"
 
     tipoVariableActual = None
@@ -300,8 +298,23 @@ class coffParser ( Parser ):
 
     globalTof = 0
 
+
     tablaVariables = {}
 
+    pilaO = [] #Pila de operandos
+
+    pOper = [] #Pila de operadores
+
+    pTipos = [] #Pila de tipos de los operadores
+
+    quadruplos = [] #Lista de cuadruplos
+
+    contQuadTemporales = 1 #Para variables temporales
+
+    tofFactor = 0
+
+    cuboSemantico = cuboSemantico() #Para hacer las validaciones semanticas
+    
     checkifAttributeBelongsClassID = None
 
     lookForObjectClassObjectType = None
@@ -483,6 +496,29 @@ class coffParser ( Parser ):
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
+    def insertarValorTipo(self,op,tipoOp):
+        self.pilaO.append(op)
+        self.pTipos.append(tipoOp)
+
+    def insertarOperador(self,op):
+        self.pOper.append(op)
+
+    def crearCuadruplo(self,op):
+        oper = self.pOper.pop()
+        if oper == op:
+            oDer = self.pilaO.pop()
+            oIzq = self.pilaO.pop()
+            res = self.cuboSemantico.checarSemanticaExp(oIzq,oDer,oper)
+            if res != None:
+                self.quadList.append([oper,oIzq,oDer,"t" + self.contQuadTemporales])
+                self.insertarValorTipo("t" + self.contQuadTemporales,res)
+                self.contQuadTemporales = self.contQuadTemporales + 1
+            else:
+                print ("Semantic error: line " + str(self.getCurrentToken().line) + ":" + str(self.getCurrentToken().column) + " Tipos de operadores no compatibles" )
+                self._syntaxErrors = self._syntaxErrors + 1
+                return
+        else:
+            self.pOper.append(oper)
 
 
     class ProgramaContext(ParserRuleContext):
@@ -519,8 +555,7 @@ class coffParser ( Parser ):
                 listener.exitPrograma(self)
 
 
-    
-           
+
 
     def programa(self):
 
@@ -607,8 +642,8 @@ class coffParser ( Parser ):
             super(coffParser.P2Context, self).__init__(parent, invokingState)
             self.parser = parser
 
-        def funcion(self):
-            return self.getTypedRuleContext(coffParser.FuncionContext,0)
+        def variables(self):
+            return self.getTypedRuleContext(coffParser.VariablesContext,0)
 
 
         def p2(self):
@@ -636,17 +671,18 @@ class coffParser ( Parser ):
         try:
             self.state = 171
             token = self._input.LA(1)
-            if token in [coffParser.FUNCION]:
+            if token in [coffParser.ENTERO, coffParser.DECIMAL, coffParser.TEXTO, coffParser.ID]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 167
-                ##########################
-                self.metodoTof = 0
-                ##########################
-                self.funcion()
+                #####################################
+                self.globalTof = 1
+                self.variables()
+                self.globalTof = 0
+                #####################################
                 self.state = 168
                 self.p2()
 
-            elif token in [coffParser.ENTERO, coffParser.DECIMAL, coffParser.TEXTO, coffParser.PRINCIPAL, coffParser.ID]:
+            elif token in [coffParser.FUNCION, coffParser.PRINCIPAL]:
                 self.enterOuterAlt(localctx, 2)
 
 
@@ -667,8 +703,8 @@ class coffParser ( Parser ):
             super(coffParser.P3Context, self).__init__(parent, invokingState)
             self.parser = parser
 
-        def variables(self):
-            return self.getTypedRuleContext(coffParser.VariablesContext,0)
+        def funcion(self):
+            return self.getTypedRuleContext(coffParser.FuncionContext,0)
 
 
         def p3(self):
@@ -696,18 +732,16 @@ class coffParser ( Parser ):
         try:
             self.state = 177
             token = self._input.LA(1)
-            if token in [coffParser.ENTERO, coffParser.DECIMAL, coffParser.TEXTO, coffParser.ID]:
+            if token in [coffParser.FUNCION]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 173
-                
-                #####################################
-                self.globalTof = 1
-                self.variables()
-                self.globalTof = 0
-                #####################################
-
+                ##########################
+                self.metodoTof = 0
+                ##########################
+                self.funcion()
                 self.state = 174
                 self.p3()
+
             elif token in [coffParser.PRINCIPAL]:
                 self.enterOuterAlt(localctx, 2)
 
@@ -768,18 +802,13 @@ class coffParser ( Parser ):
 
 
     def principal(self):
+
         localctx = coffParser.PrincipalContext(self, self._ctx, self.state)
         self.enterRule(localctx, 8, self.RULE_principal)
         try:
-
             self.enterOuterAlt(localctx, 1)
             self.state = 179
-
-           
             self.match(coffParser.PRINCIPAL)
-
-  
-            
             self.state = 180
             self.pr1()
             self.state = 181
@@ -1676,6 +1705,16 @@ class coffParser ( Parser ):
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << coffParser.CTEENT) | (1 << coffParser.CTEDEC) | (1 << coffParser.CTETEXTO))) != 0)):
                 self._errHandler.recoverInline(self)
             else:
+
+                if _la in [coffParser.CTEENT]:
+                    self.insertarValorTipo(self.getCurrentToken().text, 'ENTERO')
+
+                if _la in [coffParser.CTEDEC]:
+                    self.insertarValorTipo(self.getCurrentToken().text, 'DECIMAL')
+                
+                if _la in [coffParser.CTETEXTO]:
+                    self.insertarValorTipo(self.getCurrentToken().text, 'TEXTO')
+
                 self.consume()
         except RecognitionException as re:
             localctx.exception = re
@@ -1733,14 +1772,28 @@ class coffParser ( Parser ):
 
             elif token in [coffParser.ID]:
                 self.ejecToken = str(self.getCurrentToken().text)   
-                print(self.ejecToken)        
+                       
                 self.enterOuterAlt(localctx, 2)
+
+                if (self.ejecToken, self.scopeProcs) in self.tablaVariables:
+                    self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,self.scopeProcs])
+                elif (self.ejecToken, self.claseRef) in self.tablaVariables:
+                    self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken, self.claseRef])
+                elif (self.ejecToken, 0) in self.tablaVariables:
+                    self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,0])
                 
+
+
+
+                else: 
+                    print("Error, la variable "+self.ejecToken+" no ha sido declarada")
+                    sys.exit()
+                    return
+
                 self.state = 259
                 self.match(coffParser.ID)
                 self.state = 260
                 self.va1()
-                
 
             else:
                 raise NoViableAltException(self)
@@ -1811,11 +1864,6 @@ class coffParser ( Parser ):
         try:
             self.state = 274
             token = self._input.LA(1)
-
-
-
-
-            
             if token in [coffParser.PUNTO]:
                 #self.idVariableActual = self.ejecToken  
                 #print(self.idVariableActual) 
@@ -1826,7 +1874,6 @@ class coffParser ( Parser ):
                 self.va4()
 
             elif token in [coffParser.PIZQ]:
-                
                 self.enterOuterAlt(localctx, 2)
                 self.state = 264
                 self.match(coffParser.PIZQ)
@@ -2493,7 +2540,6 @@ class coffParser ( Parser ):
             self.match(coffParser.ID)
             self.state = 324
             self.ll1()
-
             self.state = 325
             self.match(coffParser.PIZQ)
             self.state = 326
@@ -2572,10 +2618,7 @@ class coffParser ( Parser ):
 
 
             self.state = 333
-
             token = self._input.LA(1)
-            
-
             if token in [coffParser.PUNTO]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 330
@@ -2589,14 +2632,11 @@ class coffParser ( Parser ):
 
             elif token in [coffParser.PIZQ]:
                 self.enterOuterAlt(localctx, 2)
-                
+
 
             else:
                 raise NoViableAltException(self)
 
-           
-
-           
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -3331,6 +3371,8 @@ class coffParser ( Parser ):
                 self.enterOuterAlt(localctx, 1)
                 self.state = 398
                 self.match(coffParser.RESTA)
+                #Si entra por primera vez la expresion y es negativo
+                tofFactor = 1
 
             elif token in [coffParser.SUMA]:
                 self.enterOuterAlt(localctx, 2)
@@ -4092,9 +4134,10 @@ class coffParser ( Parser ):
                 self.checkIfAttributeBelongs()
                 self.state = 463
                 self.match(coffParser.ID)
-            elif token in [coffParser.CIZQ, coffParser.IGUAL]:
 
+            elif token in [coffParser.CIZQ, coffParser.IGUAL]:
                 self.enterOuterAlt(localctx, 2)
+
 
             else:
                 raise NoViableAltException(self)
@@ -4147,6 +4190,7 @@ class coffParser ( Parser ):
             if token in [coffParser.CIZQ]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 467
+                self.tokenActual = str(self.getCurrentToken().text)
                 self.match(coffParser.CIZQ)
                 self.state = 468
                 self.expresion()
@@ -4739,7 +4783,6 @@ class coffParser ( Parser ):
             if token in [coffParser.CIZQ]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 528
-                print(str(str.))
                 self.match(coffParser.CIZQ)
                 self.state = 529
                 self.expresion()
@@ -5272,7 +5315,6 @@ class coffParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
 
 
