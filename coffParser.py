@@ -276,17 +276,11 @@ def serializedATN():
 
 class coffParser ( Parser ):
 
-
-
     grammarFileName = "java-escape"
 
     tipoVariableActual = None
 
     idVariableActual = None
-
-    tokenActual = None
-
-    ejecToken = None
 
     tipoActualFuncion = None
 
@@ -301,9 +295,6 @@ class coffParser ( Parser ):
     globalTof = 0
 
     tablaVariables = {}
-
-    lookForObjectClassObjectType = None
-    lookForObjectClassClassID = None
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
@@ -517,8 +508,7 @@ class coffParser ( Parser ):
                 listener.exitPrograma(self)
 
 
-    
-           
+
 
     def programa(self):
 
@@ -766,38 +756,26 @@ class coffParser ( Parser ):
 
 
     def principal(self):
+
         localctx = coffParser.PrincipalContext(self, self._ctx, self.state)
         self.enterRule(localctx, 8, self.RULE_principal)
         try:
-
             self.enterOuterAlt(localctx, 1)
             self.state = 179
-
-           
             self.match(coffParser.PRINCIPAL)
-
-  
-            
             self.state = 180
             self.pr1()
             self.state = 181
 
             ########################################
             self.idVariableActual = str(self.getCurrentToken().text)
-            if (self.idVariableActual, 0) in self.dirProcs or (self.idVariableActual, True) in self.dirProcs:
-                    print("Error, ya habia una funcion declarada con el nombre: "+self.idVariableActual)
-                    sys.exit()
-                    return
-            
-
-
             self.scopeProcs = self.scopeProcs + 1
             self.dirProcs[self.idVariableActual,0] = [self.scopeProcs,self.tipoVariableActual]
-            #print("")
-            #for keys,values in self.dirProcs.items():
-            #    print(str(keys))
-            #    print(str(values))
-            #print("")
+            print("")
+            for keys,values in self.dirProcs.items():
+                print(str(keys))
+                print(str(values))
+            print("")
             #########################################
 
             self.match(coffParser.ID)
@@ -1163,12 +1141,6 @@ class coffParser ( Parser ):
             self.state = 211
             ############################################
             self.tipoVariableActual = str(self.getCurrentToken().text)
-            if not((self.tipoVariableActual, False) in self.dirProcs) and not(self.tipoVariableActual == "entero" or self.tipoVariableActual == "decimal" or self.tipoVariableActual == "texto"):
-                print("Error, tipo: "+self.tipoVariableActual+" no existe")
-                sys.exit()
-                return
-
-
             ############################################
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << coffParser.ENTERO) | (1 << coffParser.DECIMAL) | (1 << coffParser.TEXTO) | (1 << coffParser.ID))) != 0)):
@@ -1274,20 +1246,24 @@ class coffParser ( Parser ):
 
             if self.globalTof:
                 if (self.idVariableActual, 0) in self.tablaVariables:
-                    print("Error, la variable "+ self.idVariableActual+" ya habia sido declarada")
+                    print("Error")
                     sys.exit()
                     return
                 else:
                     self.tablaVariables[self.idVariableActual,0] = self.tipoVariableActual
             else:
                 if (self.idVariableActual, self.scopeProcs) in self.tablaVariables:
-                    print("Error, la variable "+ self.idVariableActual+" ya habia sido declarada")
+                    print("Error")
                     sys.exit()
                     return
                 else:
                     self.tablaVariables[self.idVariableActual,self.scopeProcs] = self.tipoVariableActual
 
-           
+            print("")
+            for keys,values in self.tablaVariables.items():
+                print(str(keys))
+                print(str(values))
+            print("")
             ########################################################
 
             self.match(coffParser.ID)
@@ -1721,19 +1697,13 @@ class coffParser ( Parser ):
         try:
             self.state = 261
             token = self._input.LA(1)
-            
-
-#############################################################################################
-
             if token in [coffParser.CTEENT, coffParser.CTEDEC, coffParser.CTETEXTO]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 258
                 self.valordeclaracion()
 
             elif token in [coffParser.ID]:
-
                 self.enterOuterAlt(localctx, 2)
-                
                 self.state = 259
                 self.match(coffParser.ID)
                 self.state = 260
@@ -2002,8 +1972,6 @@ class coffParser ( Parser ):
             self.state = 287
             self.match(coffParser.PUNTO)
             self.state = 288
-            print(str(self.getCurrentToken().text))
-            self.checkIfVariableExists()
             self.match(coffParser.ID)
             self.state = 289
             self.va5()
@@ -2287,8 +2255,14 @@ class coffParser ( Parser ):
 
             ##########################################################
             self.idVariableActual = str(self.getCurrentToken().text)
+
             self.tablaVariables[self.idVariableActual,self.scopeProcs] = self.tipoVariableActual 
 
+            print("")
+            for keys,values in self.tablaVariables.items():
+                print(str(keys))
+                print(str(values))
+            print("")
             ########################################################
             
             self.match(coffParser.ID)
@@ -2453,29 +2427,11 @@ class coffParser ( Parser ):
         localctx = coffParser.LlamarfunmetContext(self, self._ctx, self.state)
         self.enterRule(localctx, 64, self.RULE_llamarfunmet)
         try:
-            self.ejecToken = str(self.getCurrentToken().text)
-              
             self.enterOuterAlt(localctx, 1)
             self.state = 323
-
-            
-
-            #########################################
-
-            #if not((self.idVariableActual, True)  in self.dirProcs or (self.idVariableActual, False)  in self.dirProcs):
-            #    print(self.scopeProcs)
-            #    print("Error, la variable "+self.idVariableActual+" no ha sido declarada")
-            #    sys.exit()
-            #    return
-
-
-           
-            
-
             self.match(coffParser.ID)
             self.state = 324
             self.ll1()
-
             self.state = 325
             self.match(coffParser.PIZQ)
             self.state = 326
@@ -2516,12 +2472,6 @@ class coffParser ( Parser ):
                 listener.exitLl1(self)
 
 
-    def lookForMethodClass(self):  
-        self.lookForObjectClassObjectType = self.tablaVariables[self.ejecToken,self.scopeProcs] #contiene el tipo del objeto
-        self.lookForObjectClassClassID = self.dirProcs[self.lookForObjectClassObjectType,0][0]; #contiene el id de la clase
-        if(self.tokenActual, self.lookForObjectClassClassID) not in self.dirProcs: #tokenActual contiene el nombre del metodo
-            print("Error, el metodo "+self.tokenActual+" no es compatible con la clase "+self.ejecToken)
-            sys.exit()
 
 
     def ll1(self):
@@ -2529,56 +2479,22 @@ class coffParser ( Parser ):
         localctx = coffParser.Ll1Context(self, self._ctx, self.state)
         self.enterRule(localctx, 66, self.RULE_ll1)
         try:
-
-            self.tokenActual = str(self.getCurrentToken().text)
-           
-            #print("")
-            #for keys,values in self.tablaVariables.items():
-            #    print(str(keys[1]))
-            #    #print(str(values))
-            #print("")
-
-
-
-            if self.tokenActual == '(':
-                if (self.ejecToken, 0) not in self.dirProcs:
-                    print("Error, la funcion "+self.ejecToken+" no ha sido declarada")
-                    sys.exit()
-            elif self.tokenActual == '.':  
-                self.idVariableActual = self.ejecToken
-                self.checkIfVariableExists()
-                #if (self.ejecToken, self.scopeProcs)  not in self.tablaVariables:
-                #    print("Error, la variable "+self.ejecToken+" no ha sido declarada")
-                #    sys.exit()
-
-
-
             self.state = 333
-
             token = self._input.LA(1)
-            
-
             if token in [coffParser.PUNTO]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 330
                 self.match(coffParser.PUNTO)
                 self.state = 331
-                #######################
-                self.tokenActual = str(self.getCurrentToken().text)
-                self.lookForMethodClass()
-                ##############
                 self.match(coffParser.ID)
 
             elif token in [coffParser.PIZQ]:
                 self.enterOuterAlt(localctx, 2)
-                
+
 
             else:
                 raise NoViableAltException(self)
 
-           
-
-           
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -3400,7 +3316,11 @@ class coffParser ( Parser ):
                 self.dirProcs[self.idVariableActual,0] = [self.scopeProcs,self.tipoVariableActual]
                 
             
-            
+            print("")
+            for keys,values in self.dirProcs.items():
+                print(str(keys))
+                print(str(values))
+            print("")
             #########################################
 
             self.match(coffParser.ID)
@@ -3976,11 +3896,7 @@ class coffParser ( Parser ):
             if isinstance( listener, coffListener ):
                 listener.exitAsignacion(self)
 
-    def checkIfVariableExists(self):
-        if (self.idVariableActual, self.scopeProcs)  not in self.tablaVariables:
-            if (self.idVariableActual, 0)  not in self.tablaVariables:
-                print("Error, la variable "+self.idVariableActual+" no ha sido declarada")
-                sys.exit()
+
 
 
     def asignacion(self):
@@ -3990,20 +3906,6 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 455
-
-            self.idVariableActual = str(self.getCurrentToken().text)
-            print(self.idVariableActual)
-            #print("")
-            #for keys,values in self.tablaVariables.items():
-            #    print(str(keys[1]))
-            #    #print(str(values))
-            #print("")
-
-            self.checkIfVariableExists()
-
-
-
-
             self.match(coffParser.ID)
             self.state = 456
             self.a1()
@@ -4060,8 +3962,7 @@ class coffParser ( Parser ):
                 self.enterOuterAlt(localctx, 1)
                 self.state = 462
                 self.match(coffParser.PUNTO)
-                self.state = 463      
-
+                self.state = 463
                 self.match(coffParser.ID)
 
             elif token in [coffParser.CIZQ, coffParser.IGUAL]:
@@ -4596,9 +4497,6 @@ class coffParser ( Parser ):
             self.state = 516
             self.match(coffParser.PIZQ)
             self.state = 517
-            self.idVariableActual = str(self.getCurrentToken().text)
-            self.checkIfVariableExists()
-            
             self.match(coffParser.ID)
             self.state = 518
             self.l1()
@@ -4902,7 +4800,11 @@ class coffParser ( Parser ):
             self.scopeProcs = self.scopeProcs + 1
             self.claseRef = self.scopeProcs
             self.dirProcs[str(self.getCurrentToken().text),0] = [self.scopeProcs,""]
-            
+            print("")
+            for keys,values in self.dirProcs.items():
+                print(str(keys))
+                print(str(values))
+            print("")
             #########################################
 
             self.state = 548
