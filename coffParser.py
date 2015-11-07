@@ -512,7 +512,7 @@ class coffParser ( Parser ):
             if oper in self.quadOperadores[op]:
                 oDer = self.pilaO.pop()
                 oIzq = self.pilaO.pop()
-                res = self.cuboSem.checarSemanticaExp(oIzq,oDer,oper)
+                res = self.cuboSemantico.checarSemanticaExp(oIzq,oDer,oper)
                 if res != None:
                     self.quadList.append([oper,oIzq,oDer,"t" + self.contQuadTemporales])
                     self.insertarValorTipo("t" + self.contQuadTemporales,res)
@@ -1779,7 +1779,7 @@ class coffParser ( Parser ):
                        
                 self.enterOuterAlt(localctx, 2)
 
-                if tofFactor:
+                if self.tofFactor:
                     self.insertarValorTipo(-1,'ENTERO')
                     
                 
@@ -1798,8 +1798,8 @@ class coffParser ( Parser ):
                         sys.exit()
                         return
 
-                if tofFactor:
-                    tofFactor = 0
+                if self.tofFactor:
+                    self.tofFactor = 0
                     self.insertarOperador('*')
                     self.crearCuadruplo(0)
 
@@ -3096,10 +3096,7 @@ class coffParser ( Parser ):
             self.state = 369
             self.termino()
 
-            oper = self.pOper.pop() 
-
-            crearCuadruplo(1)
-
+            self.crearCuadruplo(1)
 
             self.state = 370
             self.exp1()
