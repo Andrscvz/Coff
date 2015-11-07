@@ -13,15 +13,15 @@ clase coff extiende andres{
 		}
 }
 
+entero h[20] = [0,1,2];
+texto i[10] = ["a","b"];
+
 funcion entero suma1(entero e, texto f){
-	decimal g = 0;
+	decimal g = 0.0;
 	ejec suma1(e);
 	asigna f = f + 1;
 	retorna e;
 } 
-
-entero h[20] = [0,1,2];
-texto i[10] = ["a","b"];
 
 
 principal vacio inicio(){

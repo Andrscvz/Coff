@@ -17,11 +17,11 @@ p1 : clases p1
     | 
     ;
 
-p2 : funcion p2
+p2 : variables p2
     | 
     ;
 
-p3 : variables p3
+p3 :  funcion p3
     | 
     ;
 
