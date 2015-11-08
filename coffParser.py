@@ -1722,16 +1722,17 @@ class coffParser ( Parser ):
                 self._errHandler.recoverInline(self)
             else:
                 
-                #print(self.getCurrentToken().text)
+                constante = self.getCurrentToken().text
+
 
                 if _la in [coffParser.CTEENT]:
-                    self.insertarValorTipo(self.getCurrentToken().text, 'ENTERO')
+                    self.insertarValorTipo(constante, 'entero')
 
                 if _la in [coffParser.CTEDEC]:
-                    self.insertarValorTipo(self.getCurrentToken().text, 'DECIMAL')
+                    self.insertarValorTipo(constante, 'decimal')
                 
                 if _la in [coffParser.CTETEXTO]:
-                    self.insertarValorTipo(self.getCurrentToken().text, 'TEXTO')
+                    self.insertarValorTipo(constante, 'texto')
 
                 self.consume()
         except RecognitionException as re:
@@ -1794,7 +1795,7 @@ class coffParser ( Parser ):
                 self.enterOuterAlt(localctx, 2)
 
                 if self.tofFactor:
-                    self.insertarValorTipo(-1,'ENTERO')
+                    self.insertarValorTipo(-1,'entero')
                     
                 
                 #print(self.getCurrentToken().text)
@@ -2891,8 +2892,8 @@ class coffParser ( Parser ):
             if token in [coffParser.CONDICIONO]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 351
-                
-                self.insertarOperador(self.getCurrentToken().text)
+
+                self.insertarOperador('||')
 
                 self.match(coffParser.CONDICIONO)
                 self.state = 352
@@ -2902,7 +2903,7 @@ class coffParser ( Parser ):
                 self.enterOuterAlt(localctx, 2)
                 self.state = 353
 
-                self.insertarOperador(self.getCurrentToken().text)
+                self.insertarOperador('&&')
 
                 self.match(coffParser.CONDICIONY)
                 self.state = 354
@@ -3008,7 +3009,18 @@ class coffParser ( Parser ):
                 self.enterOuterAlt(localctx, 1)
                 self.state = 361
 
-                self.insertarOperador(self.getCurrentToken().text);
+                if token == coffParser.IGUALQUE:
+                    self.insertarOperador('==')
+                elif token == coffParser.MENQUE:
+                    self.insertarOperador('<')
+                elif token == coffParser.MAYQUE:
+                    self.insertarOperador('>')
+                elif token == coffParser.MAYIGUALQUE:
+                    self.insertarOperador('>=')
+                elif token == coffParser.MENIGUALQUE:
+                    self.insertarOperador('<=')
+                elif token == coffParser.DIF:
+                    self.insertarOperador('!=')
 
                 self.de2()
                 self.state = 362
