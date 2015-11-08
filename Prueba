@@ -37,11 +37,11 @@ principal vacio inicio(){
 	
 	asigna j = k.manuel(1,2);
 	
-	si(j == 1 && 1 + (1*j)){
+	si(j <= 1 && 1 + (1*j)){
 	
 		imprimir(a[0]);
 		
-		si(j == 1){
+		si(j >= 1){
 			imprimir(a[0]);
 		}
 	

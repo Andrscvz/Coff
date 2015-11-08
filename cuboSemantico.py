@@ -4,7 +4,7 @@ class cuboSemantico:
 
 	def __init__(self):
 		self.cubo_semantico = {
-		'IGUAL': {
+		'==': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': None,
@@ -21,7 +21,7 @@ class cuboSemantico:
 				'TEXTO': 'TEXTO'
 			}
 		},
-		'CONDICIONY': {
+		'&&': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': None,
@@ -38,7 +38,7 @@ class cuboSemantico:
 				'TEXTO': None
 			}
 		},
-		'CONDICIONO': {
+		'||': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': None,
@@ -55,24 +55,7 @@ class cuboSemantico:
 				'TEXTO': None
 			}
 		},
-		'MAYQUE': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
-			},
-			'DECIMAL': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
-			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': 'ENTERO'
-			}
-		},
-		'MENQUE': {
+		'>': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': 'ENTERO',
@@ -89,7 +72,7 @@ class cuboSemantico:
 				'TEXTO': 'ENTERO'
 			}
 		},
-		'DIF': {
+		'<': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': 'ENTERO',
@@ -106,7 +89,7 @@ class cuboSemantico:
 				'TEXTO': 'ENTERO'
 			}
 		},
-		'MAYIGUALQUE': {
+		'!=': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': 'ENTERO',
@@ -123,7 +106,7 @@ class cuboSemantico:
 				'TEXTO': 'ENTERO'
 			}
 		},
-		'MENIGUALQUE': {
+		'>=': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': 'ENTERO',
@@ -140,7 +123,7 @@ class cuboSemantico:
 				'TEXTO': 'ENTERO'
 			}
 		},
-		'IGUALQUE': {
+		'<=': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': 'ENTERO',
@@ -157,7 +140,24 @@ class cuboSemantico:
 				'TEXTO': 'ENTERO'
 			}
 		},
-		'SUMA': {
+		'==': {
+			'ENTERO': {
+				'ENTERO': 'ENTERO',
+				'DECIMAL': 'ENTERO',
+				'TEXTO': None
+			},
+			'DECIMAL': {
+				'ENTERO': 'ENTERO',
+				'DECIMAL': 'ENTERO',
+				'TEXTO': None
+			},
+			'TEXTO': {
+				'ENTERO': None,
+				'DECIMAL': None,
+				'TEXTO': 'ENTERO'
+			}
+		},
+		'+': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': 'DECIMAL',
@@ -174,7 +174,7 @@ class cuboSemantico:
 				'TEXTO': 'TEXTO'
 			}
 		},
-		'RESTA': {
+		'-': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': 'DECIMAL',
@@ -191,7 +191,7 @@ class cuboSemantico:
 				'TEXTO': None
 			}
 		},
-		'MULT': {
+		'*': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': 'DECIMAL',
@@ -208,7 +208,7 @@ class cuboSemantico:
 				'TEXTO': None
 			}
 		},
-		'DIV': {
+		'/': {
 			'ENTERO': {
 				'ENTERO': 'ENTERO',
 				'DECIMAL': 'DECIMAL',

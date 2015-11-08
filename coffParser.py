@@ -510,17 +510,28 @@ class coffParser ( Parser ):
         if self.pOper:
             oper = self.pOper.pop()
             if oper in self.quadOperadores[op]:
-                oDer = self.pilaO.pop()
-                oIzq = self.pilaO.pop()
-                res = self.cuboSemantico.checarSemanticaExp(oIzq,oDer,oper)
-                if res != None:
-                    self.quadList.append([oper,oIzq,oDer,"t" + self.contQuadTemporales])
-                    self.insertarValorTipo("t" + self.contQuadTemporales,res)
-                    self.contQuadTemporales = self.contQuadTemporales + 1
-                else:
-                    print ("Semantic error: line " + str(self.getCurrentToken().line) + ":" + str(self.getCurrentToken().column) + " Tipos de operandos no compatibles" )
-                    self._syntaxErrors = self._syntaxErrors + 1
-                    return
+                if self.pilaO:
+                    oDer = self.pilaO.pop()
+                    oDerTipo = self.pTipos.pop()
+                    if self.pilaO:
+                        oIzq = self.pilaO.pop()
+                        oIzqTipo = self.pTipos.pop()
+                        res = self.cuboSemantico.checarSemanticaExp(oIzqTipo,oDerTipo,oper)
+                        if res != None:
+                            self.quadruplos.append([oper,oIzq,oDer,"t" + str(self.contQuadTemporales)])
+                            self.insertarValorTipo("t" + str(self.contQuadTemporales),res)
+                            self.contQuadTemporales = self.contQuadTemporales + 1
+                        else:
+                            print ("tipo: " + oIzqTipo + " " + oIzq)
+                            print("tipo: " + oDerTipo + " " + oDer)
+                            print("operador " + oper)
+                            print ("Error semantico en la linea:" + str(self.getCurrentToken().line) + " Tipos de operandos no compatibles" )
+                            self._syntaxErrors = self._syntaxErrors + 1
+                            return
+                    else:
+                        self.pilaO.append(oDer)
+                        self.pTipos.append(oDerTipo)
+                        self.pOper.append(oper)
             else:
                 self.pOper.append(oper)
 
@@ -575,6 +586,7 @@ class coffParser ( Parser ):
             self.p3()
             self.state = 159
             self.principal()
+            print(self.quadruplos)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1709,6 +1721,8 @@ class coffParser ( Parser ):
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << coffParser.CTEENT) | (1 << coffParser.CTEDEC) | (1 << coffParser.CTETEXTO))) != 0)):
                 self._errHandler.recoverInline(self)
             else:
+                
+                #print(self.getCurrentToken().text)
 
                 if _la in [coffParser.CTEENT]:
                     self.insertarValorTipo(self.getCurrentToken().text, 'ENTERO')
@@ -1783,25 +1797,28 @@ class coffParser ( Parser ):
                     self.insertarValorTipo(-1,'ENTERO')
                     
                 
-                    #Buscar dentro del mismo scope
-                    if (self.ejecToken, self.scopeProcs) in self.tablaVariables:
-                        self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,self.scopeProcs])
-                    #si no se encuentra buscar en la def de la clase
-                    elif (self.ejecToken, self.claseRef) in self.tablaVariables:
-                        self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken, self.claseRef])
-                    #buscar en vars globales
-                    elif (self.ejecToken, 0) in self.tablaVariables:
-                        self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,0])
-                    #No se encontro y marcar error
-                    else: 
-                        print("Error, la variable "+self.ejecToken+" no ha sido declarada")
-                        sys.exit()
-                        return
+                #print(self.getCurrentToken().text)
+
+                #Buscar dentro del mismo scope
+                if (self.ejecToken, self.scopeProcs) in self.tablaVariables:
+                    self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,self.scopeProcs])
+                #si no se encuentra buscar en la def de la clase
+                elif (self.ejecToken, self.claseRef) in self.tablaVariables:
+                    self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken, self.claseRef])
+                #buscar en vars globales
+                elif (self.ejecToken, 0) in self.tablaVariables:
+                    self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,0])
+                #No se encontro y marcar error
+                else: 
+                    print("Error, la variable "+self.ejecToken+" no ha sido declarada")
+                    sys.exit()
+                    return
 
                 if self.tofFactor:
                     self.tofFactor = 0
                     self.insertarOperador('*')
-                    self.crearCuadruplo(0)
+                
+                self.crearCuadruplo(0)
 
                 self.state = 259
                 self.match(coffParser.ID)
@@ -2821,6 +2838,9 @@ class coffParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 348
             self.declaracion()
+
+            self.crearCuadruplo(3)
+            
             self.state = 349
             self.ex1()
         except RecognitionException as re:
@@ -2871,6 +2891,9 @@ class coffParser ( Parser ):
             if token in [coffParser.CONDICIONO]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 351
+                
+                self.insertarOperador(self.getCurrentToken().text)
+
                 self.match(coffParser.CONDICIONO)
                 self.state = 352
                 self.expresion()
@@ -2878,6 +2901,9 @@ class coffParser ( Parser ):
             elif token in [coffParser.CONDICIONY]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 353
+
+                self.insertarOperador(self.getCurrentToken().text)
+
                 self.match(coffParser.CONDICIONY)
                 self.state = 354
                 self.expresion()
@@ -2981,9 +3007,14 @@ class coffParser ( Parser ):
             if token in [coffParser.IGUALQUE, coffParser.MENQUE, coffParser.MAYQUE, coffParser.MAYIGUALQUE, coffParser.MENIGUALQUE, coffParser.DIF]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 361
+
+                self.insertarOperador(self.getCurrentToken().text);
+
                 self.de2()
                 self.state = 362
                 self.exp()
+
+                self.crearCuadruplo(2)
 
             elif token in [coffParser.PDER, coffParser.CDER, coffParser.CONDICIONO, coffParser.CONDICIONY, coffParser.COMA, coffParser.PUNTOYCOMA]:
                 self.enterOuterAlt(localctx, 2)
@@ -3368,6 +3399,8 @@ class coffParser ( Parser ):
                 self.expresion()
                 self.state = 394
                 self.match(coffParser.PDER)
+
+                self.pOper.pop()
 
             else:
                 raise NoViableAltException(self)
