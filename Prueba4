@@ -1,0 +1,24 @@
+
+principal vacio inicio(){
+	
+	entero a, b, c, d;
+
+	mientras(a + b * c < d){
+		si(a + b < c){
+			asigna a = b + c;
+			mientras(a > b + c){
+				asigna a = a + 1;
+			}  
+		}o{
+			mientras(b > c + d){
+				asigna a = b + c * d;
+				asigna b = a - d;
+			}
+		}
+	}
+
+	asigna a = b * c;
+	asigna c = 0;
+
+
+}

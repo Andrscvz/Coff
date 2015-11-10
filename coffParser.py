@@ -301,17 +301,23 @@ class coffParser ( Parser ):
 
     tablaVariables = {}
 
+    valorDeclaracion = None #Valor de la delcaracion
+    
+    tipoDeclaracion = None #Tipo de la delcaracion
+
     pilaO = [] #Pila de operandos
 
     pOper = [] #Pila de operadores
 
     pTipos = [] #Pila de tipos de los operadores
 
+    pSaltos = [] #Pila de saltos para los condicionales y los ciclos
+
     quadruplos = [] #Lista de cuadruplos
 
     contQuadTemporales = 1 #Para variables temporales
 
-    quadOperadores = [['*','/'],['+','-'],['==','!=','>','>=','<','<='],['&&','||']]
+    quadOperadores = [['*','/'],['+','-'],['==','!=','>','>=','<','<='],['&&','||'],['=']]
 
     tofFactor = 0
 
@@ -505,8 +511,9 @@ class coffParser ( Parser ):
     def insertarOperador(self,op):
         self.pOper.append(op)
 
-    def crearCuadruplo(self,op):
-        #OP = 0 - mult,div 1 - suma,resta 2 - relacionales 3 - logicos
+
+    def crearCuadruploExpAsig(self,op,tipoCuadruplo):
+        #OP = 0 - mult,div 1 - suma,resta 2 - relacionales 3 - logicos 4 - asignacion
         if self.pOper:
             oper = self.pOper.pop()
             if oper in self.quadOperadores[op]:
@@ -518,9 +525,15 @@ class coffParser ( Parser ):
                         oIzqTipo = self.pTipos.pop()
                         res = self.cuboSemantico.checarSemanticaExp(oIzqTipo,oDerTipo,oper)
                         if res != None:
-                            self.quadruplos.append([oper,oIzq,oDer,"t" + str(self.contQuadTemporales)])
-                            self.insertarValorTipo("t" + str(self.contQuadTemporales),res)
-                            self.contQuadTemporales = self.contQuadTemporales + 1
+                            #print ("tipo: " + oIzqTipo + " " + oIzq)
+                            #print("tipo: " + oDerTipo + " " + oDer)
+                            #print("operador " + oper)
+                            if tipoCuadruplo == 'expresion':
+                                self.quadruplos.append([oper,oIzq,oDer,"t" + str(self.contQuadTemporales)])
+                                self.insertarValorTipo("t" + str(self.contQuadTemporales),res)
+                                self.contQuadTemporales = self.contQuadTemporales + 1
+                            elif tipoCuadruplo == 'asignacion':
+                                self.quadruplos.append([oper,oDer,None,oIzq])
                         else:
                             print ("tipo: " + oIzqTipo + " " + oIzq)
                             print("tipo: " + oDerTipo + " " + oDer)
@@ -535,6 +548,61 @@ class coffParser ( Parser ):
             else:
                 self.pOper.append(oper)
 
+
+    def crearCuadruploEscritura(self):
+        if self.pilaO:
+            elemento = self.pilaO.pop()
+            elementoTipo = self.pTipos.pop()
+            elementoTipo = elementoTipo.split(',')
+            if len(elementoTipo) == 1:
+                self.quadruplos.append(['imprimir',None,None,elemento])
+            else:
+                #Para arreglos! CHECAR
+                x = int(elementoTipo[2])
+                while x > 0:
+                    self.quadruplos.append(['imprimir',None,None,elemento])
+                    elemento = elemento + 1
+                    x = x - 1
+
+    def crearCuadruploLectura(self,elemento):
+        self.quadruplos.append(['leer',None,None,elemento])
+
+
+    def crearCuadruploCondicion(self):
+        condicion = self.pilaO.pop()
+        tipoCondicion = self.pTipos.pop()
+        if tipoCondicion != 'entero':
+            print ("Error semantico en la linea:" + str(self.getCurrentToken().line) + " se esperaba una condicion" )
+            self._syntaxErrors = self._syntaxErrors + 1
+            sys.exit()
+            return
+        else:
+            self.quadruplos.append(['gotof',condicion,None,None])
+            cont = len(self.quadruplos)
+            self.pSaltos.append(cont-1)
+
+    def crearCuadruploCondicionFalso(self):
+        falso = self.pSaltos.pop()
+        self.quadruplos.append(['goto',None,None,None])
+        cont = len(self.quadruplos)
+        self.pSaltos.append(cont-1)
+        self.quadruplos[falso][3] = cont
+
+    def crearCuadruploCondicionSalida(self):
+        salida = self.pSaltos.pop()
+        cont = len(self.quadruplos)
+        self.quadruplos[salida][3] = cont
+
+    def crearCuadruploCondicionInicioCiclo(self):
+        cont = len(self.quadruplos)
+        self.pSaltos.append(cont)
+
+    def crearCuadruploCondicionFinCiclo(self):
+        falso = self.pSaltos.pop()
+        retorno = self.pSaltos.pop()
+        self.quadruplos.append(['goto',None,None,retorno])
+        cont = len(self.quadruplos)
+        self.quadruplos[falso][3] = cont
 
     class ProgramaContext(ParserRuleContext):
 
@@ -586,7 +654,19 @@ class coffParser ( Parser ):
             self.p3()
             self.state = 159
             self.principal()
-            print(self.quadruplos)
+
+            cuantos = 0
+
+            while cuantos < len(self.quadruplos):
+                print(str(cuantos), " " , self.quadruplos[cuantos])
+                cuantos = cuantos + 1
+            
+            print("")
+            print(self.pilaO)
+            print("")
+            print(self.pTipos)
+            print("")
+            print(self.pOper)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1707,8 +1787,6 @@ class coffParser ( Parser ):
                 listener.exitValordeclaracion(self)
 
 
-
-
     def valordeclaracion(self):
 
         localctx = coffParser.ValordeclaracionContext(self, self._ctx, self.state)
@@ -1726,13 +1804,16 @@ class coffParser ( Parser ):
 
 
                 if _la in [coffParser.CTEENT]:
-                    self.insertarValorTipo(constante, 'entero')
+                    self.valorDeclaracion = constante
+                    self.tipoDeclaracion = 'entero'
 
                 if _la in [coffParser.CTEDEC]:
-                    self.insertarValorTipo(constante, 'decimal')
+                    self.valorDeclaracion = constante
+                    self.tipoDeclaracion = 'decimal'
                 
                 if _la in [coffParser.CTETEXTO]:
-                    self.insertarValorTipo(constante, 'texto')
+                    self.valorDeclaracion = constante
+                    self.tipoDeclaracion = 'texto'
 
                 self.consume()
         except RecognitionException as re:
@@ -1789,6 +1870,8 @@ class coffParser ( Parser ):
                 self.state = 258
                 self.valordeclaracion()
 
+                self.insertarValorTipo(self.valorDeclaracion, self.tipoDeclaracion)
+
             elif token in [coffParser.ID]:
                 self.ejecToken = str(self.getCurrentToken().text)   
                        
@@ -1819,7 +1902,7 @@ class coffParser ( Parser ):
                     self.tofFactor = 0
                     self.insertarOperador('*')
                 
-                self.crearCuadruplo(0)
+                self.crearCuadruploExpAsig(0,'expresion')
 
                 self.state = 259
                 self.match(coffParser.ID)
@@ -2840,7 +2923,7 @@ class coffParser ( Parser ):
             self.state = 348
             self.declaracion()
 
-            self.crearCuadruplo(3)
+            self.crearCuadruploExpAsig(3,'expresion')
             
             self.state = 349
             self.ex1()
@@ -3026,7 +3109,7 @@ class coffParser ( Parser ):
                 self.state = 362
                 self.exp()
 
-                self.crearCuadruplo(2)
+                self.crearCuadruploExpAsig(2,'expresion')
 
             elif token in [coffParser.PDER, coffParser.CDER, coffParser.CONDICIONO, coffParser.CONDICIONY, coffParser.COMA, coffParser.PUNTOYCOMA]:
                 self.enterOuterAlt(localctx, 2)
@@ -3139,7 +3222,7 @@ class coffParser ( Parser ):
             self.state = 369
             self.termino()
 
-            self.crearCuadruplo(1)
+            self.crearCuadruploExpAsig(1,'expresion')
 
             self.state = 370
             self.exp1()
@@ -3262,7 +3345,7 @@ class coffParser ( Parser ):
             self.state = 379
             self.factor()
             
-            self.crearCuadruplo(0)
+            self.crearCuadruploExpAsig(0,'expresion')
 
             self.state = 380
             self.t1()
@@ -4132,6 +4215,11 @@ class coffParser ( Parser ):
             if (self.idVariableActual, 0)  not in self.tablaVariables:
                 print("Error, la variable "+self.idVariableActual+" no ha sido declarada")
                 sys.exit()
+            else:
+                return self.tablaVariables[self.idVariableActual, 0]
+        else:
+            return self.tablaVariables[self.idVariableActual,self.scopeProcs]
+
 
 
     def asignacion(self):
@@ -4147,13 +4235,16 @@ class coffParser ( Parser ):
             
             #print("")
             #for keys,values in self.tablaVariables.items():
+            #    print(str(keys[0]))
             #    print(str(keys[1]))
-            #    #print(str(values))
+            #    print(str(values))
             #print("")
 
-            self.checkIfVariableExists()
+            tipoVar = self.checkIfVariableExists()
 
 
+            #Cuadruplo de asignacion
+            self.insertarValorTipo(self.idVariableActual,tipoVar)
 
 
             self.match(coffParser.ID)
@@ -4163,10 +4254,16 @@ class coffParser ( Parser ):
             self.a2()
             self.state = 458
             self.match(coffParser.IGUAL)
+
+            self.insertarOperador('=')
+
             self.state = 459
             self.expresion()
             self.state = 460
             self.match(coffParser.PUNTOYCOMA)
+
+            self.crearCuadruploExpAsig(4,'asignacion')
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -4348,14 +4445,23 @@ class coffParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 474
             self.match(coffParser.MIENTRAS)
+
+            self.crearCuadruploCondicionInicioCiclo()
+
             self.state = 475
             self.match(coffParser.PIZQ)
             self.state = 476
             self.expresion()
             self.state = 477
             self.match(coffParser.PDER)
+
+            self.crearCuadruploCondicion()
+
             self.state = 478
             self.bloquesimple()
+
+            self.crearCuadruploCondicionFinCiclo()
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -4629,6 +4735,10 @@ class coffParser ( Parser ):
             self.match(coffParser.PIZQ)
             self.state = 503
             self.expresion()
+            
+            #Para crear los cuadruplos de escritura
+            self.crearCuadruploEscritura()
+
             self.state = 504
             self.e1()
             self.state = 505
@@ -4687,6 +4797,9 @@ class coffParser ( Parser ):
                 self.match(coffParser.COMA)
                 self.state = 509
                 self.expresion()
+
+                self.crearCuadruploEscritura()
+
                 self.state = 510
                 self.e1()
 
@@ -4761,6 +4874,8 @@ class coffParser ( Parser ):
             self.state = 517
             self.idVariableActual = str(self.getCurrentToken().text)
             self.checkIfVariableExists()
+
+            self.crearCuadruploLectura(self.idVariableActual)
             
             self.match(coffParser.ID)
             self.state = 518
@@ -4950,10 +5065,16 @@ class coffParser ( Parser ):
             self.expresion()
             self.state = 538
             self.match(coffParser.PDER)
+
+            self.crearCuadruploCondicion()
+
             self.state = 539
             self.bloque()
             self.state = 540
             self.si1()
+
+            self.crearCuadruploCondicionSalida()
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -5001,6 +5122,9 @@ class coffParser ( Parser ):
                 self.state = 542
                 self.match(coffParser.O)
                 self.state = 543
+
+                self.crearCuadruploCondicionFalso()
+
                 self.bloque()
 
             elif token in [coffParser.IMPRIMIR, coffParser.LEER, coffParser.MIENTRAS, coffParser.ENTERO, coffParser.DECIMAL, coffParser.TEXTO, coffParser.RETORNA, coffParser.SI, coffParser.EJEC, coffParser.ASIGNA, coffParser.BDER, coffParser.ID]:

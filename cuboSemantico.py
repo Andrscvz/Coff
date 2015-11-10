@@ -4,7 +4,7 @@ class cuboSemantico:
 
 	def __init__(self):
 		self.cubo_semantico = {
-		'==': {
+		'=': {
 			'entero': {
 				'entero': 'entero',
 				'decimal': None,

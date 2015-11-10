@@ -5,7 +5,7 @@ clase coff extiende andres{
 		entero b = 0;
 	metodos:
 		funcion vacio manuel(entero c, decimal &d){
-			asigna d = -1.0 + 2.0 ;
+			asigna d = -1.0 + 2 ;
 			imprimir(a);
 		}
 		
@@ -31,18 +31,18 @@ principal vacio inicio(){
 	
 	ejec suma1(j);
 	
-	
+	leer(j);
 	
 	ejec k.manuel(1,2); 
 	
-	asigna j = k.manuel(1,2);
+	asigna j = j * (1 + 2 - 3 * 4);
 	
 	si(j <= 1 && 1 + (1*j)){
 	
 		imprimir(a[0]);
 		
 		si(j >= 1){
-			imprimir(a[0]);
+			imprimir(j);
 		}
 	
 	}o{
