@@ -1,11 +1,26 @@
 
-clase coff extiende andres{
+clase coff{
 	atributos:
 		texto a = 0;
 		entero b = 0;
 	metodos:
 		funcion vacio manuel(entero c, decimal &d){
-			asigna d = a + c ;
+			asigna d = -1.0 + 2 ;
+			imprimir(a);
+		}
+		
+		funcion vacio andres(){
+		}
+}
+
+
+clase coffito extiende coff{
+	atributos:
+		texto a = 0;
+		entero b = 0;
+	metodos:
+		funcion vacio manuel(entero c, decimal &d){
+			asigna d = -1.0 + 2 ;
 			imprimir(a);
 		}
 		
@@ -18,8 +33,8 @@ texto i[10] = ["a","b"];
 
 funcion entero suma1(entero e, texto f){
 	decimal g = 0.0;
-	ejec suma1(e);
-	asigna f = f + 1;
+	ejec suma1(e, e);
+	asigna e = e + 1;
 	retorna e;
 } 
 
@@ -27,22 +42,27 @@ funcion entero suma1(entero e, texto f){
 principal vacio inicio(){
 	entero j = 0;
 	coff k;
-	asigna j = suma1(-j);
-	
-	ejec suma1(j);
 	
 	
+	ejec suma1(j,j);
 	
+
+	leer(j);
+	
+
+	asigna j = j.manuel; 
+
+
 	ejec k.manuel(1,2); 
 	
-	asigna j = k.manuel(1,2);
+	asigna j = j * (1 + 2 - 3 * 4);
 	
-	si(j == 1 && 1 + (1*j)){
+	si(j <= 1 && 1 + (1*j)){
 	
 		imprimir(a[0]);
 		
-		si(j == 1){
-			imprimir(a[0]);
+		si(j >= 1){
+			imprimir(j);
 		}
 	
 	}o{

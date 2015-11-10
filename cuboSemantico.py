@@ -4,225 +4,225 @@ class cuboSemantico:
 
 	def __init__(self):
 		self.cubo_semantico = {
-		'IGUAL': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': None,
-				'TEXTO': None
+		'=': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': None,
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': None,
-				'DECIMAL': 'DECIMAL',
-				'TEXTO': None
+			'decimal': {
+				'entero': None,
+				'decimal': 'decimal',
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': 'TEXTO'
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': 'texto'
 			}
 		},
-		'CONDICIONY': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': None,
-				'TEXTO': None,
+		'&&': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': None,
+				'texto': None,
 			},
-			'DECIMAL': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': None
+			'decimal': {
+				'entero': None,
+				'decimal': None,
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': None
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': None
 			}
 		},
-		'CONDICIONO': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': None,
-				'TEXTO': None
+		'||': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': None,
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': None
+			'decimal': {
+				'entero': None,
+				'decimal': None,
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': None
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': None
 			}
 		},
-		'MAYQUE': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+		'>': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+			'decimal': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': 'ENTERO'
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': 'entero'
 			}
 		},
-		'MENQUE': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+		'<': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+			'decimal': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': 'ENTERO'
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': 'entero'
 			}
 		},
-		'DIF': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+		'!=': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+			'decimal': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': 'ENTERO'
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': 'entero'
 			}
 		},
-		'MAYIGUALQUE': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+		'>=': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+			'decimal': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': 'ENTERO'
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': 'entero'
 			}
 		},
-		'MENIGUALQUE': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+		'<=': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+			'decimal': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': 'ENTERO'
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': 'entero'
 			}
 		},
-		'IGUALQUE': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+		'==': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'ENTERO',
-				'TEXTO': None
+			'decimal': {
+				'entero': 'entero',
+				'decimal': 'entero',
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': 'ENTERO'
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': 'entero'
 			}
 		},
-		'SUMA': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'DECIMAL',
-				'TEXTO': None
+		'+': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': 'decimal',
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': 'DECIMAL',
-				'DECIMAL': 'DECIMAL',
-				'TEXTO': None
+			'decimal': {
+				'entero': 'decimal',
+				'decimal': 'decimal',
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': 'TEXTO'
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': 'texto'
 			}
 		},
-		'RESTA': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'DECIMAL',
-				'TEXTO': None
+		'-': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': 'decimal',
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': 'DECIMAL',
-				'DECIMAL': 'DECIMAL',
-				'TEXTO': None
+			'decimal': {
+				'entero': 'decimal',
+				'decimal': 'decimal',
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': None
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': None
 			}
 		},
-		'MULT': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'DECIMAL',
-				'TEXTO': None
+		'*': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': 'decimal',
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': 'DECIMAL',
-				'DECIMAL': 'DECIMAL',
-				'TEXTO': None
+			'decimal': {
+				'entero': 'decimal',
+				'decimal': 'decimal',
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': None
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': None
 			}
 		},
-		'DIV': {
-			'ENTERO': {
-				'ENTERO': 'ENTERO',
-				'DECIMAL': 'DECIMAL',
-				'TEXTO': None
+		'/': {
+			'entero': {
+				'entero': 'entero',
+				'decimal': 'decimal',
+				'texto': None
 			},
-			'DECIMAL': {
-				'ENTERO': 'DECIMAL',
-				'DECIMAL': 'DECIMAL',
-				'TEXTO': None
+			'decimal': {
+				'entero': 'decimal',
+				'decimal': 'decimal',
+				'texto': None
 			},
-			'TEXTO': {
-				'ENTERO': None,
-				'DECIMAL': None,
-				'TEXTO': None
+			'texto': {
+				'entero': None,
+				'decimal': None,
+				'texto': None
 			}
 		}
 	}
