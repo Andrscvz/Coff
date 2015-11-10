@@ -17,27 +17,27 @@ texto i[10] = ["a","b"];
 
 funcion entero suma1(entero e, texto f){
 	decimal g = 0.0;
-	ejec suma1(e);
-	asigna f = f + 1;
+	ejec suma1(e,e);
+	asigna g = f + 1;
 	retorna e;
 } 
 
 
 principal vacio inicio(){
 	entero j = 0;
-	coff k;
-	asigna j = suma1(-j);
+	coff k,asa;
+	asigna j = suma1(-j,j);
 	
-	ejec suma1(j);
-
+	
+	ejec suma1(1,1);
 
 	entero i;
+
+	ejec asa.manel(10,2); 
 	
-	
-	
-	ejec k.manuel(1,2); 
-	
-	asigna j = k.manuel(1,2);
+	asigna j = k.manuel(1,1);
+
+	asigna j = suma1(1,11,1,1,1);
 	
 	si(j == 1 && 1 + (1*j)){
 	
