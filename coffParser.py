@@ -294,7 +294,7 @@ class coffParser ( Parser ):
 
     metodoTof = 1
 
-    claseRef = 0
+    claseScopeRef = 0
 
     globalTof = 0
 
@@ -310,6 +310,11 @@ class coffParser ( Parser ):
     nComasAux2 = 0 #ayuda a considerar el caso donde solo hay un parametro
     funcionOmetodo = 0 #1 funcion 2 metodo
 
+
+    atributosTof = 0 
+    atributosClase = [] #variable usada para agregar los atributos de cada clase en el registro dirprocs(clase)
+    metodosClase = [] #variable usada para agregar los metodos de cada clase en el registro dirprocs(clase)
+    claseIDRef = None
 
     idFuncionActual = None
 
@@ -670,15 +675,7 @@ class coffParser ( Parser ):
             cuantos = 0
 
             while cuantos < len(self.quadruplos):
-                print(str(cuantos), " " , self.quadruplos[cuantos])
                 cuantos = cuantos + 1
-            
-            print("")
-            print(self.pilaO)
-            print("")
-            print(self.pTipos)
-            print("")
-            print(self.pOper)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -933,11 +930,14 @@ class coffParser ( Parser ):
             self.scopeProcs = self.scopeProcs + 1
             self.dirProcs[self.idVariableActual,0] = [self.scopeProcs,self.tipoVariableActual]
             #print("")
-            #print("tablaVariables")
+            #print("dirProcs")
             #for keys,values in self.dirProcs.items():
             #    print(str(keys))
             #    print(str(values))
             #print("")
+
+
+
             ########################################
 
             self.match(coffParser.ID)
@@ -1411,6 +1411,8 @@ class coffParser ( Parser ):
             self.state = 217
             ########################################################
             self.idVariableActual = str(self.getCurrentToken().text)
+            if self.atributosTof:
+                self.atributosClase.append([self.idVariableActual,self.scopeProcs])
 
 
             if self.globalTof:
@@ -1901,8 +1903,8 @@ class coffParser ( Parser ):
                 if (self.ejecToken, self.scopeProcs) in self.tablaVariables:
                     self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,self.scopeProcs])
                 #si no se encuentra buscar en la def de la clase
-                elif (self.ejecToken, self.claseRef) in self.tablaVariables:
-                    self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken, self.claseRef])
+                elif (self.ejecToken, self.claseScopeRef) in self.tablaVariables:
+                    self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken, self.claseScopeRef])
                 #buscar en vars globales
                 elif (self.ejecToken, 0) in self.tablaVariables:
                     self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,0])
@@ -2010,9 +2012,7 @@ class coffParser ( Parser ):
 
                 #self.idVariableActual = self.ejecToken  
                 self.idFuncionActual = self.ejecToken  
-                if (self.ejecToken, 0) not in self.dirProcs:
-                    print("Error, la funcion "+self.ejecToken+" no ha sido declarada")
-                    sys.exit()
+                self.checkIfGlobalFunctionOrClassExists(self.ejecToken)
 
                 self.state = 265
                 self.expresion()
@@ -2767,6 +2767,11 @@ class coffParser ( Parser ):
             sys.exit()
 
 
+    def checkIfGlobalFunctionOrClassExists(self,fgcID):
+        if (fgcID, 0) not in self.dirProcs:
+                print("Error, la funcion global o clase "+fgcID+" no ha sido declarada")
+                sys.exit()
+
     def ll1(self):
 
         localctx = coffParser.Ll1Context(self, self._ctx, self.state)
@@ -2781,9 +2786,7 @@ class coffParser ( Parser ):
 
             if self.tokenActual == '(':
                 self.funcionOmetodo = 1
-                if (self.ejecToken, 0) not in self.dirProcs:
-                    print("Error, la funcion "+self.ejecToken+" no ha sido declarada")
-                    sys.exit()
+                self.checkIfGlobalFunctionOrClassExists(self.ejecToken)
             elif self.tokenActual == '.': 
                 self.funcionOmetodo = 2
                 self.idVariableActual = self.ejecToken
@@ -3689,9 +3692,11 @@ class coffParser ( Parser ):
             self.idVariableActual = str(self.getCurrentToken().text)
 
             if self.metodoTof:
-                self.dirProcs[self.idVariableActual,self.claseRef] = [self.scopeProcs,self.tipoVariableActual,[]]
+
+                self.dirProcs[self.idVariableActual,self.claseScopeRef] = [self.scopeProcs,self.tipoVariableActual,[]]
+                self.metodosClase.append([self.idVariableActual,self.claseScopeRef])
                 self.parametrosAux.append(self.idVariableActual)
-                self.parametrosAux.append(self.claseRef)
+                self.parametrosAux.append(self.claseScopeRef)
 
             else:
                 self.dirProcs[self.idVariableActual,0] = [self.scopeProcs,self.tipoVariableActual,[]]
@@ -4299,12 +4304,6 @@ class coffParser ( Parser ):
             self.ejecToken = self.idVariableActual
             
 
-            #print("")
-            #for keys,values in self.tablaVariables.items():
-            #    print(str(keys[0]))
-            #    print(str(keys[1]))
-            #    print(str(values))
-            #print("")
 
 
             tipoVar = self.checkIfVariableExists()
@@ -5273,15 +5272,16 @@ class coffParser ( Parser ):
 
             ########################################
             self.scopeProcs = self.scopeProcs + 1
-            self.claseRef = self.scopeProcs
-            self.dirProcs[str(self.getCurrentToken().text),0] = [self.scopeProcs,""]
-            
+            self.claseScopeRef = self.scopeProcs
+            self.claseIDRef = str(self.getCurrentToken().text)
+            self.dirProcs[self.claseIDRef,0] = [self.scopeProcs,"",[],[]]
             #########################################
 
             self.state = 548
             self.match(coffParser.ID)
             self.state = 549
             self.cl1()
+
             self.state = 550
             self.cl2()
         except RecognitionException as re:
@@ -5316,7 +5316,9 @@ class coffParser ( Parser ):
                 listener.exitCl1(self)
 
 
-
+    def makeInheritance(self,sonID,fatherID):
+        self.dirProcs[sonID,0][2] = (self.dirProcs[fatherID,0][2]) 
+        self.dirProcs[sonID,0][3] = (self.dirProcs[fatherID,0][3]) 
 
     def cl1(self):
 
@@ -5330,6 +5332,10 @@ class coffParser ( Parser ):
                 self.state = 552
                 self.match(coffParser.EXTIENDE)
                 self.state = 553
+                self.checkIfGlobalFunctionOrClassExists(str(self.getCurrentToken().text))
+
+
+                self.makeInheritance(self.claseIDRef,str(self.getCurrentToken().text))
                 self.match(coffParser.ID)
 
             elif token in [coffParser.BIZQ]:
@@ -5444,7 +5450,29 @@ class coffParser ( Parser ):
             self.state = 563
             self.match(coffParser.DOSPUNTOS)
             self.state = 564
+            self.atributosClase = []
             self.atr1()
+
+
+
+            
+            #print(self.atributosClase)
+            print("####1####")
+            print(self.dirProcs["coff",0])
+
+            #print("/////////")
+
+            for atributo in self.atributosClase:
+                print (hex(id(self.dirProcs[self.claseIDRef,0][2])))
+                self.dirProcs[self.claseIDRef,0][2].append(atributo)
+                print (hex(id(self.dirProcs[self.claseIDRef,0][2])))
+           
+            print(self.dirProcs["coff",0])
+
+
+
+
+            #####
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -5491,7 +5519,9 @@ class coffParser ( Parser ):
             if token in [coffParser.ENTERO, coffParser.DECIMAL, coffParser.TEXTO, coffParser.ID]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 566
+                self.atributosTof = 1
                 self.variables()
+                self.atributosTof = 0
                 self.state = 567
                 self.atr1()
 
@@ -5551,7 +5581,9 @@ class coffParser ( Parser ):
             self.state = 573
             self.match(coffParser.DOSPUNTOS)
             self.state = 574
+            self.metodosClase = []
             self.met1()
+            self.dirProcs[self.claseIDRef,0][3] = self.metodosClase
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)

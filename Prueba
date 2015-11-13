@@ -14,18 +14,11 @@ clase coff{
 }
 
 
-clase coffito extiende coff{
+clase ss extiende coff{
 	atributos:
-		texto a = 0;
-		entero b = 0;
+		texto hhh = 0;
+		entero ccc = 0;
 	metodos:
-		funcion vacio manuel(entero c, decimal &d){
-			asigna d = -1.0 + 2 ;
-			imprimir(a);
-		}
-		
-		funcion vacio andres(){
-		}
 }
 
 entero h[20] = [0,1,2];
@@ -50,7 +43,7 @@ principal vacio inicio(){
 	leer(j);
 	
 
-	asigna j = j.manuel; 
+	asigna j = j; 
 
 
 	ejec k.manuel(1,2); 
