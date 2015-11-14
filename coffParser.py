@@ -327,6 +327,7 @@ class coffParser ( Parser ):
     
     tipoDeclaracion = None #Tipo de la delcaracion
 
+    terminacionProcs = None # para saber si estoy en principal o en una funcion
 
     pilaO = [] #Pila de operandos
 
@@ -723,6 +724,55 @@ class coffParser ( Parser ):
                 sys.exit()
                 return
 
+    def crearCuadruploMain(self):
+        self.quadruplos.append(['goto',None,None,None])
+
+    def completarCuadruploMain(self):
+        cont = len(self.quadruplos)
+        self.quadruplos[0][3] = cont
+
+    def crearCuadruploTerminarProc(self):
+        self.quadruplos.append([self.terminacionProc,None,None,None])
+
+
+    def crearCuadruploRetornar(self):
+        elemento = self.pilaO.pop()
+        tipoElemento = self.pTipos.pop()
+        self.quadruplos.append(['retornar',None,None,elemento])
+
+    def idDeMetodo(self,nombreMetodo):
+        if(self.metodoTof):
+            for key, values in self.dirProcs.items():
+                if key[0] == nombreMetodo and key[1] != 0:
+                    return key[1]
+        else:
+            return 0
+
+    def getNumberOfEDT(self,procTuple): #getNumberOfEnteroDecimalTexto
+        nEnteros = 0
+        nDecimales = 0
+        nTexto = 0
+        listaFrecuenciaObjetos = {}
+
+        for keys,values in self.tablaVariables.items():
+
+            if keys[1] == self.dirProcs[procTuple[0],procTuple[1]][0]: #si tienen el mismo id
+                tipoVariable = values
+                if tipoVariable == "entero":
+                    nEnteros = nEnteros + 1
+                elif tipoVariable == "decimal":
+                    nDecimales = nDecimales + 1
+                elif tipoVariable == "texto":
+                    nTexto = nTexto + 1
+                else:
+                    try:
+                        listaFrecuenciaObjetos[tipoVariable] = listaFrecuenciaObjetos[tipoVariable] + 1;
+                    except Exception, e:
+                        listaFrecuenciaObjetos[tipoVariable] = 1;    
+
+        return([nEnteros,nDecimales,nTexto,listaFrecuenciaObjetos])
+
+
 
     class ProgramaContext(ParserRuleContext):
 
@@ -767,18 +817,46 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 158
+            self.crearCuadruploMain()
             self.p1()
             self.state = 159
             self.p2()
             self.state = 160
             self.p3()
             self.state = 161
+            self.completarCuadruploMain()
             self.principal()
+            self.terminacionProc = 'end'
+            self.crearCuadruploTerminarProc()
+            
+            cuantos = 0
+            print("###################TablaVars###################")
+            for key,values in self.tablaVariables.items():
+                print(cuantos, " ", key, values)
+                cuantos = cuantos + 1
+            print("")        
+
+            cuantos = 0
+            print("###################DirProcs###################")
+            for key,values in self.dirProcs.items():
+                print(cuantos, " ", key, values)
+                cuantos = cuantos + 1
+            print("")
+
+            print("###################Cuadruplos###################")
 
             cuantos = 0
 
             while cuantos < len(self.quadruplos):
+                print(str(cuantos), " " , self.quadruplos[cuantos])
                 cuantos = cuantos + 1
+
+            print("")
+            print(self.pilaO)
+            print("")
+            print(self.pTipos)
+            print("")
+            print(self.pOper)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1043,12 +1121,9 @@ class coffParser ( Parser ):
             self.state = 185
             self.match(coffParser.BIZQ)
             self.state = 186
-
             self.pr2()
-
             self.state = 187
             self.match(coffParser.BDER)
-            print(self.getNumberOfEDT(["sasd", 4]))
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -2775,44 +2850,6 @@ class coffParser ( Parser ):
                 listener.exitLlamarfunmet(self)
 
 
-    def getNumberOfEDT(self,procTuple): #getNumberOfEnteroDecimalTexto
-        nEnteros = 0
-        nDecimales = 0
-        nTexto = 0
-        listaFrecuenciaObjetos = {}
-
-        
-
-        print(procTuple)
-
-        for keys,values in self.tablaVariables.items():
-
-            if keys[1] == self.dirProcs[procTuple[0],procTuple[1]][0]: #si tienen el mismo id
-                tipoVariable = values
-                if tipoVariable == "entero":
-                    nEnteros = nEnteros + 1
-                elif tipoVariable == "decimal":
-                    nDecimales = nDecimales + 1
-                elif tipoVariable == "texto":
-                    nTexto = nTexto + 1
-                else:
-                    try:
-                        listaFrecuenciaObjetos[tipoVariable] = listaFrecuenciaObjetos[tipoVariable] + 1;
-                    except Exception, e:
-                        listaFrecuenciaObjetos[tipoVariable] = 1;    
-                            
-
-
-
-
-       
-
-
-
-        return([nEnteros,nDecimales,nTexto,listaFrecuenciaObjetos])
-
-
-
 
     def llamarfunmet(self):
 
@@ -3749,8 +3786,6 @@ class coffParser ( Parser ):
                 listener.exitFuncion(self)
 
 
-
-
     def funcion(self):
 
         localctx = coffParser.FuncionContext(self, self._ctx, self.state)
@@ -3763,9 +3798,10 @@ class coffParser ( Parser ):
             self.fun1()
             self.state = 409
             ########################################
+            self.terminacionProc = 'endproc'
             self.scopeProcs = self.scopeProcs + 1
             self.idVariableActual = str(self.getCurrentToken().text)
-
+            self.idFuncionActual  = str(self.getCurrentToken().text)
             if self.metodoTof:
 
                 self.dirProcs[self.idVariableActual,self.claseScopeRef] = [self.scopeProcs,self.tipoVariableActual,[]]
@@ -3788,6 +3824,7 @@ class coffParser ( Parser ):
             self.match(coffParser.BIZQ)
             self.state = 412
             self.fun2()
+            self.crearCuadruploTerminarProc()
             self.state = 413
             self.match(coffParser.BDER)
         except RecognitionException as re:
@@ -3965,9 +4002,6 @@ class coffParser ( Parser ):
             if isinstance( listener, coffListener ):
                 listener.exitFun2(self)
 
-
-
-
     def fun2(self):
 
         localctx = coffParser.Fun2Context(self, self._ctx, self.state)
@@ -3976,6 +4010,12 @@ class coffParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 423
             self.fun23()
+
+            ###########Cuadruplo inicio de funcion###############
+            resultado = self.idDeMetodo(self.idFuncionActual)
+            self.dirProcs[self.idFuncionActual,resultado].append(len(self.quadruplos))
+            #####################################################
+            
             self.state = 424
             self.fun21()
             self.state = 425
@@ -4013,9 +4053,6 @@ class coffParser ( Parser ):
             if isinstance( listener, coffListener ):
                 listener.exitFun23(self)
 
-
-
-
     def fun23(self):
 
         localctx = coffParser.Fun23Context(self, self._ctx, self.state)
@@ -4026,7 +4063,7 @@ class coffParser ( Parser ):
             if token in [coffParser.ENTERO, coffParser.DECIMAL, coffParser.TEXTO, coffParser.ID]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 427
-                self.variables()
+                self.variables()                
                 self.state = 428
                 self.fun23()
 
@@ -4145,6 +4182,7 @@ class coffParser ( Parser ):
                 self.match(coffParser.RETORNA)
                 self.state = 440
                 self.expresion()
+                self.crearCuadruploRetornar()
                 self.state = 441
                 self.match(coffParser.PUNTOYCOMA)
 
@@ -5380,12 +5418,7 @@ class coffParser ( Parser ):
         def exitRule(self, listener):
             if isinstance( listener, coffListener ):
                 listener.exitCl1(self)
-
-
-
-
-
-        
+       
 
     def cl1(self):
 
@@ -5403,7 +5436,6 @@ class coffParser ( Parser ):
 
 
                 self.makeInheritance(self.claseIDRef,str(self.getCurrentToken().text))
-                
                 self.match(coffParser.ID)
 
             elif token in [coffParser.BIZQ]:

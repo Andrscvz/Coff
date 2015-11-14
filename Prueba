@@ -1,11 +1,14 @@
 
 clase coff{
 	atributos:
-		texto a = 0;
+		texto a;
 		entero b = 0;
 	metodos:
 		funcion vacio manuel(entero c, decimal &d){
-			
+
+			entero m;
+			coff k;
+
 			asigna d = -1.0 + 2 ;
 
 			imprimir(a);
@@ -40,8 +43,13 @@ funcion entero suma1(entero e, texto f){
 
 
 principal vacio inicio(){
+
 	entero j,asdasd,asdas,asdasdsa;
 
+
+
+	
+	coff p;
 
 	coff k;
 
@@ -57,4 +65,19 @@ principal vacio inicio(){
 
 	
 	
+
+		imprimir(j);
+		
+		si(j >= 1){
+			imprimir(j);
+		}
+	
+	}o{
+	
+		mientras(j == 0){
+			asigna j = 1;
+		}
+	
+	}
+
 }
