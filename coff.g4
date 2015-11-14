@@ -38,7 +38,11 @@ pr11 : tiposimple
 pr12 : VACIO
     ;
 
-pr2 : pr21 pr22
+pr2 : pr23 pr21 pr22
+    ;
+
+pr23 : variables pr23
+    |
     ;
 
 pr21 : estatuto pr21
@@ -93,7 +97,7 @@ valor : valordeclaracion
     | ID va1
     ;
 
-va1 : va4
+va1 : va3
     | PIZQ expresion va2 PDER
     | CIZQ CTEENT CDER
     | 
@@ -101,16 +105,12 @@ va1 : va4
 
 va2 : COMA expresion va2
     | 
+    ;    
+
+va3 : PUNTO ID va4
     ;
 
-va3 : va4
-    | 
-    ;       
-
-va4 : PUNTO ID va5
-    ;
-
-va5 : PIZQ expresion va2 PDER
+va4 : PIZQ expresion va2 PDER
     | 
     ;
 
@@ -214,7 +214,11 @@ fun11 : tipo
 fun12 : VACIO
     ;
 
-fun2 : fun21 fun22
+fun2 : fun23 fun21 fun22
+    ;
+
+fun23 : variables fun23
+    |
     ;
 
 fun21 : estatuto fun21
@@ -253,8 +257,7 @@ a2 : CIZQ expresion CDER
 mientras : MIENTRAS PIZQ expresion PDER bloquesimple
     ;
 
-estatuto : variables
-    | EJEC llamarfunmet
+estatuto : EJEC llamarfunmet
     | ASIGNA asignacion
     | mientras
     | si

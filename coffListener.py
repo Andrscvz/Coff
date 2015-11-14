@@ -85,6 +85,15 @@ class coffListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by coffParser#pr23.
+    def enterPr23(self, ctx):
+        pass
+
+    # Exit a parse tree produced by coffParser#pr23.
+    def exitPr23(self, ctx):
+        pass
+
+
     # Enter a parse tree produced by coffParser#pr21.
     def enterPr21(self, ctx):
         pass
@@ -226,15 +235,6 @@ class coffListener(ParseTreeListener):
 
     # Exit a parse tree produced by coffParser#va4.
     def exitVa4(self, ctx):
-        pass
-
-
-    # Enter a parse tree produced by coffParser#va5.
-    def enterVa5(self, ctx):
-        pass
-
-    # Exit a parse tree produced by coffParser#va5.
-    def exitVa5(self, ctx):
         pass
 
 
@@ -469,6 +469,15 @@ class coffListener(ParseTreeListener):
 
     # Exit a parse tree produced by coffParser#fun2.
     def exitFun2(self, ctx):
+        pass
+
+
+    # Enter a parse tree produced by coffParser#fun23.
+    def enterFun23(self, ctx):
+        pass
+
+    # Exit a parse tree produced by coffParser#fun23.
+    def exitFun23(self, ctx):
         pass
 
 
