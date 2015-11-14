@@ -327,6 +327,7 @@ class coffParser ( Parser ):
     
     tipoDeclaracion = None #Tipo de la delcaracion
 
+    terminacionProcs = None # para saber si estoy en principal o en una funcion
 
     pilaO = [] #Pila de operandos
 
@@ -627,6 +628,31 @@ class coffParser ( Parser ):
         cont = len(self.quadruplos)
         self.quadruplos[falso][3] = cont
 
+    def crearCuadruploMain(self):
+        self.quadruplos.append(['goto',None,None,None])
+
+    def completarCuadruploMain(self):
+        cont = len(self.quadruplos)
+        self.quadruplos[0][3] = cont
+
+    def crearCuadruploTerminarProc(self):
+        self.quadruplos.append([self.terminacionProc,None,None,None])
+
+
+    def crearCuadruploRetornar(self):
+        elemento = self.pilaO.pop()
+        tipoElemento = self.pTipos.pop()
+        self.quadruplos.append(['retornar',None,None,elemento])
+
+    def idDeMetodo(self,nombreMetodo):
+        if(self.metodoTof):
+            for key, values in self.dirProcs.items():
+                if key[0] == nombreMetodo and key[1] != 0:
+                    return key[1]
+        else:
+            return 0
+
+
     class ProgramaContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -670,18 +696,46 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 158
+            self.crearCuadruploMain()
             self.p1()
             self.state = 159
             self.p2()
             self.state = 160
             self.p3()
             self.state = 161
+            self.completarCuadruploMain()
             self.principal()
+            self.terminacionProc = 'end'
+            self.crearCuadruploTerminarProc()
+            
+            cuantos = 0
+            print("###################TablaVars###################")
+            for key,values in self.tablaVariables.items():
+                print(cuantos, " ", key, values)
+                cuantos = cuantos + 1
+            print("")        
+
+            cuantos = 0
+            print("###################DirProcs###################")
+            for key,values in self.dirProcs.items():
+                print(cuantos, " ", key, values)
+                cuantos = cuantos + 1
+            print("")
+
+            print("###################Cuadruplos###################")
 
             cuantos = 0
 
             while cuantos < len(self.quadruplos):
+                print(str(cuantos), " " , self.quadruplos[cuantos])
                 cuantos = cuantos + 1
+
+            print("")
+            print(self.pilaO)
+            print("")
+            print(self.pTipos)
+            print("")
+            print(self.pOper)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -2496,7 +2550,7 @@ class coffParser ( Parser ):
             self.state = 315
             ##########################################################
             self.idVariableActual = str(self.getCurrentToken().text)
-            self.listaParametros.append(self.idVariableActual)
+            self.listaParametros.append([self.idVariableActual,self.scopeProcs])
 
             
             self.dirProcs[self.parametrosAux[0], self.parametrosAux[1]][2] = self.listaParametros
@@ -3637,8 +3691,6 @@ class coffParser ( Parser ):
                 listener.exitFuncion(self)
 
 
-
-
     def funcion(self):
 
         localctx = coffParser.FuncionContext(self, self._ctx, self.state)
@@ -3651,9 +3703,10 @@ class coffParser ( Parser ):
             self.fun1()
             self.state = 409
             ########################################
+            self.terminacionProc = 'endproc'
             self.scopeProcs = self.scopeProcs + 1
             self.idVariableActual = str(self.getCurrentToken().text)
-
+            self.idFuncionActual  = str(self.getCurrentToken().text)
             if self.metodoTof:
 
                 self.dirProcs[self.idVariableActual,self.claseScopeRef] = [self.scopeProcs,self.tipoVariableActual,[]]
@@ -3676,6 +3729,7 @@ class coffParser ( Parser ):
             self.match(coffParser.BIZQ)
             self.state = 412
             self.fun2()
+            self.crearCuadruploTerminarProc()
             self.state = 413
             self.match(coffParser.BDER)
         except RecognitionException as re:
@@ -3853,9 +3907,6 @@ class coffParser ( Parser ):
             if isinstance( listener, coffListener ):
                 listener.exitFun2(self)
 
-
-
-
     def fun2(self):
 
         localctx = coffParser.Fun2Context(self, self._ctx, self.state)
@@ -3864,6 +3915,12 @@ class coffParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 423
             self.fun23()
+
+            ###########Cuadruplo inicio de funcion###############
+            resultado = self.idDeMetodo(self.idFuncionActual)
+            self.dirProcs[self.idFuncionActual,resultado].append(len(self.quadruplos))
+            #####################################################
+            
             self.state = 424
             self.fun21()
             self.state = 425
@@ -3901,9 +3958,6 @@ class coffParser ( Parser ):
             if isinstance( listener, coffListener ):
                 listener.exitFun23(self)
 
-
-
-
     def fun23(self):
 
         localctx = coffParser.Fun23Context(self, self._ctx, self.state)
@@ -3914,7 +3968,7 @@ class coffParser ( Parser ):
             if token in [coffParser.ENTERO, coffParser.DECIMAL, coffParser.TEXTO, coffParser.ID]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 427
-                self.variables()
+                self.variables()                
                 self.state = 428
                 self.fun23()
 
@@ -4033,6 +4087,7 @@ class coffParser ( Parser ):
                 self.match(coffParser.RETORNA)
                 self.state = 440
                 self.expresion()
+                self.crearCuadruploRetornar()
                 self.state = 441
                 self.match(coffParser.PUNTOYCOMA)
 
@@ -5301,9 +5356,9 @@ class coffParser ( Parser ):
 
     def makeInheritance(self,sonID,fatherID):
         self.dirProcs[sonID,0][2] = (self.dirProcs[fatherID,0][2]) 
-        print(self.dirProcs[sonID,0][3])
+        #print(self.dirProcs[sonID,0][3])
         self.dirProcs[sonID,0][3] = (self.dirProcs[fatherID,0][3]) 
-        print(self.dirProcs[sonID,0][3])
+        #print(self.dirProcs[sonID,0][3])
         
 
     def cl1(self):
@@ -5322,9 +5377,9 @@ class coffParser ( Parser ):
 
 
                 self.makeInheritance(self.claseIDRef,str(self.getCurrentToken().text))
-                print(self.claseIDRef)
-                print(self.dirProcs[self.claseIDRef,0][3])
-                print("////")
+                #print(self.claseIDRef)
+                #print(self.dirProcs[self.claseIDRef,0][3])
+                #print("////")
                 self.match(coffParser.ID)
 
             elif token in [coffParser.BIZQ]:
