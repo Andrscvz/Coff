@@ -5,7 +5,9 @@ clase coff{
 		entero b = 0;
 	metodos:
 		funcion vacio manuel(entero c, decimal &d){
+			
 			asigna d = -1.0 + 2 ;
+
 			imprimir(a);
 		}
 		
@@ -19,6 +21,11 @@ clase ss extiende coff{
 		texto hhh = 0;
 		entero ccc = 0;
 	metodos:
+		funcion vacio sasd(entero c, decimal &d){
+			coff k,q,w,e,t;
+			ss m,s;
+		}
+
 }
 
 entero h[20] = [0,1,2];
@@ -33,9 +40,11 @@ funcion entero suma1(entero e, texto f){
 
 
 principal vacio inicio(){
-	entero j = 0;
+	entero j,asdasd,asdas,asdasdsa;
+
+
 	coff k;
-	
+
 	
 	ejec suma1(j,j);
 	
@@ -46,24 +55,6 @@ principal vacio inicio(){
 	asigna j = j; 
 
 
-	ejec k.manuel(1,2); 
 	
-	asigna j = j * (1 + 2 - 3 * 4);
 	
-	si(j <= 1 && 1 + (1*j)){
-	
-		imprimir(a[0]);
-		
-		si(j >= 1){
-			imprimir(j);
-		}
-	
-	}o{
-	
-		mientras(j == 0){
-			asigna j = 1;
-		}
-	
-	}
-
 }

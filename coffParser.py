@@ -627,6 +627,103 @@ class coffParser ( Parser ):
         cont = len(self.quadruplos)
         self.quadruplos[falso][3] = cont
 
+    def checkIfVariableExists(self):
+        if (self.idVariableActual, self.scopeProcs)  not in self.tablaVariables:
+            if (self.idVariableActual, 0)  not in self.tablaVariables:
+                print("Error, la variable "+self.idVariableActual+" no ha sido declarada")
+                sys.exit()
+            else:
+                return self.tablaVariables[self.idVariableActual, 0]
+        else:
+            return self.tablaVariables[self.idVariableActual,self.scopeProcs]
+
+    def checkIfCountParametersMatch(self):
+        
+        if self.nComas == 0 and self.nComasAux == 1: #nComasAux te dice si hay al menos un parametro
+            self.nComas = 1
+        elif self.nComasAux == 1: 
+            self.nComas = self.nComas + 1
+        if self.funcionOmetodo == 1: #funcion
+           if self.nComas != len(self.dirProcs[self.idFuncionActual,0][2]):
+                print("Error, el numero de parametros de la llamada en "+self.idFuncionActual+" no coincide con la definicion de la funcion "+self.idFuncionActual)
+                sys.exit()
+                return 
+        elif self.funcionOmetodo == 2: #metodo
+            if self.nComas != len(self.dirProcs[self.idFuncionActual,self.dirProcs[self.tablaVariables[self.ejecToken,self.scopeProcs],0][0]][2]):
+                print("Error, el numero de parametros de la llamada en "+self.idVariableActual+" no coincide con la definicion de la funcion "+self.idFuncionActual)
+                sys.exit()
+                return
+
+
+    def lookForMethodClass(self): 
+        instanciaID = self.ejecToken
+        metodoID = self.tokenActual
+        tipoObjeto = self.tablaVariables[instanciaID,self.scopeProcs] #contiene el tipo del objeto
+        claseID = self.dirProcs[tipoObjeto,0][0] #contiene el id de la clase
+        if(metodoID, claseID) not in self.dirProcs: #tokenActual contiene el nombre del metodo
+            print("Error, el metodo "+metodoID+" no es compatible con la clase de "+instanciaID)
+            sys.exit()
+
+
+    def checkIfGlobalFunctionOrClassExists(self,fgcID):
+        if (fgcID, 0) not in self.dirProcs:
+                print("Error, la funcion global o clase "+fgcID+" no ha sido declarada")
+                sys.exit()
+                return
+
+
+        self.nComasAux = 0
+        self.nComas = 0
+        self.nComasAux2 = 0
+        self.funcionOmetodo = 0
+
+    def checkIfAttributeBelongs(self):
+        #idVariableActual contiene el atributo
+        #ejecToken contiene el id de la instancia de la clase
+        
+
+
+        tipoAtributo = self.tablaVariables[self.ejecToken,self.scopeProcs]
+        
+        try:
+            self.checkifAttributeBelongsClassID = self.dirProcs[tipoAtributo, 0][0] 
+        except KeyError:
+            print ("Error, "+self.ejecToken+" es una variable simple")
+            sys.exit()
+            return
+
+       
+        
+
+        if (self.idVariableActual, self.checkifAttributeBelongsClassID)  not in self.tablaVariables:
+                print("Error, el atributo "+self.idVariableActual+" no pertenece a la clase "+self.ejecToken)
+                sys.exit()
+                return
+
+    def checkForAttributeCollisionsInheritance(self,sonAttribute, fatherAttributes):
+        for fatherAttribute in fatherAttributes:
+            if sonAttribute[0] == fatherAttribute[0]:
+                print("Error, atributo "+ sonAttribute[0]+" repetido")
+                sys.exit()
+                return
+
+    def makeInheritance(self,sonID,fatherID):
+        if sonID == fatherID:
+            print("Error, la clase "+sonID+" esta heredando a si misma")
+            sys.error()
+            return
+        self.dirProcs[sonID,0][2] = (self.dirProcs[fatherID,0][2]) 
+        self.dirProcs[sonID,0][3] = (self.dirProcs[fatherID,0][3]) 
+
+    def checkForMethodCollisionsInheritance(self,sonMethod, fatherMethods):
+
+        for fatherMethod in fatherMethods:
+            if sonMethod[0] == fatherMethod[0]:
+                print("Error, metodo "+ sonMethod[0]+" repetido")
+                sys.exit()
+                return
+
+
     class ProgramaContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -934,12 +1031,7 @@ class coffParser ( Parser ):
 
             self.scopeProcs = self.scopeProcs + 1
             self.dirProcs[self.idVariableActual,0] = [self.scopeProcs,self.tipoVariableActual]
-            #print("")
-            #print("dirProcs")
-            #for keys,values in self.dirProcs.items():
-            #    print(str(keys))
-            #    print(str(values))
-            #print("")
+
 
 
 
@@ -951,9 +1043,12 @@ class coffParser ( Parser ):
             self.state = 185
             self.match(coffParser.BIZQ)
             self.state = 186
+
             self.pr2()
+
             self.state = 187
             self.match(coffParser.BDER)
+            print(self.getNumberOfEDT(["sasd", 4]))
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1944,6 +2039,18 @@ class coffParser ( Parser ):
         try:
             self.state = 270
             token = self._input.LA(1)
+
+
+            #print("")
+            #print("dirProcs")
+            #for keys,values in self.dirProcs.items():
+            #    
+            #        print(str(keys))
+            #        print(str(values))
+            #print("")
+
+            
+
             if token in [coffParser.CTEENT, coffParser.CTEDEC, coffParser.CTETEXTO]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 267
@@ -1956,6 +2063,11 @@ class coffParser ( Parser ):
                 
                 self.enterOuterAlt(localctx, 2)
                 self.state = 268
+
+
+
+
+
                 if self.tofFactor:
                     self.insertarValorTipo(-1,'entero')
                     
@@ -1973,7 +2085,7 @@ class coffParser ( Parser ):
                     self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,0])
                 #No se encontro y marcar error
                 else: 
-                    print("Error, la variable "+self.ejecToken+" no ha sido declarada")
+                    print("Error, la variable "+self.ejecToken+" no ha sido declarada")################
                     sys.exit()
                     return
 
@@ -2496,7 +2608,7 @@ class coffParser ( Parser ):
             self.state = 315
             ##########################################################
             self.idVariableActual = str(self.getCurrentToken().text)
-            self.listaParametros.append(self.idVariableActual)
+            self.listaParametros.append([self.idVariableActual,self.scopeProcs])
 
             
             self.dirProcs[self.parametrosAux[0], self.parametrosAux[1]][2] = self.listaParametros
@@ -2663,30 +2775,44 @@ class coffParser ( Parser ):
                 listener.exitLlamarfunmet(self)
 
 
+    def getNumberOfEDT(self,procTuple): #getNumberOfEnteroDecimalTexto
+        nEnteros = 0
+        nDecimales = 0
+        nTexto = 0
+        listaFrecuenciaObjetos = {}
 
-
-    def checkIfCountParametersMatch(self):
         
-        if self.nComas == 0 and self.nComasAux == 1: #nComasAux te dice si hay al menos un parametro
-            self.nComas = 1
-        elif self.nComasAux == 1: 
-            self.nComas = self.nComas + 1
-        if self.funcionOmetodo == 1: #funcion
-           if self.nComas != len(self.dirProcs[self.idFuncionActual,0][2]):
-                print("Error, el numero de parametros de la llamada en "+self.idFuncionActual+" no coincide con la definicion de la funcion "+self.idFuncionActual)
-                sys.exit()
-                return 
-        elif self.funcionOmetodo == 2: #metodo
-            if self.nComas != len(self.dirProcs[self.idFuncionActual,self.dirProcs[self.tablaVariables[self.ejecToken,self.scopeProcs],0][0]][2]):
-                print("Error, el numero de parametros de la llamada en "+self.idVariableActual+" no coincide con la definicion de la funcion "+self.idFuncionActual)
-                sys.exit()
-                return
-            
 
-        self.nComasAux = 0
-        self.nComas = 0
-        self.nComasAux2 = 0
-        self.funcionOmetodo = 0
+        print(procTuple)
+
+        for keys,values in self.tablaVariables.items():
+
+            if keys[1] == self.dirProcs[procTuple[0],procTuple[1]][0]: #si tienen el mismo id
+                tipoVariable = values
+                if tipoVariable == "entero":
+                    nEnteros = nEnteros + 1
+                elif tipoVariable == "decimal":
+                    nDecimales = nDecimales + 1
+                elif tipoVariable == "texto":
+                    nTexto = nTexto + 1
+                else:
+                    try:
+                        listaFrecuenciaObjetos[tipoVariable] = listaFrecuenciaObjetos[tipoVariable] + 1;
+                    except Exception, e:
+                        listaFrecuenciaObjetos[tipoVariable] = 1;    
+                            
+
+
+
+
+       
+
+
+
+        return([nEnteros,nDecimales,nTexto,listaFrecuenciaObjetos])
+
+
+
 
     def llamarfunmet(self):
 
@@ -2749,21 +2875,7 @@ class coffParser ( Parser ):
                 listener.exitLl1(self)
 
 
-    def lookForMethodClass(self): 
-        instanciaID = self.ejecToken
-        metodoID = self.tokenActual
-        tipoObjeto = self.tablaVariables[instanciaID,self.scopeProcs] #contiene el tipo del objeto
-        claseID = self.dirProcs[tipoObjeto,0][0] #contiene el id de la clase
-        if(metodoID, claseID) not in self.dirProcs: #tokenActual contiene el nombre del metodo
-            print("Error, el metodo "+metodoID+" no es compatible con la clase de "+instanciaID)
-            sys.exit()
 
-
-    def checkIfGlobalFunctionOrClassExists(self,fgcID):
-        if (fgcID, 0) not in self.dirProcs:
-                print("Error, la funcion global o clase "+fgcID+" no ha sido declarada")
-                sys.exit()
-                return
 
     def ll1(self):
 
@@ -4303,15 +4415,6 @@ class coffParser ( Parser ):
             if isinstance( listener, coffListener ):
                 listener.exitAsignacion(self)
 
-    def checkIfVariableExists(self):
-        if (self.idVariableActual, self.scopeProcs)  not in self.tablaVariables:
-            if (self.idVariableActual, 0)  not in self.tablaVariables:
-                print("Error, la variable "+self.idVariableActual+" no ha sido declarada")
-                sys.exit()
-            else:
-                return self.tablaVariables[self.idVariableActual, 0]
-        else:
-            return self.tablaVariables[self.idVariableActual,self.scopeProcs]
 
 
 
@@ -4332,6 +4435,7 @@ class coffParser ( Parser ):
 
 
 
+
             #Cuadruplo de asignacion
             self.insertarValorTipo(self.idVariableActual,tipoVar)
             self.match(coffParser.ID)
@@ -4344,7 +4448,7 @@ class coffParser ( Parser ):
             self.insertarOperador('=')
             self.state = 470
             self.expresion()
-            self.checkIfCountParametersMatch()
+            #self.checkIfCountParametersMatch()
             self.state = 471
             self.match(coffParser.PUNTOYCOMA)
             self.crearCuadruploExpAsig(4,'asignacion')
@@ -4380,28 +4484,7 @@ class coffParser ( Parser ):
                 listener.exitA1(self)
 
 
-    def checkIfAttributeBelongs(self):
-        #idVariableActual contiene el atributo
-        #ejecToken contiene el id de la instancia de la clase
-        
 
-
-        tipoAtributo = self.tablaVariables[self.ejecToken,self.scopeProcs]
-        
-        try:
-            self.checkifAttributeBelongsClassID = self.dirProcs[tipoAtributo, 0][0] 
-        except KeyError:
-            print ("Error, "+self.ejecToken+" es una variable simple")
-            sys.exit()
-            return
-
-       
-        
-
-        if (self.idVariableActual, self.checkifAttributeBelongsClassID)  not in self.tablaVariables:
-                print("Error, el atributo "+self.idVariableActual+" no pertenece a la clase "+self.ejecToken)
-                sys.exit()
-                return
 
 
     def a1(self):
@@ -5299,11 +5382,9 @@ class coffParser ( Parser ):
                 listener.exitCl1(self)
 
 
-    def makeInheritance(self,sonID,fatherID):
-        self.dirProcs[sonID,0][2] = (self.dirProcs[fatherID,0][2]) 
-        print(self.dirProcs[sonID,0][3])
-        self.dirProcs[sonID,0][3] = (self.dirProcs[fatherID,0][3]) 
-        print(self.dirProcs[sonID,0][3])
+
+
+
         
 
     def cl1(self):
@@ -5322,9 +5403,7 @@ class coffParser ( Parser ):
 
 
                 self.makeInheritance(self.claseIDRef,str(self.getCurrentToken().text))
-                print(self.claseIDRef)
-                print(self.dirProcs[self.claseIDRef,0][3])
-                print("////")
+                
                 self.match(coffParser.ID)
 
             elif token in [coffParser.BIZQ]:
@@ -5426,12 +5505,7 @@ class coffParser ( Parser ):
                 listener.exitAtributos(self)
 
 
-    def checkForAttributeCollisionsInheritance(self,sonAttribute, fatherAttributes):
-        for fatherAttribute in fatherAttributes:
-            if sonAttribute[0] == fatherAttribute[0]:
-                print("Error, atributo "+ sonAttribute[0]+" repetido")
-                sys.exit()
-                return
+
 
     def atributos(self):
 
@@ -5550,13 +5624,7 @@ class coffParser ( Parser ):
 
 
 
-    def checkForMethodCollisionsInheritance(self,sonMethod, fatherMethods):
 
-        for fatherMethod in fatherMethods:
-            if sonMethod[0] == fatherMethod[0]:
-                print("Error, metodo "+ sonMethod[0]+" repetido")
-                sys.exit()
-                return
 
 
 
@@ -5578,7 +5646,6 @@ class coffParser ( Parser ):
 
 
             for metodo in self.metodosClase:
-               
                self.dirProcs[self.claseIDRef,0][3] = copy.copy(self.dirProcs[self.claseIDRef,0][3])
                self.checkForMethodCollisionsInheritance(metodo,self.dirProcs[self.claseIDRef,0][3])
                self.dirProcs[self.claseIDRef,0][3].append(metodo)
@@ -5586,7 +5653,7 @@ class coffParser ( Parser ):
 
 
 
-            self.dirProcs[self.claseIDRef,0][3] = self.metodosClase
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
