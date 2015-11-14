@@ -1,7 +1,7 @@
 # Generated from java-escape by ANTLR 4.5
 # encoding: utf-8
 from __future__ import print_function
-import sys
+import sys, copy
 from antlr4 import *
 from cuboSemantico import *
 from io import StringIO
@@ -2144,6 +2144,7 @@ class coffParser ( Parser ):
             if token in [coffParser.COMA]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 284
+                self.nComas = self.nComas + 1
                 self.match(coffParser.COMA)
                 self.state = 285
                 self.expresion()
@@ -2259,6 +2260,8 @@ class coffParser ( Parser ):
             self.state = 301
             token = self._input.LA(1)
             if token in [coffParser.PIZQ]:
+                
+                self.nComasAux2 = 1
                 self.enterOuterAlt(localctx, 1)
                 self.state = 295
                 self.idFuncionActual = self.tokenActual
@@ -2760,6 +2763,7 @@ class coffParser ( Parser ):
         if (fgcID, 0) not in self.dirProcs:
                 print("Error, la funcion global o clase "+fgcID+" no ha sido declarada")
                 sys.exit()
+                return
 
     def ll1(self):
 
@@ -3021,7 +3025,6 @@ class coffParser ( Parser ):
                 self.enterOuterAlt(localctx, 1)
                 self.state = 355
                 self.insertarOperador('||')
-                self.match(coffParser.CONDICIONO)
                 self.match(coffParser.CONDICIONO)
                 self.state = 356
                 self.expresion()
@@ -4413,6 +4416,7 @@ class coffParser ( Parser ):
                 self.state = 473
                 self.match(coffParser.PUNTO)
                 self.state = 474
+                self.idVariableActual = str(self.getCurrentToken().text)
                 self.checkIfAttributeBelongs()
                 self.match(coffParser.ID)
 
@@ -5297,7 +5301,10 @@ class coffParser ( Parser ):
 
     def makeInheritance(self,sonID,fatherID):
         self.dirProcs[sonID,0][2] = (self.dirProcs[fatherID,0][2]) 
+        print(self.dirProcs[sonID,0][3])
         self.dirProcs[sonID,0][3] = (self.dirProcs[fatherID,0][3]) 
+        print(self.dirProcs[sonID,0][3])
+        
 
     def cl1(self):
 
@@ -5315,6 +5322,9 @@ class coffParser ( Parser ):
 
 
                 self.makeInheritance(self.claseIDRef,str(self.getCurrentToken().text))
+                print(self.claseIDRef)
+                print(self.dirProcs[self.claseIDRef,0][3])
+                print("////")
                 self.match(coffParser.ID)
 
             elif token in [coffParser.BIZQ]:
@@ -5416,7 +5426,12 @@ class coffParser ( Parser ):
                 listener.exitAtributos(self)
 
 
-
+    def checkForAttributeCollisionsInheritance(self,sonAttribute, fatherAttributes):
+        for fatherAttribute in fatherAttributes:
+            if sonAttribute[0] == fatherAttribute[0]:
+                print("Error, atributo "+ sonAttribute[0]+" repetido")
+                sys.exit()
+                return
 
     def atributos(self):
 
@@ -5435,23 +5450,10 @@ class coffParser ( Parser ):
 
 
             
-            #print(self.atributosClase)
-            print("####1####")
-            print(self.dirProcs["coff",0])
-
-            #print("/////////")
-
-            for atributo in self.atributosClase:
-                print (hex(id(self.dirProcs[self.claseIDRef,0][2])))
+            for atributo in self.atributosClase: 
+                self.dirProcs[self.claseIDRef,0][2] = copy.copy(self.dirProcs[self.claseIDRef,0][2])
+                self.checkForAttributeCollisionsInheritance(atributo,self.dirProcs[self.claseIDRef,0][2])
                 self.dirProcs[self.claseIDRef,0][2].append(atributo)
-                print (hex(id(self.dirProcs[self.claseIDRef,0][2])))
-           
-            print(self.dirProcs["coff",0])
-
-
-
-
-            #####
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -5548,6 +5550,16 @@ class coffParser ( Parser ):
 
 
 
+    def checkForMethodCollisionsInheritance(self,sonMethod, fatherMethods):
+
+        for fatherMethod in fatherMethods:
+            if sonMethod[0] == fatherMethod[0]:
+                print("Error, metodo "+ sonMethod[0]+" repetido")
+                sys.exit()
+                return
+
+
+
 
     def metodos(self):
 
@@ -5562,6 +5574,18 @@ class coffParser ( Parser ):
             self.state = 584
             self.metodosClase = []
             self.met1()
+            
+
+
+            for metodo in self.metodosClase:
+               
+               self.dirProcs[self.claseIDRef,0][3] = copy.copy(self.dirProcs[self.claseIDRef,0][3])
+               self.checkForMethodCollisionsInheritance(metodo,self.dirProcs[self.claseIDRef,0][3])
+               self.dirProcs[self.claseIDRef,0][3].append(metodo)
+            #print(self.dirProcs[self.claseIDRef,0][3])
+
+
+
             self.dirProcs[self.claseIDRef,0][3] = self.metodosClase
         except RecognitionException as re:
             localctx.exception = re
