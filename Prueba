@@ -3,11 +3,11 @@ clase coff{
 		texto a;
 		entero b = 0;
 	metodos:
-		funcion vacio manuel(entero c, decimal &d){
+		funcion entero manuel(entero c, decimal &d){
 			entero m;
 			coff k;
 			imprimir(a);
-
+			retorna 1;
 		}
 		
 		funcion vacio andres(){
@@ -44,8 +44,8 @@ principal vacio inicio(){
 
 	coff p,k;
 
-	ejec b.manuel(1,1.0);
-	ejec suma1(j,qq);
+	asigna j = p.manuel(1,1.0);
+
 
 	leer(j);
 	
