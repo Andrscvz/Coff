@@ -563,10 +563,11 @@ class coffParser ( Parser ):
                             elif tipoCuadruplo == 'asignacion':
                                 self.quadruplos.append([oper,oDer,None,oIzq])
                         else:
-                            print ("tipo: " + oIzqTipo + " " + oIzq)
-                            print("tipo: " + oDerTipo + " " + oDer)
-                            print("operador " + oper)
+                            #print ("tipo: " + oIzqTipo + " " + oIzq)
+                            #print("tipo: " + oDerTipo + " " + oDer)
+                            #print("operador " + oper)
                             print ("Error semantico en la linea:" + str(self.getCurrentToken().line) + " Tipos de operandos no compatibles" )
+                            sys.exit()
                             self._syntaxErrors = self._syntaxErrors + 1
                             return
                     else:
@@ -1702,6 +1703,7 @@ class coffParser ( Parser ):
                 else:
                     self.tablaVariables[self.idVariableActual,self.scopeProcs] = self.tipoVariableActual
 
+            self.insertarValorTipo(self.idVariableActual,self.tipoVariableActual)
            
             ########################################################
             self.match(coffParser.ID)
@@ -1784,9 +1786,12 @@ class coffParser ( Parser ):
             elif token in [coffParser.IGUAL]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 233
+                self.insertarOperador("=")
                 self.match(coffParser.IGUAL)
                 self.state = 234
                 self.valordeclaracion()
+                self.insertarValorTipo(self.valorDeclaracion,self.tipoDeclaracion)
+                self.crearCuadruploExpAsig(4,"asignacion")
                 self.state = 235
                 self.v6()
 

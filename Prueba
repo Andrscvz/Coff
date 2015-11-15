@@ -6,7 +6,7 @@ clase coff{
 	metodos:
 		funcion vacio manuel(entero c, decimal &d){
 
-			entero m;
+			entero m = 1;
 			coff k;
 
 			asigna d = -1.0 + 2 ;
@@ -21,7 +21,7 @@ clase coff{
 
 clase ss extiende coff{
 	atributos:
-		texto hhh = 0;
+		texto hhh = "a";
 		entero ccc = 0;
 	metodos:
 		funcion vacio sasd(entero c, decimal &d){
