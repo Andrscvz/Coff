@@ -1,17 +1,13 @@
-
 clase coff{
 	atributos:
 		texto a;
 		entero b = 0;
 	metodos:
 		funcion vacio manuel(entero c, decimal &d){
-
 			entero m;
 			coff k;
-
-			asigna d = -1.0 + 2 ;
-
 			imprimir(a);
+
 		}
 		
 		funcion vacio andres(){
@@ -21,12 +17,12 @@ clase coff{
 
 clase ss extiende coff{
 	atributos:
-		texto hhh = 0;
+		texto hhh = "j";
 		entero ccc = 0;
 	metodos:
-		funcion vacio sasd(entero c, decimal &d){
-			coff k,q,w,e,t;
-			ss m,s;
+		funcion entero sasd(entero c, decimal &d){
+			
+			retorna 1;
 		}
 
 }
@@ -34,27 +30,27 @@ clase ss extiende coff{
 entero h[20] = [0,1,2];
 texto i[10] = ["a","b"];
 
-funcion entero suma1(entero e, texto f){
+funcion vacio suma1(entero e, entero aaa){
 	decimal g = 0.0;
-	ejec suma1(e, e);
+
 	asigna e = e + 1;
-	retorna e;
+
 } 
 
 
 principal vacio inicio(){
 
-	entero j,asdasd,asdas,asdasdsa;
+	entero j,qq,asdas,asdasdsa;
 
 
 
-	
 	coff p;
 
 	coff k;
 
-	
-	ejec suma1(j,j);
+	asigna asdasdasdasd = p.asdasd(j);
+
+
 	
 
 	leer(j);
@@ -72,7 +68,7 @@ principal vacio inicio(){
 			imprimir(j);
 		}
 	
-	}o{
+	o{
 	
 		mientras(j == 0){
 			asigna j = 1;
