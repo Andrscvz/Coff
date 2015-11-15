@@ -17,6 +17,7 @@ clase coff{
 
 clase ss extiende coff{
 	atributos:
+
 		texto hhh = "j";
 		entero ccc = 0;
 	metodos:
@@ -33,6 +34,10 @@ texto i[10] = ["a","b"];
 funcion vacio suma1(entero e, entero aaa){
 	decimal g = 0.0;
 
+
+
+	ejec suma1(e, e);
+
 	asigna e = e + 1;
 
 } 
@@ -42,34 +47,23 @@ principal vacio inicio(){
 
 	entero j,qq,asdas,asdasdsa;
 
+	coff p,k;
 
+	asigna j = p.manuel(j,1.0);
 
-	coff p;
-
-	coff k;
-
-	asigna asdasdasdasd = p.asdasd(j);
-
-
-	
+	ejec k.manuel(1,1.0);
+	ejec suma1(j,i);
 
 	leer(j);
 	
-
 	asigna j = j; 
 
-
-	
-	
-
-		imprimir(j);
+	imprimir(j);
 		
-		si(j >= 1){
+	si(j >= 1){
 			imprimir(j);
-		}
-	
-	o{
-	
+
+	}o{
 		mientras(j == 0){
 			asigna j = 1;
 		}
