@@ -341,6 +341,10 @@ class coffParser ( Parser ):
 
     contQuadTemporales = 1 #Para variables temporales
 
+    contadorParametro = 0 #Para las validaciones de parametros en la llamada de funcion
+
+    llamarfunmetTof = 0 #Para saber si se llamo un metodo o una funcion
+
     quadOperadores = [['*','/'],['+','-'],['==','!=','>','>=','<','<='],['&&','||'],['=']]
 
     tofFactor = 0
@@ -655,6 +659,11 @@ class coffParser ( Parser ):
                 sys.exit()
                 return
 
+        self.nComasAux = 0
+        self.nComas = 0
+        self.nComasAux2 = 0
+        self.funcionOmetodo = 0
+
 
     def lookForMethodClass(self): 
         instanciaID = self.ejecToken
@@ -672,17 +681,9 @@ class coffParser ( Parser ):
                 sys.exit()
                 return
 
-
-        self.nComasAux = 0
-        self.nComas = 0
-        self.nComasAux2 = 0
-        self.funcionOmetodo = 0
-
     def checkIfAttributeBelongs(self):
         #idVariableActual contiene el atributo
         #ejecToken contiene el id de la instancia de la clase
-        
-
 
         tipoAtributo = self.tablaVariables[self.ejecToken,self.scopeProcs]
         
@@ -693,8 +694,6 @@ class coffParser ( Parser ):
             sys.exit()
             return
 
-       
-        
 
         if (self.idVariableActual, self.checkifAttributeBelongsClassID)  not in self.tablaVariables:
                 print("Error, el atributo "+self.idVariableActual+" no pertenece a la clase "+self.ejecToken)
@@ -771,6 +770,63 @@ class coffParser ( Parser ):
                         listaFrecuenciaObjetos[tipoVariable] = 1;    
 
         return([nEnteros,nDecimales,nTexto,listaFrecuenciaObjetos])
+
+    def obtenerClaseDeUnaFuncionEra(self, nombreVariable, nombreFuncion):
+        if nombreVariable == None:
+            return None
+        aux = self.tablaVariables[nombreVariable,self.scopeProcs]
+        return aux
+
+    def crearCuadruploEra(self, nombreVariable, nombreFuncion):
+        clase = self.obtenerClaseDeUnaFuncionEra(nombreVariable, nombreFuncion)
+        self.quadruplos.append(['era',None,clase,nombreFuncion])
+
+    
+    def checaTipoExpresionConParametro(self,nombreVariable,nombreFuncion):
+        tipoExpresion = self.pTipos[len(self.pTipos)-1]
+        
+        if nombreVariable == None:
+            var = self.dirProcs[nombreFuncion,0][2][self.contadorParametro][0]
+            scope = self.dirProcs[nombreFuncion,0][2][self.contadorParametro][1]
+        else:
+            clase = self.obtenerClaseDeUnaFuncionEra(nombreVariable,nombreFuncion)
+            idClasePadre = self.dirProcs[clase,0][0]
+            var = self.dirProcs[nombreFuncion,idClasePadre][2][self.contadorParametro][0]
+            scope = self.dirProcs[nombreFuncion,idClasePadre][2][self.contadorParametro][1]
+        
+        #print(var," - ",scope)
+
+        tipoParametro = self.tablaVariables[var,scope]
+
+        #print(tipoExpresion, " : ", tipoParametro)
+
+        if tipoExpresion == tipoParametro:
+            self.contadorParametro = self.contadorParametro + 1
+        else:
+            print("Error en la linea " + str(self.getCurrentToken().line) +", tipos no coinciden con la funcion o metodo")
+            sys.exit()
+            return
+        
+
+
+    def guardarCuadruploParam(self, referencia, numParam):
+        elementoLlamada = self.pilaO[len(self.pilaO) - 1]
+        tipoElementoLlamada = self.pTipos[len(self.pTipos) - 1]
+        elemParametro = self.obtenerTipoDireccionParametro(self.stackParametros[len(self.stackParametros) - 1], numParam)
+        dirParametro = self.obtenerDireccionParametro(elemParametro)
+        
+        tipoElementoLlamada = tipoElementoLlamada.split(',')
+        if len(tipoElementoLlamada) == 1:
+            self.stackCuadruploParam.append(['PARAM',referencia,dirParametro,elementoLlamada])
+        else:
+            tamanioLlamada = int(tipoElementoLlamada[2])
+            self.stackContArgumLlamadaFunc[len(self.stackContArgumLlamadaFunc)-1] = self.stackContArgumLlamadaFunc[len(self.stackContArgumLlamadaFunc)-1] + tamanioLlamada - 1
+            while tamanioLlamada > 0:
+                self.stackCuadruploParam.append(['PARAM',referencia,dirParametro,elementoLlamada])
+                dirParametro = dirParametro + 1
+                elementoLlamada = elementoLlamada + 1
+                tamanioLlamada = tamanioLlamada - 1
+
 
 
 
@@ -2856,18 +2912,15 @@ class coffParser ( Parser ):
         localctx = coffParser.LlamarfunmetContext(self, self._ctx, self.state)
         self.enterRule(localctx, 64, self.RULE_llamarfunmet)
         try:
-            self.ejecToken = str(self.getCurrentToken().text)
             self.enterOuterAlt(localctx, 1)
             self.state = 327
+            
+            self.contadorParametro = 0;
+            self.llamarfunmetTof = 0;
+            self.ejecToken = str(self.getCurrentToken().text)
             self.idFuncionActual = str(self.getCurrentToken().text)
             self.nComasAux2 = 1
-            #########################################
 
-            #if not((self.idVariableActual, True)  in self.dirProcs or (self.idVariableActual, False)  in self.dirProcs):
-            #    print(self.scopeProcs)
-            #    print("Error, la variable "+self.idVariableActual+" no ha sido declarada")
-            #    sys.exit()
-            #    return
             self.match(coffParser.ID)
             self.state = 328
             self.ll1()
@@ -2921,37 +2974,38 @@ class coffParser ( Parser ):
         try:
             self.state = 337
             self.tokenActual = str(self.getCurrentToken().text)
-           
 
-
-
-
-            if self.tokenActual == '(':
-                self.funcionOmetodo = 1
-                self.checkIfGlobalFunctionOrClassExists(self.ejecToken)
-            elif self.tokenActual == '.': 
-                self.funcionOmetodo = 2
-                self.idVariableActual = self.ejecToken
-                self.checkIfVariableExists()
-                #if (self.ejecToken, self.scopeProcs)  not in self.tablaVariables:
-                #    print("Error, la variable "+self.ejecToken+" no ha sido declarada")
-                #    sys.exit()
             token = self._input.LA(1)
             if token in [coffParser.PUNTO]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 334
                 self.match(coffParser.PUNTO)
                 self.state = 335
+
                 #######################
+                self.llamarfunmetTof = 1
+                self.funcionOmetodo = 2
+                self.idVariableActual = self.ejecToken
+                self.checkIfVariableExists()
+
                 self.tokenActual = str(self.getCurrentToken().text)
                 self.idFuncionActual = str(self.getCurrentToken().text)
                 self.lookForMethodClass()
-                ##############
+
+                self.crearCuadruploEra(self.ejecToken,self.idFuncionActual)
+
+                #######################
+
                 self.match(coffParser.ID)
 
             elif token in [coffParser.PIZQ]:
                 self.enterOuterAlt(localctx, 2)
 
+                #######################
+                self.funcionOmetodo = 1
+                self.checkIfGlobalFunctionOrClassExists(self.ejecToken)
+                self.crearCuadruploEra(None,self.ejecToken)
+                #######################
 
             else:
                 raise NoViableAltException(self)
@@ -3003,6 +3057,12 @@ class coffParser ( Parser ):
                 self.enterOuterAlt(localctx, 1)
                 self.state = 339
                 self.expresion()
+                
+                if self.llamarfunmetTof:
+                    self.checaTipoExpresionConParametro(self.ejecToken,self.idFuncionActual)
+                else:
+                    self.checaTipoExpresionConParametro(None,self.idFuncionActual)
+                
                 self.state = 340
                 self.ll3()
 
@@ -3066,6 +3126,12 @@ class coffParser ( Parser ):
                 self.match(coffParser.COMA)
                 self.state = 346
                 self.expresion()
+
+                if self.llamarfunmetTof:
+                    self.checaTipoExpresionConParametro(self.ejecToken,self.idFuncionActual)
+                else:
+                    self.checaTipoExpresionConParametro(None,self.idFuncionActual)
+
                 self.state = 347
                 self.ll3()
 

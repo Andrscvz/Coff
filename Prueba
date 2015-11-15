@@ -36,7 +36,7 @@ texto i[10] = ["a","b"];
 
 funcion entero suma1(entero e, texto f){
 	decimal g = 0.0;
-	ejec suma1(e, e);
+	ejec suma1(e, f);
 	asigna e = e + 1;
 	retorna e;
 } 
@@ -53,9 +53,8 @@ principal vacio inicio(){
 
 	coff k;
 
-	
-	ejec suma1(j,j);
-	
+	ejec k.manuel(1,1.0);
+	ejec suma1(j,i);
 
 	leer(j);
 	
@@ -70,9 +69,7 @@ principal vacio inicio(){
 		
 		si(j >= 1){
 			imprimir(j);
-		}
-	
-	}o{
+		}o{
 	
 		mientras(j == 0){
 			asigna j = 1;
