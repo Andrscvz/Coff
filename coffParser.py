@@ -793,12 +793,8 @@ class coffParser ( Parser ):
             idClasePadre = self.dirProcs[clase,0][0]
             var = self.dirProcs[nombreFuncion,idClasePadre][2][self.contadorParametro][0]
             scope = self.dirProcs[nombreFuncion,idClasePadre][2][self.contadorParametro][1]
-        
-        #print(var," - ",scope)
 
         tipoParametro = self.tablaVariables[var,scope]
-
-        #print(tipoExpresion, " : ", tipoParametro)
 
         if tipoExpresion == tipoParametro:
             self.contadorParametro = self.contadorParametro + 1
@@ -809,24 +805,15 @@ class coffParser ( Parser ):
         
 
 
-    def guardarCuadruploParam(self, referencia, numParam):
-        elementoLlamada = self.pilaO[len(self.pilaO) - 1]
-        tipoElementoLlamada = self.pTipos[len(self.pTipos) - 1]
-        elemParametro = self.obtenerTipoDireccionParametro(self.stackParametros[len(self.stackParametros) - 1], numParam)
-        dirParametro = self.obtenerDireccionParametro(elemParametro)
-        
-        tipoElementoLlamada = tipoElementoLlamada.split(',')
-        if len(tipoElementoLlamada) == 1:
-            self.stackCuadruploParam.append(['PARAM',referencia,dirParametro,elementoLlamada])
-        else:
-            tamanioLlamada = int(tipoElementoLlamada[2])
-            self.stackContArgumLlamadaFunc[len(self.stackContArgumLlamadaFunc)-1] = self.stackContArgumLlamadaFunc[len(self.stackContArgumLlamadaFunc)-1] + tamanioLlamada - 1
-            while tamanioLlamada > 0:
-                self.stackCuadruploParam.append(['PARAM',referencia,dirParametro,elementoLlamada])
-                dirParametro = dirParametro + 1
-                elementoLlamada = elementoLlamada + 1
-                tamanioLlamada = tamanioLlamada - 1
+    def crearCuadruploParam(self):
+        operando = self.pilaO.pop()
+        self.pTipos.pop()
+        self.quadruplos.append(['param',operando,None,"param"+str(self.contadorParametro)])
 
+
+    def crearCuadruploGosub(self, nombreFuncion):
+        #dirAux = self.obtenerDireccionFuncion(nombreFuncion)
+        self.quadruplos.append(['gosub',None,None,nombreFuncion])
 
 
 
@@ -907,12 +894,6 @@ class coffParser ( Parser ):
                 print(str(cuantos), " " , self.quadruplos[cuantos])
                 cuantos = cuantos + 1
 
-            print("")
-            print(self.pilaO)
-            print("")
-            print(self.pTipos)
-            print("")
-            print(self.pOper)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -2933,6 +2914,9 @@ class coffParser ( Parser ):
             self.match(coffParser.PDER)
             self.state = 332
             self.match(coffParser.PUNTOYCOMA)
+            
+            self.crearCuadruploGosub(self.idFuncionActual)
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -3062,6 +3046,8 @@ class coffParser ( Parser ):
                     self.checaTipoExpresionConParametro(self.ejecToken,self.idFuncionActual)
                 else:
                     self.checaTipoExpresionConParametro(None,self.idFuncionActual)
+
+                self.crearCuadruploParam()
                 
                 self.state = 340
                 self.ll3()
@@ -3131,6 +3117,8 @@ class coffParser ( Parser ):
                     self.checaTipoExpresionConParametro(self.ejecToken,self.idFuncionActual)
                 else:
                     self.checaTipoExpresionConParametro(None,self.idFuncionActual)
+
+                self.crearCuadruploParam()
 
                 self.state = 347
                 self.ll3()
