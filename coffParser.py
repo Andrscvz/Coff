@@ -349,6 +349,8 @@ class coffParser ( Parser ):
 
     llamarfunmetTof = 0 #Para saber si se llamo un metodo o una funcion
 
+    llamarfunmetIdClaseActual = None #Para saber el objeto que tiene el metodo que se va a llamar
+
     quadOperadores = [['*','/'],['+','-'],['==','!=','>','>=','<','<='],['&&','||'],['=']]
 
     tofFactor = 0
@@ -567,9 +569,9 @@ class coffParser ( Parser ):
                             elif tipoCuadruplo == 'asignacion':
                                 self.quadruplos.append([oper,oDer,None,oIzq])
                         else:
-                            #print ("tipo: " + oIzqTipo + " " + oIzq)
-                            #print("tipo: " + oDerTipo + " " + oDer)
-                            #print("operador " + oper)
+                            print ("tipo: " + oIzqTipo + " " + oIzq)
+                            print("tipo: " + oDerTipo + " " + oDer)
+                            print("operador " + oper)
                             print ("Error semantico en la linea:" + str(self.getCurrentToken().line) + " Tipos de operandos no compatibles" )
                             sys.exit()
                             self._syntaxErrors = self._syntaxErrors + 1
@@ -643,9 +645,10 @@ class coffParser ( Parser ):
         if (self.idVariableActual, self.scopeProcs)  not in self.tablaVariables:
             if (self.idVariableActual, 0)  not in self.tablaVariables:
                 presente = 0
-                for variable in self.dirProcs[self.claseIDRef,0][2]:
-                    if self.idVariableActual == variable[0]:
-                        presente = variable
+                if self.claseIDRef:
+                    for variable in self.dirProcs[self.claseIDRef,0][2]:
+                        if self.idVariableActual == variable[0]:
+                            presente = variable
                 if presente == 0:
                     print ("Error, la variable "+self.idVariableActual+" no ha sido declarada")
                     sys.exit()
@@ -808,7 +811,6 @@ class coffParser ( Parser ):
     
     def checaTipoExpresionConParametro(self,nombreVariable,nombreFuncion):
         tipoExpresion = self.pTipos[len(self.pTipos)-1]
-        
         if nombreVariable == None:
             var = self.dirProcs[nombreFuncion,0][2][self.contadorParametro][0]
             scope = self.dirProcs[nombreFuncion,0][2][self.contadorParametro][1]
@@ -840,35 +842,36 @@ class coffParser ( Parser ):
         self.quadruplos.append(['gosub',None,None,nombreFuncion])
 
 
-    def imprimeDebug(self):
-            cuantos = 0
-            print("###################TablaVars###################")
-            for key,values in self.tablaVariables.items():
-                print(cuantos, " ", key, values)
-                cuantos = cuantos + 1
-            print("")        
+    def printTablaVariables(self):
+        cuantos = 0
+        print("###################TablaVars###################")
+        for key,values in self.tablaVariables.items():
+            print(cuantos, " ", key, values)
+            cuantos = cuantos + 1
+        print("")
 
-            cuantos = 0
-            print("###################DirProcs###################")
-            for key,values in self.dirProcs.items():
-                print(cuantos, " ", key, values)
-                cuantos = cuantos + 1
-            print("")
+    def printDirProcs(self):
+        cuantos = 0
+        print("###################DirProcs###################")
+        for key,values in self.dirProcs.items():
+            print(cuantos, " ", key, values)
+            cuantos = cuantos + 1
+        print("")
 
-            print("###################Cuadruplos###################")
+    def printCuadruplos(self):
+        print("###################Cuadruplos###################")
+        cuantos = 0
+        while cuantos < len(self.quadruplos):
+            print(str(cuantos), " " , self.quadruplos[cuantos])
+            cuantos = cuantos + 1
 
-            cuantos = 0
-
-            while cuantos < len(self.quadruplos):
-                print(str(cuantos), " " , self.quadruplos[cuantos])
-                cuantos = cuantos + 1
-
-            print("")
-            print(self.pilaO)
-            print("")
-            print(self.pTipos)
-            print("")
-            print(self.pOper)
+        print("")
+        print(self.pilaO)
+        print("")
+        print(self.pTipos)
+        print("")
+        print(self.pOper)
+        print("")
 
     class ProgramaContext(ParserRuleContext):
 
@@ -924,7 +927,10 @@ class coffParser ( Parser ):
             self.principal()
             self.terminacionProc = 'end'
             self.crearCuadruploTerminarProc()
-            self.imprimeDebug()
+
+            #self.printTablaVariables()
+            #self.printDirProcs()
+            self.printCuadruplos()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1091,6 +1097,7 @@ class coffParser ( Parser ):
                 self.state = 175
                 ##########################
                 self.metodoTof = 0
+                self.claseIDRef = None
                 ##########################
                 self.funcion()
                 self.state = 176
@@ -2462,8 +2469,6 @@ class coffParser ( Parser ):
             self.state = 292
             self.funcionOmetodo = 2
             self.tokenActual = str(self.getCurrentToken().text)
-            print(self.idVariableActual)
-            print("///")
             self.lookForMethodClass()
             
             self.match(coffParser.ID)
@@ -2934,6 +2939,7 @@ class coffParser ( Parser ):
             
             self.contadorParametro = 0;
             self.llamarfunmetTof = 0;
+            self.llamarfunmetIdClaseActual = str(self.getCurrentToken().text)
             self.ejecToken = str(self.getCurrentToken().text)
             self.idFuncionActual = str(self.getCurrentToken().text)
             self.nComasAux2 = 1
@@ -3079,7 +3085,7 @@ class coffParser ( Parser ):
                 self.expresion()
                 
                 if self.llamarfunmetTof:
-                    self.checaTipoExpresionConParametro(self.ejecToken,self.idFuncionActual)
+                    self.checaTipoExpresionConParametro(self.llamarfunmetIdClaseActual,self.idFuncionActual)
                 else:
                     self.checaTipoExpresionConParametro(None,self.idFuncionActual)
 
@@ -3150,7 +3156,7 @@ class coffParser ( Parser ):
                 self.expresion()
 
                 if self.llamarfunmetTof:
-                    self.checaTipoExpresionConParametro(self.ejecToken,self.idFuncionActual)
+                    self.checaTipoExpresionConParametro(self.llamarfunmetIdClaseActual,self.idFuncionActual)
                 else:
                     self.checaTipoExpresionConParametro(None,self.idFuncionActual)
 

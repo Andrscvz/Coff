@@ -33,13 +33,8 @@ texto i[10] = ["a","b"];
 
 funcion vacio suma1(entero e, entero aaa){
 	decimal g = 0.0;
-
-
-
 	ejec suma1(e, e);
-
 	asigna e = e + 1;
-
 } 
 
 
@@ -49,10 +44,8 @@ principal vacio inicio(){
 
 	coff p,k;
 
-	asigna j = p.manuel(j,1.0);
-
-	ejec k.manuel(1,1.0);
-	ejec suma1(j,i);
+	ejec b.manuel(1,1.0);
+	ejec suma1(j,qq);
 
 	leer(j);
 	
