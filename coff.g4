@@ -97,21 +97,29 @@ valor : valordeclaracion
     | ID va1
     ;
 
-va1 : va3
-    | PIZQ expresion va2 PDER
+va1 : va4
+    | PIZQ va2 PDER
     | CIZQ CTEENT CDER
     | 
     ;
 
-va2 : COMA expresion va2
+va2 : expresion va3
+    |
+    ;
+
+va3 : COMA expresion va3
     | 
     ;    
 
-va3 : PUNTO ID va4
+va4 : PUNTO ID va5
     ;
 
-va4 : PIZQ expresion va2 PDER
+va5 : PIZQ va6 PDER
     | 
+    ;
+
+va6 : expresion va3
+    |
     ;
 
 tiposimple : ENTERO

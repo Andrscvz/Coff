@@ -3,14 +3,15 @@ clase coff{
 		texto a;
 		entero b = 0;
 	metodos:
-		funcion vacio manuel(entero c, decimal &d){
+		funcion entero manuel(entero c, decimal &d){
 			entero m;
 			coff k;
 			imprimir(a);
-
+			retorna 1;
 		}
 		
-		funcion vacio andres(){
+		funcion entero andres(){
+			retorna 1;
 		}
 }
 
@@ -31,36 +32,29 @@ clase ss extiende coff{
 entero h[20] = [0,1,2];
 texto i[10] = ["a","b"];
 
-funcion vacio suma1(entero e, entero aaa){
+funcion entero suma1(entero e, entero aaa){
 	decimal g = 0.0;
 	ejec suma1(e, e);
 	asigna e = e + 1;
+	retorna 1;
 } 
 
 
+funcion entero suma2(){
+	retorna 2;
+} 
+
+funcion vacio suma3(){
+} 
+
 principal vacio inicio(){
 
-	entero j,qq,asdas,asdasdsa;
+	entero j;
+	decimal y;
+	coff k;
 
-	coff p,k;
 
-	ejec b.manuel(1,1.0);
-	ejec suma1(j,qq);
+	ejec k.manuel(suma1(suma4(),j),y);
 
-	leer(j);
-	
-	asigna j = j; 
-
-	imprimir(j);
-		
-	si(j >= 1){
-			imprimir(j);
-
-	}o{
-		mientras(j == 0){
-			asigna j = 1;
-		}
-	
-	}
 
 }

@@ -238,6 +238,24 @@ class coffListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by coffParser#va5.
+    def enterVa5(self, ctx):
+        pass
+
+    # Exit a parse tree produced by coffParser#va5.
+    def exitVa5(self, ctx):
+        pass
+
+
+    # Enter a parse tree produced by coffParser#va6.
+    def enterVa6(self, ctx):
+        pass
+
+    # Exit a parse tree produced by coffParser#va6.
+    def exitVa6(self, ctx):
+        pass
+
+
     # Enter a parse tree produced by coffParser#tiposimple.
     def enterTiposimple(self, ctx):
         pass
