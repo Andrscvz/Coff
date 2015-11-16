@@ -54,7 +54,7 @@ principal vacio inicio(){
 	coff k;
 
 
-	ejec k.manuel(suma1(suma4(),j),y);
+	ejec k.manuel(suma1(suma2(),j),y);
 
 
 }

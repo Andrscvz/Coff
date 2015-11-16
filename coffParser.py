@@ -357,8 +357,22 @@ class coffParser ( Parser ):
     quadOperadores = [['*','/'],['+','-'],['==','!=','>','>=','<','<='],['&&','||'],['=']]
 
     tofFactor = 0
+    ################################################# revisar CAVAZOS
+    memGlobalEntero = -1 #Contador para memoria virtual de variables globales enteras
+
+    memGlobalDecimal = 2999 #Contador para memoria virtual de variables globales decimales
+
+    memGlobalTexto = 5999 #Contador para memoria virtual de variables globales texto
+
+    memLocalEntero = 8999 #Contador para memoria virtual de variables locales y temporales enteras
+
+    memLocalDecimal = 14999 #Contador para memoria virtual de variables locales y temporales decimales
+
+    memLocalTexto = 20999 #Contador para memoria virtual de variables locales y temporales texto
+    ####################################################
 
     cuboSemantico = cuboSemantico() #Para hacer las validaciones semanticas
+
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
@@ -539,6 +553,70 @@ class coffParser ( Parser ):
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
+    def insertarVariableEnMemoria(self,variableActual):
+        direccion = None
+        isClase = False
+        isGlobal = False
+        dicAtributos = {}
+        tipoVar = None
+
+        #variables globales
+        if self.globalTof: 
+            tipoVar = self.tablaVariables[variableActual,0]
+            if tipoVar == "entero":
+                self.memGlobalEntero = self.memGlobalEntero + 1
+                direccion = self.memGlobalEntero
+            elif tipoVar == "decimal":
+                self.memGlobalDecimal = self.memGlobalDecimal + 1
+                direccion = self.memGlobalDecimal
+            elif tipoVar == "texto":
+                self.memGlobalTexto = self.memGlobalTexto + 1
+                direccion = self.memGlobalTexto
+            else:
+                for atributo in self.dirProcs[tipoVar,0][2]:
+                    tipoAtributo = self.tablaVariables[atributo[0],atributo[1]]
+                    print(tipoAtributo)
+                    if tipoAtributo == "entero":
+                        self.memLocalEntero = self.memLocalEntero + 1
+                    elif tipoAtributo == "decimal":
+                        self.memLocalDecimal = self.memLocalDecimal + 1
+                    elif tipoAtributo == "texto":
+                        self.memLocalTexto = self.memLocalTexto + 1
+
+
+        #variables locales
+        if self.globalTof == 0:
+            tipoVar = self.tablaVariables[variableActual,self.scopeProcs]
+            if tipoVar == "entero":
+                self.memLocalEntero = self.memLocalEntero + 1
+                direccion = self.memLocalEntero
+            elif tipoVar == "decimal":
+                self.memLocalDecimal = self.memLocalDecimal + 1
+                direccion = self.memLocalDecimal
+            elif tipoVar == "texto":
+                self.memLocalTexto = self.memLocalTexto + 1
+                direccion = self.memLocalTexto
+            else:
+                for atributo in self.dirProcs[tipoVar,0][2]:
+                    tipoAtributo = self.tablaVariables[atributo[0],atributo[1]]
+                    print(tipoAtributo)
+                    if tipoAtributo == "entero":
+                        self.memLocalEntero = self.memLocalEntero + 1
+                    elif tipoAtributo == "decimal":
+                        self.memLocalDecimal = self.memLocalDecimal + 1
+                    elif tipoAtributo == "texto":
+                        self.memLocalTexto = self.memLocalTexto + 1
+            print("")
+            print(variableActual)
+            print("memLocalEntero")
+            print(self.memLocalEntero)
+            print("memLocalDecimal")
+            print(self.memLocalDecimal)
+            print("memLocalTexto")
+            print(self.memLocalTexto)
+            print("")
+
+
     def insertarValorTipo(self,op,tipoOp):
         self.pilaO.append(op)
         self.pTipos.append(tipoOp)
@@ -561,6 +639,16 @@ class coffParser ( Parser ):
                         res = self.cuboSemantico.checarSemanticaExp(oIzqTipo,oDerTipo,oper)
                         if res != None:
                             if tipoCuadruplo == 'expresion':
+                                if res == "entero":
+                                    self.memLocalEntero = self.memLocalEntero + 1
+                                    #auxDireccion = self.memLocalEntero
+                                elif res == "decimal":
+                                    self.memLocalDecimal = self.memLocalDecimal + 1
+                                    #auxDireccion = self.memLocalDecimal
+                                elif res == "texto":
+                                    self.memLocalTexto = self.memLocalTexto + 1
+                                    #auxDireccion = self.memLocalTexto
+
                                 self.quadruplos.append([oper,oIzq,oDer,"t" + str(self.contQuadTemporales)])
                                 self.insertarValorTipo("t" + str(self.contQuadTemporales),res)
                                 self.contQuadTemporales = self.contQuadTemporales + 1
@@ -659,12 +747,17 @@ class coffParser ( Parser ):
         else:
             return self.tablaVariables[self.idVariableActual,self.scopeProcs]
 
-
     def lookForMethodClass(self): 
         instanciaID = self.ejecToken
         metodoID = self.tokenActual
         tipoObjeto = self.tablaVariables[instanciaID,self.scopeProcs] #contiene el tipo del objeto
-        claseID = self.dirProcs[tipoObjeto,0][0] #contiene el id de la clase
+        try:
+            claseID = self.dirProcs[tipoObjeto,0][0] #contiene el id de la clase
+        except KeyError:
+            print ("Error, "+self.ejecToken+" es una variable simple")
+            sys.exit()
+            return
+
         if(metodoID, claseID) not in self.dirProcs: #tokenActual contiene el nombre del metodo
             print("Error, el metodo "+metodoID+" no es compatible con la clase de "+instanciaID)
             sys.exit()
@@ -910,7 +1003,7 @@ class coffParser ( Parser ):
             self.state = 162
             self.crearCuadruploMain()
             self.p1()
-            self.state = 163
+            self.idFuncionActual = None
             self.p2()
             self.state = 164
             self.p3()
@@ -1084,6 +1177,7 @@ class coffParser ( Parser ):
         try:
             self.state = 183
             token = self._input.LA(1)
+
             if token in [coffParser.FUNCION]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 179
@@ -1719,7 +1813,7 @@ class coffParser ( Parser ):
             if self.atributosTof:
                 self.atributosClase.append([self.idVariableActual,self.scopeProcs])
 
-
+    
             if self.globalTof:
                 if (self.idVariableActual, 0) in self.tablaVariables:
                     print("Error, la variable "+ self.idVariableActual+" ya habia sido declarada")
@@ -1734,7 +1828,9 @@ class coffParser ( Parser ):
                     return
                 else:
                     self.tablaVariables[self.idVariableActual,self.scopeProcs] = self.tipoVariableActual
-
+            
+            self.insertarVariableEnMemoria(self.idVariableActual)
+            
             self.insertarValorTipo(self.idVariableActual,self.tipoVariableActual)
            
             ########################################################
@@ -2191,6 +2287,7 @@ class coffParser ( Parser ):
         try:
             self.state = 274
             token = self._input.LA(1)
+
             if token in [coffParser.CTEENT, coffParser.CTEDEC, coffParser.CTETEXTO]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 271
@@ -2599,6 +2696,8 @@ class coffParser ( Parser ):
             self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1] = str(self.getCurrentToken().text)
             self.funcionOmetodo = 2
             self.tokenActual = str(self.getCurrentToken().text)
+
+
             self.lookForMethodClass()
             ######################################
 
@@ -2974,7 +3073,7 @@ class coffParser ( Parser ):
 
 
             self.tablaVariables[self.idVariableActual,self.scopeProcs] = self.tipoVariableActual 
-
+            self.insertarVariableEnMemoria(self.idVariableActual)
             ########################################################
             self.match(coffParser.ID)
             self.state = 330
@@ -6059,7 +6158,6 @@ class coffParser ( Parser ):
                self.dirProcs[self.claseIDRef,0][3] = copy.copy(self.dirProcs[self.claseIDRef,0][3])
                self.checkForMethodCollisionsInheritance(metodo,self.dirProcs[self.claseIDRef,0][3])
                self.dirProcs[self.claseIDRef,0][3].append(metodo)
-
 
         except RecognitionException as re:
             localctx.exception = re
