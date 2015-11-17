@@ -53,8 +53,8 @@ principal vacio inicio(){
 	decimal y;
 	coff k;
 
-
-	ejec k.manuel(suma1(suma2(),j),y);
+	
+	ejec k.manuel(k.manuel(k.b,y);
 
 
 }

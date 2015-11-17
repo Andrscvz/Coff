@@ -575,7 +575,7 @@ class coffParser ( Parser ):
             else:
                 for atributo in self.dirProcs[tipoVar,0][2]:
                     tipoAtributo = self.tablaVariables[atributo[0],atributo[1]]
-                    print(tipoAtributo)
+                    #print(tipoAtributo)
                     if tipoAtributo == "entero":
                         self.memLocalEntero = self.memLocalEntero + 1
                     elif tipoAtributo == "decimal":
@@ -599,22 +599,22 @@ class coffParser ( Parser ):
             else:
                 for atributo in self.dirProcs[tipoVar,0][2]:
                     tipoAtributo = self.tablaVariables[atributo[0],atributo[1]]
-                    print(tipoAtributo)
+                    #print(tipoAtributo)
                     if tipoAtributo == "entero":
                         self.memLocalEntero = self.memLocalEntero + 1
                     elif tipoAtributo == "decimal":
                         self.memLocalDecimal = self.memLocalDecimal + 1
                     elif tipoAtributo == "texto":
                         self.memLocalTexto = self.memLocalTexto + 1
-            print("")
-            print(variableActual)
-            print("memLocalEntero")
-            print(self.memLocalEntero)
-            print("memLocalDecimal")
-            print(self.memLocalDecimal)
-            print("memLocalTexto")
-            print(self.memLocalTexto)
-            print("")
+            #print("")
+            #print(variableActual)
+            #print("memLocalEntero")
+            #print(self.memLocalEntero)
+            #print("memLocalDecimal")
+            #print(self.memLocalDecimal)
+            #print("memLocalTexto")
+            #print(self.memLocalTexto)
+            #print("")
 
 
     def insertarValorTipo(self,op,tipoOp):
@@ -885,7 +885,12 @@ class coffParser ( Parser ):
 
     def obtenerCantidadParametrosFuncionOMetodo(self,nombreVariable,nombreFuncion):
         if nombreVariable == None:
-            return len(self.dirProcs[nombreFuncion,0][2])
+            try:
+                return len(self.dirProcs[nombreFuncion,0][2])
+            except:
+                print("Error, la funcion "+nombreFuncion+" no ha sido declarada")
+                sys.exit()
+                return
         else:   
             clase = self.obtenerClaseDeUnaFuncionEra(nombreVariable,nombreFuncion)
             idClasePadre = self.dirProcs[clase,0][0]
@@ -1005,6 +1010,7 @@ class coffParser ( Parser ):
             self.p1()
             self.idFuncionActual = None
             self.p2()
+            self.printTablaVariables()
             self.state = 164
             self.p3()
             self.state = 165
@@ -1013,9 +1019,9 @@ class coffParser ( Parser ):
             self.terminacionProc = 'end'
             self.crearCuadruploTerminarProc()
 
-            self.printTablaVariables()
-            self.printDirProcs()
-            self.printCuadruplos()
+            
+            #self.printDirProcs()
+            #self.printCuadruplos()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -2698,7 +2704,6 @@ class coffParser ( Parser ):
             self.tokenActual = str(self.getCurrentToken().text)
 
 
-            self.lookForMethodClass()
             ######################################
 
             self.match(coffParser.ID)
@@ -2706,6 +2711,9 @@ class coffParser ( Parser ):
             self.va5()
 
             #####################################
+            print(self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
+            print( self.valorIdClaseActual[len(self.valorIdClaseActual)-1])
+           
             if self.contadorParametros[len(self.contadorParametros)-1] != self.obtenerCantidadParametrosFuncionOMetodo(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1]):
                 print("Error en la linea " + str(self.getCurrentToken().line) + ", cantidad incorrecta de parametros")
                 sys.exit()
