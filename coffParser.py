@@ -1964,7 +1964,12 @@ class coffParser ( Parser ):
                 self.state = 238
                 self.valordeclaracion()
                 self.state = 239
-                self.insertarValorTipo(self.valorDeclaracion,self.tipoDeclaracion)
+                if self.tipoDeclaracion == 'entero':
+                    self.insertarValorTipo([int(self.valorDeclaracion)], self.tipoDeclaracion)
+                elif self.tipoDeclaracion == 'decimal':
+                    self.insertarValorTipo([float(self.valorDeclaracion)], self.tipoDeclaracion)
+                elif self.tipoDeclaracion == 'texto':
+                    self.insertarValorTipo([self.valorDeclaracion.replace('"',"")], self.tipoDeclaracion)
                 self.crearCuadruploExpAsig(4,"asignacion")
                 self.v6()
 
@@ -2340,7 +2345,13 @@ class coffParser ( Parser ):
 
                 ###############################################
                 #Inserto el valor constante y su tipo a la pila de operadores y de tipos
-                self.insertarValorTipo(self.valorDeclaracion, self.tipoDeclaracion)
+
+                if self.tipoDeclaracion == 'entero':
+                    self.insertarValorTipo([int(self.valorDeclaracion)], self.tipoDeclaracion)
+                elif self.tipoDeclaracion == 'decimal':
+                    self.insertarValorTipo([float(self.valorDeclaracion)], self.tipoDeclaracion)
+                elif self.tipoDeclaracion == 'texto':
+                    self.insertarValorTipo([self.valorDeclaracion.replace('"',"")], self.tipoDeclaracion)
                 ###############################################
 
             elif token in [coffParser.ID]:

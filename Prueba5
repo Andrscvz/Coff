@@ -1,6 +1,7 @@
 
-entero i,j;
-
+entero i = 0,j;
+decimal d = 0.0;
+texto t = "t";
 
 funcion vacio uno(entero a){
 	
