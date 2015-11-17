@@ -29,8 +29,8 @@ clase ss extiende coff{
 
 }
 
-entero h[20] = [0,1,2];
-texto i[10] = ["a","b"];
+entero h;
+texto i;
 
 funcion entero suma1(entero e, entero aaa){
 	decimal g = 0.0;
@@ -52,9 +52,6 @@ principal vacio inicio(){
 	entero j;
 	decimal y;
 	coff k;
-
-	
-	ejec k.manuel(k.manuel(k.b,y);
 
 
 }

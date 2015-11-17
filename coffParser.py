@@ -562,7 +562,7 @@ class coffParser ( Parser ):
 
         #variables globales
         if self.globalTof: 
-            tipoVar = self.tablaVariables[variableActual,0]
+            tipoVar = self.tablaVariables[variableActual,0][0]
             if tipoVar == "entero":
                 self.memGlobalEntero = self.memGlobalEntero + 1
                 direccion = self.memGlobalEntero
@@ -574,19 +574,18 @@ class coffParser ( Parser ):
                 direccion = self.memGlobalTexto
             else:
                 for atributo in self.dirProcs[tipoVar,0][2]:
-                    tipoAtributo = self.tablaVariables[atributo[0],atributo[1]]
-                    #print(tipoAtributo)
+                    tipoAtributo = self.tablaVariables[atributo[0],atributo[1]][0]
                     if tipoAtributo == "entero":
-                        self.memLocalEntero = self.memLocalEntero + 1
+                        self.memGlobalEntero = self.memGlobalEntero + 1
                     elif tipoAtributo == "decimal":
-                        self.memLocalDecimal = self.memLocalDecimal + 1
+                        self.memGlobalDecimal = self.memGlobalDecimal + 1
                     elif tipoAtributo == "texto":
-                        self.memLocalTexto = self.memLocalTexto + 1
+                        self.memGlobalTexto = self.memGlobalTexto + 1
 
 
         #variables locales
         if self.globalTof == 0:
-            tipoVar = self.tablaVariables[variableActual,self.scopeProcs]
+            tipoVar = self.tablaVariables[variableActual,self.scopeProcs][0]
             if tipoVar == "entero":
                 self.memLocalEntero = self.memLocalEntero + 1
                 direccion = self.memLocalEntero
@@ -598,23 +597,32 @@ class coffParser ( Parser ):
                 direccion = self.memLocalTexto
             else:
                 for atributo in self.dirProcs[tipoVar,0][2]:
-                    tipoAtributo = self.tablaVariables[atributo[0],atributo[1]]
-                    #print(tipoAtributo)
+                    tipoAtributo = self.tablaVariables[atributo[0],atributo[1]][0]
                     if tipoAtributo == "entero":
                         self.memLocalEntero = self.memLocalEntero + 1
                     elif tipoAtributo == "decimal":
                         self.memLocalDecimal = self.memLocalDecimal + 1
                     elif tipoAtributo == "texto":
                         self.memLocalTexto = self.memLocalTexto + 1
-            #print("")
-            #print(variableActual)
-            #print("memLocalEntero")
-            #print(self.memLocalEntero)
-            #print("memLocalDecimal")
-            #print(self.memLocalDecimal)
-            #print("memLocalTexto")
-            #print(self.memLocalTexto)
-            #print("")
+        #print("Variable:",variableActual)
+        #self.imprimeMemoria()
+
+    def imprimeMemoria(self):
+        print("")
+        print("Global")
+        print("memGlobalEntero:",self.memGlobalEntero)
+        print("memGlobalDecimal:",self.memGlobalDecimal)
+        print("memGlobalTexto:",self.memGlobalTexto)
+        print("Local")
+        print("memLocalEntero:",self.memLocalEntero)
+        print("memLocalDecimal:",self.memLocalDecimal)
+        print("memLocalTexto:",self.memLocalTexto)
+        print("")
+
+    def resetearDireccionesLocales(self):
+        self.memLocalEntero = 8999
+        self.memLocalDecimal = 14999
+        self.memLocalTexto = 20999
 
 
     def insertarValorTipo(self,op,tipoOp):
@@ -641,16 +649,16 @@ class coffParser ( Parser ):
                             if tipoCuadruplo == 'expresion':
                                 if res == "entero":
                                     self.memLocalEntero = self.memLocalEntero + 1
-                                    #auxDireccion = self.memLocalEntero
+                                    auxDireccion = self.memLocalEntero
                                 elif res == "decimal":
                                     self.memLocalDecimal = self.memLocalDecimal + 1
-                                    #auxDireccion = self.memLocalDecimal
+                                    auxDireccion = self.memLocalDecimal
                                 elif res == "texto":
                                     self.memLocalTexto = self.memLocalTexto + 1
-                                    #auxDireccion = self.memLocalTexto
+                                    auxDireccion = self.memLocalTexto
 
-                                self.quadruplos.append([oper,oIzq,oDer,"t" + str(self.contQuadTemporales)])
-                                self.insertarValorTipo("t" + str(self.contQuadTemporales),res)
+                                self.quadruplos.append([oper,oIzq,oDer,auxDireccion])
+                                self.insertarValorTipo(auxDireccion,res)
                                 self.contQuadTemporales = self.contQuadTemporales + 1
                             elif tipoCuadruplo == 'asignacion':
                                 self.quadruplos.append([oper,oDer,None,oIzq])
@@ -741,16 +749,16 @@ class coffParser ( Parser ):
                     sys.exit()
                     return
                 else:
-                    return self.tablaVariables[self.idVariableActual, presente[1]]
+                    return self.tablaVariables[self.idVariableActual, presente[1]][0]
             else:
-                return self.tablaVariables[self.idVariableActual, 0]
+                return self.tablaVariables[self.idVariableActual, 0][0]
         else:
-            return self.tablaVariables[self.idVariableActual,self.scopeProcs]
+            return self.tablaVariables[self.idVariableActual,self.scopeProcs][0]
 
     def lookForMethodClass(self): 
         instanciaID = self.ejecToken
         metodoID = self.tokenActual
-        tipoObjeto = self.tablaVariables[instanciaID,self.scopeProcs] #contiene el tipo del objeto
+        tipoObjeto = self.tablaVariables[instanciaID,self.scopeProcs][0] #contiene el tipo del objeto
         try:
             claseID = self.dirProcs[tipoObjeto,0][0] #contiene el id de la clase
         except KeyError:
@@ -773,7 +781,7 @@ class coffParser ( Parser ):
     def checkIfAttributeBelongs(self):
         #idVariableActual contiene el atributo
         #ejecToken contiene el id de la instancia de la clase
-        tipoAtributo = self.tablaVariables[self.ejecToken,self.scopeProcs]
+        tipoAtributo = self.tablaVariables[self.ejecToken,self.scopeProcs][0]
         
         try:
             self.checkifAttributeBelongsClassID = self.dirProcs[tipoAtributo, 0][0] 
@@ -842,7 +850,7 @@ class coffParser ( Parser ):
         for keys,values in self.tablaVariables.items():
 
             if keys[1] == self.dirProcs[procTuple[0],procTuple[1]][0]: #si tienen el mismo id
-                tipoVariable = values
+                tipoVariable = values[0]
                 if tipoVariable == "entero":
                     nEnteros = nEnteros + 1
                 elif tipoVariable == "decimal":
@@ -851,7 +859,7 @@ class coffParser ( Parser ):
                     nTexto = nTexto + 1
                 else:
                     for atributo in self.dirProcs[tipoVariable,0][2]:
-                        tipoAtributo = self.tablaVariables[atributo[0],atributo[1]]
+                        tipoAtributo = self.tablaVariables[atributo[0],atributo[1]][0]
                         if tipoAtributo == "entero":
                             nEnteros = nEnteros + 1
                         elif tipoAtributo == "decimal":
@@ -864,7 +872,7 @@ class coffParser ( Parser ):
     def obtenerClaseDeUnaFuncionEra(self, nombreVariable, nombreFuncion):
         if nombreVariable == None:
             return None
-        aux = self.tablaVariables[nombreVariable,self.scopeProcs]
+        aux = self.tablaVariables[nombreVariable,self.scopeProcs][0]
         return aux
 
     def obtenerTipoDeUnMetodoEra(self, nombreVariable, nombreFuncion):
@@ -907,7 +915,7 @@ class coffParser ( Parser ):
             var = self.dirProcs[nombreFuncion,idClasePadre][2][self.contadorParametros[len(self.contadorParametros)-1]][0]
             scope = self.dirProcs[nombreFuncion,idClasePadre][2][self.contadorParametros[len(self.contadorParametros)-1]][1]
 
-        tipoParametro = self.tablaVariables[var,scope]
+        tipoParametro = self.tablaVariables[var,scope][0]
 
         if tipoExpresion == tipoParametro:
             self.contadorParametros[len(self.contadorParametros)-1] = self.contadorParametros[len(self.contadorParametros)-1] + 1 
@@ -963,6 +971,40 @@ class coffParser ( Parser ):
     def crearCuadruploAsignacionRetorno(self,elemento):
         self.quadruplos.append(['asignacionRetorno',None,None,elemento])
 
+
+    #Regresa la direccion especifica de una variable
+    def obtenerDireccionVariable(self,variable):
+        for key,value in self.tablaVariables.items():
+            if key[0] == variable and key[1] == self.scopeProcs:
+                return value[2]
+        for key,value in self.tablaVariables.items():
+            if key[0] == variable and key[1] == 0:
+                return value[2]
+        print("Error en la linea " + str(self.getCurrentToken().line) + " no existe la variable")
+        sys.exit()
+        return
+    
+    #Regresa la direccion actual del tipo requerido
+    def obtenerDireccionActualTipo(self,globalTof,tipo):
+        if globalTof:
+            if tipo == "entero":
+                return self.memGlobalEntero + 1
+            elif tipo == "decimal":
+                return self.memGlobalDecimal + 1
+            elif tipo == "texto":
+                return self.memGlobalTexto + 1
+            else:
+                return None
+        else:
+            if tipo == "entero":
+                return self.memLocalEntero + 1
+            elif tipo == "decimal":
+                return self.memLocalDecimal + 1
+            elif tipo == "texto":
+                return self.memLocalTexto + 1
+            else:
+                return None
+
     class ProgramaContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -1010,7 +1052,6 @@ class coffParser ( Parser ):
             self.p1()
             self.idFuncionActual = None
             self.p2()
-            self.printTablaVariables()
             self.state = 164
             self.p3()
             self.state = 165
@@ -1019,9 +1060,9 @@ class coffParser ( Parser ):
             self.terminacionProc = 'end'
             self.crearCuadruploTerminarProc()
 
-            
-            #self.printDirProcs()
-            #self.printCuadruplos()
+            self.printTablaVariables()
+            self.printDirProcs()
+            self.printCuadruplos()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1266,6 +1307,7 @@ class coffParser ( Parser ):
             self.pr1()
             self.state = 187
             ########################################
+            self.resetearDireccionesLocales()
             self.idVariableActual = str(self.getCurrentToken().text)
             if (self.idVariableActual, 0) in self.dirProcs or (self.idVariableActual, True) in self.dirProcs:
                     print("Error, ya habia una funcion declarada con el nombre: "+self.idVariableActual)
@@ -1804,9 +1846,6 @@ class coffParser ( Parser ):
             if isinstance( listener, coffListener ):
                 listener.exitV1(self)
 
-
-
-
     def v1(self):
 
         localctx = coffParser.V1Context(self, self._ctx, self.state)
@@ -1826,18 +1865,18 @@ class coffParser ( Parser ):
                     sys.exit()
                     return
                 else:
-                    self.tablaVariables[self.idVariableActual,0] = self.tipoVariableActual
+                    self.tablaVariables[self.idVariableActual,0] = [self.tipoVariableActual,1,self.obtenerDireccionActualTipo(1,self.tipoVariableActual)]
             else:
                 if (self.idVariableActual, self.scopeProcs) in self.tablaVariables:
                     print("Error, la variable "+ self.idVariableActual+" ya habia sido declarada")
                     sys.exit()
                     return
                 else:
-                    self.tablaVariables[self.idVariableActual,self.scopeProcs] = self.tipoVariableActual
+                    self.tablaVariables[self.idVariableActual,self.scopeProcs] = [self.tipoVariableActual,1,self.obtenerDireccionActualTipo(0,self.tipoVariableActual)]
             
             self.insertarVariableEnMemoria(self.idVariableActual)
             
-            self.insertarValorTipo(self.idVariableActual,self.tipoVariableActual)
+            self.insertarValorTipo(self.obtenerDireccionVariable(self.idVariableActual),self.tipoVariableActual)
            
             ########################################################
             self.match(coffParser.ID)
@@ -2331,20 +2370,22 @@ class coffParser ( Parser ):
 
                 self.match(coffParser.ID)
                 self.state = 273
+                self.insertarOperador("(")
                 self.va1()
+                self.pOper.pop()
 
                 ###############################################
                 #Checo si fue una funcion o metodo o si fue una variable simple
                 if self.valorEntraaMetodoOFuncion[len(self.valorEntraaMetodoOFuncion)-1] == 0:
                     #Buscar dentro del mismo scope
                     if (self.ejecToken, self.scopeProcs) in self.tablaVariables:
-                        self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,self.scopeProcs])
+                        self.insertarValorTipo(self.obtenerDireccionVariable(self.ejecToken),self.tablaVariables[self.ejecToken,self.scopeProcs][0])
                     #si no se encuentra buscar en la def de la clase
                     elif (self.ejecToken, self.claseScopeRef) in self.tablaVariables:
-                        self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken, self.claseScopeRef])
+                        self.insertarValorTipo(self.obtenerDireccionVariable(self.ejecToken),self.tablaVariables[self.ejecToken, self.claseScopeRef][0])
                     #buscar en vars globales
                     elif (self.ejecToken, 0) in self.tablaVariables:
-                        self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,0]) 
+                        self.insertarValorTipo(self.obtenerDireccionVariable(self.ejecToken),self.tablaVariables[self.ejecToken,0][0]) 
                 else:
                     #si fue una funcion o metodo genero el cuadruplo de gosub
                     self.crearCuadruploGosub(self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
@@ -3078,9 +3119,22 @@ class coffParser ( Parser ):
             
 
 
+            if self.globalTof:
+                if (self.idVariableActual, 0) in self.tablaVariables:
+                    print("Error, la variable "+ self.idVariableActual+" ya habia sido declarada")
+                    sys.exit()
+                    return
+                else:
+                    self.tablaVariables[self.idVariableActual,0] = [self.tipoVariableActual,1,self.obtenerDireccionActualTipo(1,self.tipoVariableActual)]
+            else:
+                if (self.idVariableActual, self.scopeProcs) in self.tablaVariables:
+                    print("Error, la variable "+ self.idVariableActual+" ya habia sido declarada")
+                    sys.exit()
+                    return
+                else:
+                    self.tablaVariables[self.idVariableActual,self.scopeProcs] = [self.tipoVariableActual,1,self.obtenerDireccionActualTipo(0,self.tipoVariableActual)]
 
 
-            self.tablaVariables[self.idVariableActual,self.scopeProcs] = self.tipoVariableActual 
             self.insertarVariableEnMemoria(self.idVariableActual)
             ########################################################
             self.match(coffParser.ID)
@@ -4271,6 +4325,7 @@ class coffParser ( Parser ):
             self.fun1()
             self.state = 423
             ########################################
+            self.resetearDireccionesLocales()
             self.terminacionProc = 'endproc'
             self.scopeProcs = self.scopeProcs + 1
             self.idVariableActual = str(self.getCurrentToken().text)
@@ -4970,7 +5025,7 @@ class coffParser ( Parser ):
 
 
             #Cuadruplo de asignacion
-            self.insertarValorTipo(self.idVariableActual,tipoVar)
+            self.insertarValorTipo(self.obtenerDireccionVariable(self.idVariableActual),tipoVar)
             self.match(coffParser.ID)
             self.state = 481
             self.a1()
