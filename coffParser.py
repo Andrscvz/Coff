@@ -1317,7 +1317,7 @@ class coffParser ( Parser ):
 
 
             self.scopeProcs = self.scopeProcs + 1
-            self.dirProcs[self.idVariableActual,0] = [self.scopeProcs,self.tipoVariableActual]
+            self.dirProcs[self.idVariableActual,0] = [self.scopeProcs,self.tipoVariableActual,[]]
 
 
 
@@ -1518,7 +1518,11 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 201
+            self.dirProcs["inicio",0].append([])
+            self.dirProcs["inicio",0].append(len(self.quadruplos))
             self.pr23()
+            self.dirProcs["inicio",0][3] = self.getNumberOfEDT(["inicio",0])
+            
             self.state = 202
             self.pr21()
             self.state = 203
@@ -1964,12 +1968,16 @@ class coffParser ( Parser ):
                 self.state = 238
                 self.valordeclaracion()
                 self.state = 239
+                
                 if self.tipoDeclaracion == 'entero':
                     self.insertarValorTipo([int(self.valorDeclaracion)], self.tipoDeclaracion)
                 elif self.tipoDeclaracion == 'decimal':
                     self.insertarValorTipo([float(self.valorDeclaracion)], self.tipoDeclaracion)
                 elif self.tipoDeclaracion == 'texto':
                     self.insertarValorTipo([self.valorDeclaracion.replace('"',"")], self.tipoDeclaracion)
+                
+                self.tipoDeclaracion = None
+
                 self.crearCuadruploExpAsig(4,"asignacion")
                 self.v6()
 
@@ -2352,6 +2360,7 @@ class coffParser ( Parser ):
                     self.insertarValorTipo([float(self.valorDeclaracion)], self.tipoDeclaracion)
                 elif self.tipoDeclaracion == 'texto':
                     self.insertarValorTipo([self.valorDeclaracion.replace('"',"")], self.tipoDeclaracion)
+                self.tipoDeclaracion = None
                 ###############################################
 
             elif token in [coffParser.ID]:
@@ -2407,10 +2416,20 @@ class coffParser ( Parser ):
                     else:                    
                         tipoMetFunc = self.obtenerTipoDeUnaFuncionEra(self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
 
+                    if tipoMetFunc == "entero":
+                        self.memLocalEntero = self.memLocalEntero + 1
+                        auxDireccion = self.memLocalEntero
+                    elif tipoMetFunc == "decimal":
+                        self.memLocalDecimal = self.memLocalDecimal + 1
+                        auxDireccion = self.memLocalDecimal
+                    elif tipoMetFunc == "texto":
+                        self.memLocalTexto = self.memLocalTexto + 1
+                        auxDireccion = self.memLocalTexto
+
                     #creo el cuadruplo donde se va a tener el retorno
-                    self.crearCuadruploAsignacionRetorno(self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
+                    self.crearCuadruploAsignacionRetorno(auxDireccion)
                     #Inserto el tipo y nombre de la funcion a la pila de tipos y operandos para procesar con el cubo semantico despues
-                    self.insertarValorTipo(self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],tipoMetFunc)
+                    self.insertarValorTipo(auxDireccion,tipoMetFunc)
                 
                 #Saco el contador de parametros ya que ya se termino esta expresion
                 self.contadorParametros.pop()
@@ -4553,13 +4572,15 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 437
-            self.fun23()
-            self.state = 438
+
             ###########Cuadruplo inicio de funcion###############
             idClasePadre = self.idDeMetodo(self.idFuncionActual)
-            self.dirProcs[self.idFuncionActual,idClasePadre].append(self.getNumberOfEDT([self.idFuncionActual,idClasePadre]))
-            
+            self.dirProcs[self.idFuncionActual,idClasePadre].append([])
             self.dirProcs[self.idFuncionActual,idClasePadre].append(len(self.quadruplos))
+
+            self.fun23()
+            self.state = 438
+            self.dirProcs[self.idFuncionActual,idClasePadre][3] = self.getNumberOfEDT([self.idFuncionActual,idClasePadre])           
             #####################################################
             self.fun21()
             self.state = 439

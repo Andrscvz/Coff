@@ -17,7 +17,7 @@ funcion vacio uno(entero a){
 } 
 
 funcion entero dos(entero b){
-	
+	entero h = 1;
 	asigna b = b * i + j;
 
 	retorna b * 2;
