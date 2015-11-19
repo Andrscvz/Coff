@@ -313,7 +313,8 @@ class coffParser ( Parser ):
     listaParametros = []
 
     tablaVariables = {}
-
+    
+    pilaParam = [] #pila que guada los cuadruplos de parametros para procesar despues
 
     parametrosAux = [] #variable usada guardar el procedimiento donde se agregaran parametros
 
@@ -924,10 +925,16 @@ class coffParser ( Parser ):
             sys.exit()
             return
         
-    def crearCuadruploParam(self,direccionParametro):
+    def crearCuadruploParam(self):
+        while len(self.pilaParam) > 0:
+            self.quadruplos.append(self.pilaParam[0])
+            self.pilaParam.pop(0)
+
+
+    def guardarCuadruploParam(self,direccionParametro):
         operando = self.pilaO.pop()
         self.pTipos.pop()
-        self.quadruplos.append(['param',0,direccionParametro,operando])
+        self.pilaParam.append(['param',0,direccionParametro,operando])
 
     def obtenerCuadruploInicioFuncion(self,nombreVariable,nombreFuncion):
         if nombreVariable == None:
@@ -2422,10 +2429,13 @@ class coffParser ( Parser ):
                     #si fue una funcion o metodo genero el cuadruplo de gosub
                     #Saco el tipo de la funcion o metodo
                     if self.valorMetodoOFuncion[len(self.valorMetodoOFuncion)-1]:
-                        self.crearCuadruploGosub(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
+                        self.crearCuadruploEra(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
+                        self.crearCuadruploParam()
+                        
                         tipoMetFunc = self.obtenerTipoDeUnMetodoEra(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
-                    else:                    
-                        self.crearCuadruploGosub(None,self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
+                    else:        
+                        self.crearCuadruploEra(None,self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
+                        self.crearCuadruploParam()            
                         tipoMetFunc = self.obtenerTipoDeUnaFuncionEra(self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
 
                     if tipoMetFunc == "entero":
@@ -2440,6 +2450,12 @@ class coffParser ( Parser ):
 
                     #creo el cuadruplo donde se va a tener el retorno
                     self.crearCuadruploAsignacionRetorno(auxDireccion)
+
+                    if self.valorMetodoOFuncion[len(self.valorMetodoOFuncion)-1]:
+                        self.crearCuadruploGosub(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
+                    else:
+                        self.crearCuadruploGosub(None,self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
+
                     #Inserto el tipo y nombre de la funcion a la pila de tipos y operandos para procesar con el cubo semantico despues
                     self.insertarValorTipo(auxDireccion,tipoMetFunc)
                 
@@ -2526,7 +2542,6 @@ class coffParser ( Parser ):
             elif token in [coffParser.PIZQ]:
                 ###############################################
                 #Una funcion
-                self.crearCuadruploEra(None,self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
                 self.valorMetodoOFuncion[len(self.valorMetodoOFuncion)-1] = 0
                 self.valorEntraaMetodoOFuncion[len(self.valorEntraaMetodoOFuncion)-1] = 1
                 
@@ -2641,7 +2656,7 @@ class coffParser ( Parser ):
                 variableParametro = self.dirProcs[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],0][2][numeroParametroActual]
                 dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
 
-                self.crearCuadruploParam(dirParametroActual)
+                self.guardarCuadruploParam(dirParametroActual)
                 ######################################
 
                 self.state = 288
@@ -2722,7 +2737,7 @@ class coffParser ( Parser ):
                     numeroParametroActual = self.contadorParametros[len(self.contadorParametros)-1]-1
                     variableParametro = self.dirProcs[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],0][2][numeroParametroActual]
                     dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
-                    self.crearCuadruploParam(dirParametroActual)
+                    self.guardarCuadruploParam(dirParametroActual)
 
                 else:
                     cParametros = self.obtenerCantidadParametrosFuncionOMetodo(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
@@ -2736,7 +2751,7 @@ class coffParser ( Parser ):
                     numeroParametroActual = self.contadorParametros[len(self.contadorParametros)-1]-1
                     variableParametro = self.dirProcs[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],self.valorIdClaseActual[len(self.valorIdClaseActual)-1]][2][numeroParametroActual]
                     dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
-                    self.crearCuadruploParam(dirParametroActual)
+                    self.guardarCuadruploParam(dirParametroActual)
                 ###################################################################
 
                 self.state = 295
@@ -2877,12 +2892,7 @@ class coffParser ( Parser ):
                 ############################################
                 
                 self.match(coffParser.PIZQ)
-                self.state = 305
-
-                ############################################
-                self.crearCuadruploEra(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
-                ############################################
-                
+                self.state = 305                
                 self.va6()
                 self.state = 306
                 self.match(coffParser.PDER)
@@ -2951,7 +2961,7 @@ class coffParser ( Parser ):
                 numeroParametroActual = self.contadorParametros[len(self.contadorParametros)-1]-1
                 variableParametro = self.dirProcs[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],self.valorIdClaseActual[len(self.valorIdClaseActual)-1]][2][numeroParametroActual]
                 dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
-                self.crearCuadruploParam(dirParametroActual)
+                self.guardarCuadruploParam(dirParametroActual)
 
                 ###################################
                 
@@ -3398,7 +3408,8 @@ class coffParser ( Parser ):
                     print("Error en la linea " + str(self.getCurrentToken().line) + ", cantidad de parametros no coincide con el metodo")
                     sys.exit()
                     return
-
+                self.crearCuadruploEra(self.llamarfunmetIdClaseActual[len(self.llamarfunmetIdClaseActual)-1],self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1])
+                self.crearCuadruploParam()
                 self.crearCuadruploGosub(self.llamarfunmetIdClaseActual[len(self.llamarfunmetIdClaseActual)-1],self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1])
 
             else:
@@ -3406,7 +3417,8 @@ class coffParser ( Parser ):
                     print("Error en la linea " + str(self.getCurrentToken().line) + ", cantidad de parametros no coincide con la funcion")
                     sys.exit()
                     return
-
+                self.crearCuadruploEra(None,self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1])
+                self.crearCuadruploParam()
                 self.crearCuadruploGosub(None,self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1])
 
             self.contadorParametros.pop()
@@ -3480,8 +3492,6 @@ class coffParser ( Parser ):
                 self.tokenActual = str(self.getCurrentToken().text)
                 self.idFuncionActual = self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1]
                 self.lookForMethodClass()
-
-                self.crearCuadruploEra(self.llamarfunmetIdClaseActual[len(self.llamarfunmetIdClaseActual)-1],self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetMetodoOFuncion)-1])
                 #######################
 
                 self.match(coffParser.ID)
@@ -3493,7 +3503,6 @@ class coffParser ( Parser ):
                 self.llamarfunmetMetodoOFuncion[len(self.llamarfunmetMetodoOFuncion)-1] = 0
                 self.funcionOmetodo = self.llamarfunmetMetodoOFuncion[len(self.llamarfunmetMetodoOFuncion)-1] + 1
                 self.checkIfGlobalFunctionOrClassExists(self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetMetodoOFuncion)-1])
-                self.crearCuadruploEra(None,self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetMetodoOFuncion)-1])
                 #######################
 
             else:
@@ -3579,7 +3588,7 @@ class coffParser ( Parser ):
                     variableParametro = self.dirProcs[self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1],0][2][numeroParametroActual]
                     dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
 
-                self.crearCuadruploParam(dirParametroActual)
+                self.guardarCuadruploParam(dirParametroActual)
                 ##########################################
 
                 self.ll3()
@@ -3628,8 +3637,6 @@ class coffParser ( Parser ):
                 listener.exitLl3(self)
 
 
-
-
     def ll3(self):
 
         localctx = coffParser.Ll3Context(self, self._ctx, self.state)
@@ -3673,8 +3680,7 @@ class coffParser ( Parser ):
                     variableParametro = self.dirProcs[self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1],0][2][numeroParametroActual]
                     dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
 
-
-                self.crearCuadruploParam(dirParametroActual)
+                self.guardarCuadruploParam(dirParametroActual)
                 ##########################################
 
                 self.state = 361

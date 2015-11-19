@@ -78,11 +78,11 @@ class maquinaVirtual:
 	def obtenerTamanioFuncion(self):
 		if type(self.cuadruplos[self.InstruccionIndex][3]) is list:
 			return
-		tamanio = None
+
 		clase = self.cuadruplos[self.InstruccionIndex][2]
 		funcion = self.cuadruplos[self.InstruccionIndex][3]
 		if clase != None:
-			idClasePadre = obtenerIdClasePadre(clase)
+			idClasePadre = self.obtenerIdClasePadre(clase)
 			self.cuadruplos[self.InstruccionIndex][3] = self.dirPrincipal[funcion,idClasePadre][3]
 		else:
 			self.cuadruplos[self.InstruccionIndex][3] = self.dirPrincipal[funcion,0][3]
@@ -267,10 +267,13 @@ class maquinaVirtual:
 		self.obtenerTamanioFuncion()
 		aux = self.cuadruplos[self.InstruccionIndex][3]
 		self.stackCantidadEspacio.append(aux)
+
 		self.memoria[1][0] = self.memoria[1][0] + ([0] * aux[0])
 		self.contLocalInt = self.contLocalInt + aux[0]
+
 		self.memoria[1][1] = self.memoria[1][1] + ([0.0] * aux[1])
 		self.contLocalDecimal = self.contLocalDecimal + aux[1]
+
 		self.memoria[1][2] = self.memoria[1][2] + ([""] * aux[2])
 		self.contLocalTexto = self.contLocalTexto + aux[2]
 
@@ -335,6 +338,7 @@ class maquinaVirtual:
 
 	def retornar(self):
 		aux1 = None
+
 		if type(self.cuadruplos[self.InstruccionIndex][3]) is int:
 			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][3])
 			aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
@@ -346,6 +350,7 @@ class maquinaVirtual:
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 				indexs = self.obtenerDireccion(aux1)
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+
 		if len(self.stackRetornos) > 0:	
 			indexs2 = self.obtenerDireccion(self.stackRetornos.pop())
 			self.memoria[indexs2[0]][indexs2[1]][indexs2[2]- self.stackCantidadEspacio[len(self.stackCantidadEspacio) - 2][indexs2[1]]] = aux1
