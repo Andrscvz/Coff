@@ -2,6 +2,7 @@ clase coff{
 	atributos:
 		texto a;
 		entero b = 0;
+		decimal cc = 3.0;
 	metodos:
 		funcion entero manuel(entero c, decimal &d){
 			entero m;
@@ -51,10 +52,8 @@ principal vacio inicio(){
 
 	entero j;
 	decimal y;
-	coff k;
-
-	
-	ejec k.manuel(k.manuel(k.b,y);
+	coff k,h;
+	asigna k.b = k.manuel();
 
 
 }

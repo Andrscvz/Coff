@@ -340,6 +340,8 @@ class coffParser ( Parser ):
 
     terminacionProcs = None # para saber si estoy en principal o en una funcion
 
+    esAtributo = 0
+
     pilaO = [] #Pila de operandos
 
     pOper = [] #Pila de operadores
@@ -618,6 +620,7 @@ class coffParser ( Parser ):
 
 
     def insertarValorTipo(self,op,tipoOp):
+
         self.pilaO.append(op)
         self.pTipos.append(tipoOp)
 
@@ -654,15 +657,15 @@ class coffParser ( Parser ):
                                 self.contQuadTemporales = self.contQuadTemporales + 1
                             elif tipoCuadruplo == 'asignacion':
                                 self.quadruplos.append([oper,oDer,None,oIzq])
-                        else:
+                        #else:
                             #self.printTablaVariables()
                             #self.printDirProcs()
                             #self.printCuadruplos()
-                            print ("var1: " + oIzqTipo + " " + oIzq, " var2: " + oDerTipo + " " + oDer, " operador: " + oper)
-                            print ("Error semantico en la linea:" + str(self.getCurrentToken().line) + " Tipos de operandos no compatibles" )
-                            sys.exit()
-                            self._syntaxErrors = self._syntaxErrors + 1
-                            return
+                            #print ("var1: " + oIzqTipo + " " + oIzq, " var2: " + oDerTipo + " " + oDer, " operador: " + oper)
+                            #print ("Error semantico en la linea:" + str(self.getCurrentToken().line) + " Tipos de operandos no compatibles" )
+                            #sys.exit()
+                            #self._syntaxErrors = self._syntaxErrors + 1
+                            #return
                     else:
                         self.pilaO.append(oDer)
                         self.pTipos.append(oDerTipo)
@@ -907,11 +910,22 @@ class coffParser ( Parser ):
             var = self.dirProcs[nombreFuncion,idClasePadre][2][self.contadorParametros[len(self.contadorParametros)-1]][0]
             scope = self.dirProcs[nombreFuncion,idClasePadre][2][self.contadorParametros[len(self.contadorParametros)-1]][1]
 
+
         tipoParametro = self.tablaVariables[var,scope]
 
         if tipoExpresion == tipoParametro:
             self.contadorParametros[len(self.contadorParametros)-1] = self.contadorParametros[len(self.contadorParametros)-1] + 1 
         else:
+            print("")
+            print("Error de incompatibles:")
+            print("tipoExpresion")
+            print(tipoExpresion)
+            print("pila de tipos")
+            print(self.pTipos)
+            print("tipoParametro")
+            print(tipoParametro)
+            print("")
+
             print("Error en la linea " + str(self.getCurrentToken().line) +", tipos no coinciden con la funcion o metodo")
             sys.exit()
             return
@@ -1835,8 +1849,8 @@ class coffParser ( Parser ):
                 else:
                     self.tablaVariables[self.idVariableActual,self.scopeProcs] = self.tipoVariableActual
             
+
             self.insertarVariableEnMemoria(self.idVariableActual)
-            
             self.insertarValorTipo(self.idVariableActual,self.tipoVariableActual)
            
             ########################################################
@@ -1925,6 +1939,7 @@ class coffParser ( Parser ):
                 self.state = 238
                 self.valordeclaracion()
                 self.state = 239
+
                 self.insertarValorTipo(self.valorDeclaracion,self.tipoDeclaracion)
                 self.crearCuadruploExpAsig(4,"asignacion")
                 self.v6()
@@ -2332,7 +2347,6 @@ class coffParser ( Parser ):
                 self.match(coffParser.ID)
                 self.state = 273
                 self.va1()
-
                 ###############################################
                 #Checo si fue una funcion o metodo o si fue una variable simple
                 if self.valorEntraaMetodoOFuncion[len(self.valorEntraaMetodoOFuncion)-1] == 0:
@@ -2345,7 +2359,7 @@ class coffParser ( Parser ):
                     #buscar en vars globales
                     elif (self.ejecToken, 0) in self.tablaVariables:
                         self.insertarValorTipo(self.ejecToken,self.tablaVariables[self.ejecToken,0]) 
-                else:
+                elif self.esAtributo == 0:
                     #si fue una funcion o metodo genero el cuadruplo de gosub
                     self.crearCuadruploGosub(self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
 
@@ -2373,6 +2387,7 @@ class coffParser ( Parser ):
 
                 self.crearCuadruploExpAsig(0,'expresion')
                 ###############################################
+                self.esAtributo = 0
             else:
                 raise NoViableAltException(self)
 
@@ -2551,6 +2566,7 @@ class coffParser ( Parser ):
                     sys.exit()
                     return
 
+
                 self.checaTipoExpresionConParametro(None,self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
                 self.crearCuadruploParam()
                 ######################################
@@ -2626,7 +2642,6 @@ class coffParser ( Parser ):
                         print("Error en la linea " + str(self.getCurrentToken().line) + ", cantidad incorrecta de parametros")
                         sys.exit()
                         return
-
                     self.checaTipoExpresionConParametro(None,self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
                     self.crearCuadruploParam()
                 else:
@@ -2635,6 +2650,7 @@ class coffParser ( Parser ):
                         print("Error en la linea " + str(self.getCurrentToken().line) + ", cantidad incorrecta de parametros")
                         sys.exit()
                         return
+
                     self.checaTipoExpresionConParametro(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
                     self.crearCuadruploParam()
                 ###################################################################
@@ -2702,8 +2718,7 @@ class coffParser ( Parser ):
             self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1] = str(self.getCurrentToken().text)
             self.funcionOmetodo = 2
             self.tokenActual = str(self.getCurrentToken().text)
-
-
+            
             ######################################
 
             self.match(coffParser.ID)
@@ -2711,13 +2726,10 @@ class coffParser ( Parser ):
             self.va5()
 
             #####################################
-            print(self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
-            print( self.valorIdClaseActual[len(self.valorIdClaseActual)-1])
+            #print(self.funcionOmetodo)
+            
            
-            if self.contadorParametros[len(self.contadorParametros)-1] != self.obtenerCantidadParametrosFuncionOMetodo(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1]):
-                print("Error en la linea " + str(self.getCurrentToken().line) + ", cantidad incorrecta de parametros")
-                sys.exit()
-                return
+          
             #####################################
         except RecognitionException as re:
             localctx.exception = re
@@ -2785,12 +2797,28 @@ class coffParser ( Parser ):
                 
                 self.va6()
                 self.state = 306
+                
+
+                print(self.contadorParametros)
+                print(self.obtenerCantidadParametrosFuncionOMetodo(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1]))
+                if self.contadorParametros[len(self.contadorParametros)-1] != self.obtenerCantidadParametrosFuncionOMetodo(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1]):
+                    print("Error en la linea " + str(self.getCurrentToken().line) + ", cantidad incorrecta de parametros")
+                    sys.exit()
+                    return
                 self.match(coffParser.PDER)
 
             elif token in [coffParser.PDER, coffParser.CDER, coffParser.SUMA, coffParser.RESTA, coffParser.DIV, coffParser.MULT, coffParser.IGUALQUE, coffParser.MENQUE, coffParser.MAYQUE, coffParser.MAYIGUALQUE, coffParser.MENIGUALQUE, coffParser.DIF, coffParser.CONDICIONO, coffParser.CONDICIONY, coffParser.COMA, coffParser.PUNTOYCOMA]:
                 self.enterOuterAlt(localctx, 2)
-
-                if (str(self.getCurrentToken().text) == ";"):                    
+                self.esAtributo = 1
+                atributo = self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1]
+                try:
+                    tipoAtributo = self.tablaVariables[atributo,self.dirProcs[self.claseIDRef,0][0]]
+                except KeyError:
+                    print ("Error, el atributo "+atributo+" no ha sido declarado")
+                    sys.exit()
+                    return
+                self.insertarValorTipo(atributo,tipoAtributo)  
+                if (str(self.getCurrentToken().text) == ";"):                 
                     self.idVariableActual = self.tokenActual
                     self.checkIfAttributeBelongs()
             else:
@@ -2844,17 +2872,19 @@ class coffParser ( Parser ):
                 self.state = 311
                 self.expresion()
                 
-                ###################################
-                self.checaTipoExpresionConParametro(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
-                self.crearCuadruploParam()
-                ###################################
+               
                 
                 self.state = 312
                 self.va3()
 
             elif token in [coffParser.PDER]:
                 self.enterOuterAlt(localctx, 2)
-
+                ###################################
+                print(self.valorIdClaseActual[len(self.valorIdClaseActual)-1])
+                print(self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
+                self.checaTipoExpresionConParametro(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
+                self.crearCuadruploParam()
+                ###################################
 
             else:
                 raise NoViableAltException(self)
@@ -4964,13 +4994,12 @@ class coffParser ( Parser ):
 
 
 
-            tipoVar = self.checkIfVariableExists()
+            #tipoVar = self.checkIfVariableExists()
 
 
 
 
-            #Cuadruplo de asignacion
-            self.insertarValorTipo(self.idVariableActual,tipoVar)
+           
             self.match(coffParser.ID)
             self.state = 481
             self.a1()
@@ -5026,15 +5055,24 @@ class coffParser ( Parser ):
             self.state = 490
             token = self._input.LA(1)
             if token in [coffParser.PUNTO]:
+                
                 self.enterOuterAlt(localctx, 1)
                 self.state = 487
+                self.claseIDRef = self.tablaVariables[self.idVariableActual,self.scopeProcs]
                 self.match(coffParser.PUNTO)
                 self.state = 488
                 self.idVariableActual = str(self.getCurrentToken().text)
+
+                tipoVar = self.checkIfVariableExists()
+                 #Cuadruplo de asignacion
+                self.insertarValorTipo(self.idVariableActual,tipoVar)
                 self.checkIfAttributeBelongs()
                 self.match(coffParser.ID)
 
             elif token in [coffParser.CIZQ, coffParser.IGUAL]:
+                tipoVar = self.checkIfVariableExists()
+                 #Cuadruplo de asignacion
+                self.insertarValorTipo(self.idVariableActual,tipoVar)
                 self.enterOuterAlt(localctx, 2)
 
 
