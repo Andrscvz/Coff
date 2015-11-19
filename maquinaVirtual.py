@@ -384,6 +384,7 @@ class maquinaVirtual:
 
 	def empezar(self):
 		while (self.cuadruplos[self.InstruccionIndex][0] != "end"):
+			print(self.cuadruplos[self.InstruccionIndex])
 			if self.cuadruplos[self.InstruccionIndex][0] in ["+", "-", "*", "/", "==", ">", "&&", "||", "<", "!=", ">=", "<="]:
 				self.operacionBasica(self.cuadruplos[self.InstruccionIndex][0])
 

@@ -1,4 +1,6 @@
 
+entero f = 10;
+
 funcion vacio uno(entero a){	
 	imprimir( a );
 } 
@@ -15,5 +17,7 @@ principal vacio inicio(){
 	asigna i = dos(i+j);
 
 	imprimir(i);
+
+	imprimir(f * i);
 
 }

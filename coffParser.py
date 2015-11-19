@@ -822,9 +822,19 @@ class coffParser ( Parser ):
     def crearCuadruploMain(self):
         self.quadruplos.append(['goto',None,None,None])
 
+
     def completarCuadruploMain(self):
         cont = len(self.quadruplos)
         self.quadruplos[0][3] = cont
+
+    cuadruploFinVarsGlobales = 0
+    def crearCuadruploVarsGlobales(self):
+        self.cuadruploFinVarsGlobales = len(self.quadruplos)
+        self.quadruplos.append(['goto',None,None,None])
+
+    def completarCuadruploVarsGlobales(self):
+        cont = len(self.quadruplos)
+        self.quadruplos[self.cuadruploFinVarsGlobales][3] = cont
 
     def crearCuadruploTerminarProc(self):
         self.quadruplos.append([self.terminacionProc,None,None,None])
@@ -1069,7 +1079,7 @@ class coffParser ( Parser ):
             self.state = 164
             self.p3()
             self.state = 165
-            self.completarCuadruploMain()
+            self.completarCuadruploVarsGlobales()
             self.principal()
             self.terminacionProc = 'end'
             self.dirProcs["inicio",0][3] = [self.memLocalEntero - 8999,self.memLocalDecimal - 14999,self.memLocalTexto - 20999]
@@ -1183,7 +1193,9 @@ class coffParser ( Parser ):
                 self.state = 173
                 #####################################
                 self.globalTof = 1
+                self.completarCuadruploMain()
                 self.variables()
+                self.crearCuadruploVarsGlobales()
                 self.globalTof = 0
                 #####################################
                 self.state = 174

@@ -53,5 +53,7 @@ principal vacio inicio(){
 	decimal y;
 	coff k;
 
+	asigna k.b = k.manuel(1,1.0);
+
 
 }
