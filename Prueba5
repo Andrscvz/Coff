@@ -1,29 +1,16 @@
 
-entero i = 0,j;
-decimal d = 0.0;
-texto t = "t";
-
-funcion vacio uno(entero a){
-	
-	entero i;
-
-	asigna i = a * 2;
-
-	si( i < a + 4){
-		ejec uno(a + 1);
-	}
-	
-	imprimir( i );
+funcion vacio uno(entero a){	
+	imprimir( a );
 } 
 
 funcion entero dos(entero b){
-	entero h = 1;
-	asigna b = b * i + j;
 
 	retorna b * 2;
 } 
 
 principal vacio inicio(){
+	
+	entero i,j;
 
 	asigna i = 2;
 	asigna j = i * 2 - 1;

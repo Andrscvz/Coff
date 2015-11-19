@@ -23,7 +23,7 @@ class maquinaVirtual:
 	contLocalDecimal = 0
 
 	contLocalTexto = 0
-	def __init__(self, dirPrincipal:dict, cuadruplos:list, contGlobalInt:int, contGlobalDecimal:int, contGlobalTexto:int, contInicioInt:int, contInicioDecimal:int, contInicioTexto:int):
+	def __init__(self, dirPrincipal, cuadruplos, contGlobalInt, contGlobalDecimal, contGlobalTexto, contInicioInt, contInicioDecimal, contInicioTexto):
 		self.dirPrincipal = dirPrincipal
 		self.cuadruplos = cuadruplos
 		self.memoria[0][0] = [0] * contGlobalInt
@@ -39,7 +39,7 @@ class maquinaVirtual:
 
 	# calcula los indices de acuerdo a una funcion
 
-	def obtenerDireccion(self, direccion:int):
+	def obtenerDireccion(self, direccion):
 		indexs = [0, 0, 0]
 		if direccion >= 9000:
 			indexs[0] = 1
@@ -89,7 +89,7 @@ class maquinaVirtual:
 
 	# hace operaciones aritmeticas y logicas entre 2 valores y lo guarda en una direccion
 
-	def operacionBasica(self, op:str):
+	def operacionBasica(self, op):
 		aux1 = 0
 		aux2 = 0
 		if type(self.cuadruplos[self.InstruccionIndex][1]) is int:
@@ -118,6 +118,7 @@ class maquinaVirtual:
 				aux2 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 
 		indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][3])
+
 		if op == "+":
 			self.memoria[indexs[0]][indexs[1]][indexs[2]] = aux1 + aux2
 		elif op == "*":
@@ -238,12 +239,14 @@ class maquinaVirtual:
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 				indexs = self.obtenerDireccion(aux1)
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]	
+
 		if type(self.cuadruplos[self.InstruccionIndex][3]) is list:
 			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][3][0][0])
 			aux = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 			indexs = self.obtenerDireccion(aux)
 		else:
 			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][3])
+		
 		if indexs[1] == 0:
 			try:
 				self.memoria[indexs[0]][indexs[1]][indexs[2]] = int(aux1)
@@ -275,7 +278,7 @@ class maquinaVirtual:
 
 	def gosub(self):
 		self.stackDireccionesFunciones.append(self.InstruccionIndex)
-		self.InstruccionIndex = self.cuadruplos[self.InstruccionIndex][3] - 1
+		self.InstruccionIndex = int(self.cuadruplos[self.InstruccionIndex][3]) - 1
 
 	# se le asignan valores a los parametros de una funcion
 
@@ -300,7 +303,7 @@ class maquinaVirtual:
 
 	# se asginan los valores a las variables que se pasaron por referencia al invocar una funcion
 
-	def asignarReferencias(self, referencias:list):
+	def asignarReferencias(self, referencias):
 		for par in referencias:
 			indexs1 = self.obtenerDireccion(par[0])
 			if par[1] is list:
