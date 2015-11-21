@@ -1100,8 +1100,8 @@ class coffParser ( Parser ):
             self.terminacionProc = 'end'
             self.dirProcs["inicio",0][3] = [self.memLocalEntero - 8999,self.memLocalDecimal - 14999,self.memLocalTexto - 20999]
             self.crearCuadruploTerminarProc()
-            #self.printTablaVariables()
-            #self.printDirProcs()
+            self.printTablaVariables()
+            self.printDirProcs()
             self.printCuadruplos()
         except RecognitionException as re:
             localctx.exception = re

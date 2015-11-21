@@ -23,6 +23,17 @@ clase coff{
 		}
 }
 
+clase coffito extiende coff{
+	atributos:
+		entero aaa;
+		
+	metodos:
+		funcion entero andsssres(){
+			retorna 1;
+		}
+}
+
+
 entero h;
 texto p;
 coff F;
