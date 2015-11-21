@@ -636,6 +636,10 @@ class coffParser ( Parser ):
         self.pOper.append(op)
 
 
+    def obtenerTipoDeAtributo(self, nombreAtributo, nombreClase):
+        return self.tablaVariables[nombreAtributo,self.dirProcs[nombreClase,0][0]]   
+
+
     def crearCuadruploExpAsig(self,op,tipoCuadruplo):
         #OP = 0 - mult,div 1 - suma,resta 2 - relacionales 3 - logicos 4 - asignacion
         if self.pOper:
@@ -666,14 +670,6 @@ class coffParser ( Parser ):
                             elif tipoCuadruplo == 'asignacion':
                                 self.quadruplos.append([oper,oDer,None,oIzq])
                         else:
-                            print(oper)
-                            print(oIzqTipo)
-                            print(oDerTipo)
-
-
-                            #self.printTablaVariables()
-                            #self.printDirProcs()
-                            #self.printCuadruplos()
                             print ("Error semantico en la linea:" + str(self.getCurrentToken().line) + " Tipos de operandos no compatibles" )
                             sys.exit()
                             self._syntaxErrors = self._syntaxErrors + 1
@@ -834,9 +830,19 @@ class coffParser ( Parser ):
     def crearCuadruploMain(self):
         self.quadruplos.append(['goto',None,None,None])
 
+
     def completarCuadruploMain(self):
         cont = len(self.quadruplos)
         self.quadruplos[0][3] = cont
+
+    cuadruploFinVarsGlobales = 0
+    def crearCuadruploVarsGlobales(self):
+        self.cuadruploFinVarsGlobales = len(self.quadruplos)
+        self.quadruplos.append(['goto',None,None,None])
+
+    def completarCuadruploVarsGlobales(self):
+        cont = len(self.quadruplos)
+        self.quadruplos[self.cuadruploFinVarsGlobales][3] = cont
 
     def crearCuadruploTerminarProc(self):
         self.quadruplos.append([self.terminacionProc,None,None,None])
@@ -913,8 +919,6 @@ class coffParser ( Parser ):
                 sys.exit()
                 return
         else:   
-            print(nombreVariable)
-            print(nombreFuncion)
             clase = self.obtenerClaseDeUnaFuncionEra(nombreVariable,nombreFuncion)
             idClasePadre = self.dirProcs[clase,0][0]
             return len(self.dirProcs[nombreFuncion,idClasePadre][2])
@@ -938,15 +942,6 @@ class coffParser ( Parser ):
 
             self.contadorParametros[len(self.contadorParametros)-1] = self.contadorParametros[len(self.contadorParametros)-1] + 1 
         else:
-            #print("")
-            #print("Error de incompatibles:")
-            #print("nombreVariable")
-            #print(nombreVariable)
-            #print("pila de tipos")
-            #print(self.pTipos)
-            #print("nombreFuncion")
-            #print(nombreFuncion)
-            #print("")
 
             print("Error en la linea " + str(self.getCurrentToken().line) +", tipos no coinciden con la funcion o metodo")
             sys.exit()
@@ -1098,8 +1093,9 @@ class coffParser ( Parser ):
             self.state = 164
             self.p3()
             self.state = 165
-            self.completarCuadruploMain()
-            #self.printDirProcs()
+
+            self.completarCuadruploVarsGlobales()
+
             self.principal()
             self.terminacionProc = 'end'
             self.dirProcs["inicio",0][3] = [self.memLocalEntero - 8999,self.memLocalDecimal - 14999,self.memLocalTexto - 20999]
@@ -1212,7 +1208,9 @@ class coffParser ( Parser ):
                 self.state = 173
                 #####################################
                 self.globalTof = 1
+                self.completarCuadruploMain()
                 self.variables()
+                self.crearCuadruploVarsGlobales()
                 self.globalTof = 0
                 #####################################
                 self.state = 174
@@ -1928,7 +1926,6 @@ class coffParser ( Parser ):
             
 
             self.insertarVariableEnMemoria(self.idVariableActual)
-
             self.insertarValorTipo(self.obtenerDireccionVariable(self.idVariableActual),self.tipoVariableActual)
 
            
@@ -3018,16 +3015,10 @@ class coffParser ( Parser ):
                 ################nombre variable luego nombre funcion###################
                 ######################################
 
-                print("///////")
-                print(self.ejecToken)
-                cParametros = self.obtenerCantidadParametrosFuncionOMetodo(self.ejecToken,self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual) - 1])
+
+                cParametros = self.obtenerCantidadParametrosFuncionOMetodo(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual) - 1])
 
 
-                print(self.valorIdClaseActual[len(self.valorIdClaseActual) - 1])
-                print(self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual) - 1])
-                print(cParametros)
-                print(self.contadorParametros)
-                print(self.contadorParametros[len(self.contadorParametros) - 1])
                 if cParametros < self.contadorParametros[len(self.contadorParametros) - 1]+1:
                     print("Error en la linea " + str(self.getCurrentToken().line) + ", cantidad incorrecta de parametros")
                     sys.exit()
@@ -3626,8 +3617,6 @@ class coffParser ( Parser ):
     def idDeMetodo2(self,nombreMetodo):
         for key, values in self.dirProcs.items():
             if key[0] == nombreMetodo and key[1] != 0:
-                print("///////")
-                print(key[1])
                 return key[1]
 
 
@@ -3662,8 +3651,6 @@ class coffParser ( Parser ):
 
                     par1 = self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1]
                     par2 = self.idDeMetodo2(self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1])
-                    print(self.metodoTof)
-                    print("1111")
                     variableParametro = self.dirProcs[par1,par2][2][numeroParametroActual]
                     dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
 
@@ -5218,16 +5205,9 @@ class coffParser ( Parser ):
             self.ejecToken = self.idVariableActual
             
 
-
-
             tipoVar = self.checkIfVariableExists()
 
 
-
-
-
-           
-            
             self.match(coffParser.ID)
 
             self.state = 481
@@ -5241,6 +5221,7 @@ class coffParser ( Parser ):
             self.expresion()
             self.state = 485
             self.match(coffParser.PUNTOYCOMA)
+
             self.crearCuadruploExpAsig(4,'asignacion')
         except RecognitionException as re:
             localctx.exception = re
@@ -5274,8 +5255,7 @@ class coffParser ( Parser ):
                 listener.exitA1(self)
 
 
-    def obtenerTipoDeAtributo(self, nombreAtributo, nombreClase):
-        return self.tablaVariables[nombreAtributo,self.dirProcs[nombreClase,0][0]]           
+        
 
     def a1(self):
 
@@ -5312,7 +5292,7 @@ class coffParser ( Parser ):
             elif token in [coffParser.CIZQ, coffParser.IGUAL]:
                 tipoVar = self.checkIfVariableExists()
                  #Cuadruplo de asignacion
-                self.insertarValorTipo(self.idVariableActual,tipoVar)
+                self.insertarValorTipo(self.obtenerDireccionVariable(self.idVariableActual),tipoVar)
                 self.enterOuterAlt(localctx, 2)
 
 
@@ -5845,7 +5825,7 @@ class coffParser ( Parser ):
             self.idVariableActual = str(self.getCurrentToken().text)
             self.checkIfVariableExists()
 
-            self.crearCuadruploLectura(self.idVariableActual)
+            self.crearCuadruploLectura(self.obtenerDireccionVariable(self.idVariableActual))
             self.match(coffParser.ID)
             self.state = 542
             self.l1()
