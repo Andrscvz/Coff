@@ -1838,6 +1838,8 @@ class coffParser ( Parser ):
             self.state = 224
             ############################################
             self.tipoVariableActual = str(self.getCurrentToken().text)
+            self.tipoVariableUntouched = self.tipoVariableActual
+
             if self.esTipoFuncionOMetodo == 1:
                 self.tipoActualFuncionOMetodo = self.tipoVariableActual
             self.esTipoFuncionOMetodo = 0
@@ -1948,7 +1950,7 @@ class coffParser ( Parser ):
             if self.atributosTof:
                 self.atributosClase.append([self.idVariableActual,self.scopeProcs])
 
-    
+
             if self.globalTof:
                 if (self.idVariableActual, 0) in self.tablaVariables:
                     print("Error, la variable "+ self.idVariableActual+" ya habia sido declarada")
@@ -1963,7 +1965,31 @@ class coffParser ( Parser ):
                     return
                 else:
                     self.tablaVariables[self.idVariableActual,self.scopeProcs] = [self.tipoVariableActual,1,self.obtenerDireccionActualTipo(0,self.tipoVariableActual)]
-            
+
+            try: 
+                if self.dirProcs[self.tipoVariableUntouched,0]: #si es una variable compuesta:                     
+                    i = 0
+                    if self.globalTof == 0:
+
+                        for direccion in self.tablaVariables[self.idVariableActual,self.scopeProcs][2]:
+                            
+                            self.insertarValorTipo(direccion,self.dirProcs[self.tipoVariableActual,0][2][i][2])
+                            self.insertarValorTipo([self.dirProcs[self.tipoVariableActual,0][2][i][3]],self.dirProcs[self.tipoVariableActual,0][2][i][2])
+
+                            self.insertarOperador("=")
+                            self.crearCuadruploExpAsig(4,"asignacion")
+                            i = i + 1
+                    else:
+                        for direccion in self.tablaVariables[self.idVariableActual,0][2]:
+                        
+                            self.insertarValorTipo(direccion,self.dirProcs[self.tipoVariableActual,0][2][i][2])
+                            self.insertarValorTipo([self.dirProcs[self.tipoVariableActual,0][2][i][3]],self.dirProcs[self.tipoVariableActual,0][2][i][2])
+
+                            self.insertarOperador("=")
+                            self.crearCuadruploExpAsig(4,"asignacion")
+                            i = i + 1
+            except KeyError:
+                pass
 
             self.insertarVariableEnMemoria(self.idVariableActual)
             self.insertarValorTipo(self.obtenerDireccionVariable(self.idVariableActual),self.tipoVariableActual)
@@ -1973,6 +1999,8 @@ class coffParser ( Parser ):
             self.match(coffParser.ID)
             self.state = 231
             self.v2()
+
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -2056,6 +2084,9 @@ class coffParser ( Parser ):
                 self.valordeclaracion()
                 self.state = 239
 
+
+
+
                 if self.atributosTof:
                     if self.tipoDeclaracion == 'entero':
                         self.atributosClase[len(self.atributosClase)-1].append('entero')
@@ -2067,13 +2098,19 @@ class coffParser ( Parser ):
                         self.atributosClase[len(self.atributosClase)-1].append('texto')
                         self.atributosClase[len(self.atributosClase)-1].append(self.valorDeclaracion.replace('"',""))
 
+ 
+
+ 
+
+
+
                 if self.tipoDeclaracion == 'entero':
                     self.insertarValorTipo([int(self.valorDeclaracion)], self.tipoDeclaracion)
                 elif self.tipoDeclaracion == 'decimal':
                     self.insertarValorTipo([float(self.valorDeclaracion)], self.tipoDeclaracion)
                 elif self.tipoDeclaracion == 'texto':
                     self.insertarValorTipo([self.valorDeclaracion.replace('"',"")], self.tipoDeclaracion)
-                
+
                 self.tipoDeclaracion = None
 
 
@@ -2393,6 +2430,7 @@ class coffParser ( Parser ):
                 if _la in [coffParser.CTETEXTO]:
                     self.valorDeclaracion = constante
                     self.tipoDeclaracion = 'texto'
+
 
                 self.consume()
         except RecognitionException as re:

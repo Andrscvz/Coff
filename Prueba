@@ -1,6 +1,7 @@
 clase coff{
 	atributos:
 		entero a=9;
+		texto kaka = "sss";
 	metodos:
 		funcion vacio manuel(entero c){
 			asigna a = c;
