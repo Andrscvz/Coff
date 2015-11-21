@@ -14,7 +14,7 @@ principal vacio inicio(){
 	
 	entero i=1,j=1;
 
-	asigna i = dos(i+j);
+	asigna i = dos(dos(i+j));
 
 	imprimir(i);
 

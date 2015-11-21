@@ -1,0 +1,25 @@
+
+funcion entero factorial( entero n){
+	
+	entero x;
+
+	si(n == 1){
+		asigna x = 1;
+	}o{
+		asigna x = n * factorial(n - 1); 
+	}
+
+	retorna x;
+}
+
+principal vacio inicio(){
+
+	entero j;
+
+	leer(j);
+
+	asigna j = factorial(j);
+
+	imprimir(j);
+
+}

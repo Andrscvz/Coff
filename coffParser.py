@@ -5736,7 +5736,7 @@ class coffParser ( Parser ):
             self.idVariableActual = str(self.getCurrentToken().text)
             self.checkIfVariableExists()
 
-            self.crearCuadruploLectura(self.idVariableActual)
+            self.crearCuadruploLectura(self.obtenerDireccionVariable(self.idVariableActual))
             self.match(coffParser.ID)
             self.state = 542
             self.l1()
