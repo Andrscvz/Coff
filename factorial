@@ -15,10 +15,11 @@ funcion entero factorial( entero n){
 principal vacio inicio(){
 
 	entero j;
+	entero m;
 
-	leer(j);
+	leer(m);
 
-	asigna j = factorial(j);
+	asigna j = factorial(m);
 
 	imprimir(j);
 

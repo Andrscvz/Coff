@@ -267,7 +267,6 @@ class maquinaVirtual:
 		self.obtenerTamanioFuncion()
 		aux = self.cuadruplos[self.InstruccionIndex][3]
 		self.stackCantidadEspacio.append(aux)
-
 		self.memoria[1][0] = self.memoria[1][0] + ([0] * aux[0])
 		self.contLocalInt = self.contLocalInt + aux[0]
 

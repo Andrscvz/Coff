@@ -29,12 +29,8 @@ coff F;
 
 funcion entero dos(entero b){
 	asigna b = b + 2;
-	
-
 
 	retorna b;
-	
-	
 } 
 
 principal vacio inicio(){
@@ -46,7 +42,7 @@ principal vacio inicio(){
 	coff k,h;
 	asigna y = 3.0;
 
-	asigna t = k.manuel(5,y);
+	asigna t = k.manuel(dos(dos(3)),y);
 	imprimir(t);
 	
 

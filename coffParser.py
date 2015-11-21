@@ -1100,6 +1100,7 @@ class coffParser ( Parser ):
             self.terminacionProc = 'end'
             self.dirProcs["inicio",0][3] = [self.memLocalEntero - 8999,self.memLocalDecimal - 14999,self.memLocalTexto - 20999]
             self.crearCuadruploTerminarProc()
+            
             #self.printTablaVariables()
             #self.printDirProcs()
             self.printCuadruplos()
@@ -2465,7 +2466,6 @@ class coffParser ( Parser ):
                     if self.valorMetodoOFuncion[len(self.valorMetodoOFuncion)-1]:
                         self.crearCuadruploEra(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
                         self.crearCuadruploParam()
-                        
                         tipoMetFunc = self.obtenerTipoDeUnMetodoEra(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
                     else:        
                         self.crearCuadruploEra(None,self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
@@ -2938,7 +2938,6 @@ class coffParser ( Parser ):
                 ####cambie esto en la ultima vez
 
                 #self.checaTipoExpresionConParametro(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
-                self.crearCuadruploParam()
                 self.match(coffParser.PDER)
 
             elif token in [coffParser.PDER, coffParser.CDER, coffParser.SUMA, coffParser.RESTA, coffParser.DIV, coffParser.MULT, coffParser.IGUALQUE, coffParser.MENQUE, coffParser.MAYQUE, coffParser.MAYIGUALQUE, coffParser.MENIGUALQUE, coffParser.DIF, coffParser.CONDICIONO, coffParser.CONDICIONY, coffParser.COMA, coffParser.PUNTOYCOMA]:
