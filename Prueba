@@ -1,13 +1,12 @@
 clase coff{
 	atributos:
-		texto a;
-		entero b = 0;
+		entero a;
+		texto b = "a";
 		decimal cc = 3.0;
 	metodos:
 		funcion entero manuel(entero c, decimal &d){
 			entero m;
 			coff k;
-			imprimir(a);
 			retorna 1;
 		}
 		
@@ -16,44 +15,25 @@ clase coff{
 		}
 }
 
-
-clase ss extiende coff{
-	atributos:
-
-		texto hhh = "j";
-		entero ccc = 0;
-	metodos:
-		funcion entero sasd(entero c, decimal &d){
-			
-			retorna 1;
-		}
-
-}
-
-entero h[20] = [0,1,2];
-texto i[10] = ["a","b"];
-
-funcion entero suma1(entero e, entero aaa){
-	decimal g = 0.0;
-	ejec suma1(e, e);
-	asigna e = e + 1;
-	retorna 1;
-} 
-
-
-funcion entero suma2(){
-	retorna 2;
-} 
-
-funcion vacio suma3(){
+funcion entero dos(entero b){
+	asigna b = b * 2;
+	si (b < 3) {
+		asigna b = dos(dos(1));
+	}
+	
+	retorna b;
 } 
 
 principal vacio inicio(){
 
 	entero j;
 	decimal y;
+
 	coff k,h;
-	asigna k.b = k.manuel();
+	ejec k.manuel(dos(dos(1)),y);
+
+
+	
 
 
 }

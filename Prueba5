@@ -1,0 +1,19 @@
+
+funcion vacio uno(entero a){	
+	imprimir( a );
+} 
+
+funcion entero dos(entero b){
+
+	retorna b * 2;
+} 
+
+principal vacio inicio(){
+	
+	entero i=1,j=1;
+
+	asigna i = dos(i+j);
+
+	imprimir(i);
+
+}
