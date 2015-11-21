@@ -575,15 +575,6 @@ class coffParser ( Parser ):
             elif tipoVar == "texto":
                 self.memGlobalTexto = self.memGlobalTexto + 1
                 direccion = self.memGlobalTexto
-            else:
-                for atributo in self.dirProcs[tipoVar,0][2]:
-                    tipoAtributo = self.tablaVariables[atributo[0],atributo[1]][0]
-                    if tipoAtributo == "entero":
-                        self.memGlobalEntero = self.memGlobalEntero + 1
-                    elif tipoAtributo == "decimal":
-                        self.memGlobalDecimal = self.memGlobalDecimal + 1
-                    elif tipoAtributo == "texto":
-                        self.memGlobalTexto = self.memGlobalTexto + 1
 
 
         #variables locales
@@ -598,15 +589,7 @@ class coffParser ( Parser ):
             elif tipoVar == "texto":
                 self.memLocalTexto = self.memLocalTexto + 1
                 direccion = self.memLocalTexto
-            else:
-                for atributo in self.dirProcs[tipoVar,0][2]:
-                    tipoAtributo = self.tablaVariables[atributo[0],atributo[1]][0]
-                    if tipoAtributo == "entero":
-                        self.memLocalEntero = self.memLocalEntero + 1
-                    elif tipoAtributo == "decimal":
-                        self.memLocalDecimal = self.memLocalDecimal + 1
-                    elif tipoAtributo == "texto":
-                        self.memLocalTexto = self.memLocalTexto + 1
+
         #print("Variable:",variableActual)
         #self.imprimeMemoria()
 
@@ -651,7 +634,10 @@ class coffParser ( Parser ):
                     if self.pilaO:
                         oIzq = self.pilaO.pop()
                         oIzqTipo = self.pTipos.pop()
-                        res = self.cuboSemantico.checarSemanticaExp(oIzqTipo,oDerTipo,oper)
+                        try: #si viene una variable simple
+                            res = self.cuboSemantico.checarSemanticaExp(oIzqTipo,oDerTipo,oper)
+                        except TypeError: #si viene un atributo
+                            res = self.cuboSemantico.checarSemanticaExp(oIzqTipo[0],oDerTipo,oper)
                         if res != None:
                             if tipoCuadruplo == 'expresion':
                                 if res == "entero":
@@ -1015,12 +1001,20 @@ class coffParser ( Parser ):
         for key,value in self.tablaVariables.items():
             if key[0] == variable and key[1] == 0:
                 return value[2]
+        #si es miembro de una clase
+        for key,value in self.tablaVariables.items():
+            if key[0] == variable and key[1] != 0:
+                return value[2]
 
         
         print("Error en la linea " + str(self.getCurrentToken().line) + " no existe la variable")
         sys.exit()
         return
     
+    def obtenerAtributosDeClase(self,clase):
+        return self.dirProcs[clase,0][2]
+
+
     #Regresa la direccion actual del tipo requerido
     def obtenerDireccionActualTipo(self,globalTof,tipo):
         if globalTof:
@@ -1031,7 +1025,22 @@ class coffParser ( Parser ):
             elif tipo == "texto":
                 return self.memGlobalTexto + 1
             else:
-                return None
+                atributos = self.obtenerAtributosDeClase(tipo)
+                listaDeDireccionesGlobales = []
+                for atributo in atributos:
+                    print("////////////")
+                    tipo = self.tablaVariables[atributo[0], atributo[1]][0]
+                    print(tipo)
+                    if tipo == "entero":
+                        self.memGlobalEntero = self.memGlobalEntero + 1
+                        listaDeDireccionesGlobales.append(self.memGlobalEntero)
+                    elif tipo == "decimal":
+                        self.memGlobalDecimal = self.memGlobalDecimal + 1
+                        listaDeDireccionesGlobales.append(self.memGlobalDecimal)
+                    elif tipo == "texto":
+                        self.memGlobalTexto = self.memGlobalTexto + 1
+                        listaDeDireccionesGlobales.append(self.memGlobalTexto)
+            return listaDeDireccionesGlobales
         else:
             if tipo == "entero":
                 return self.memLocalEntero + 1
@@ -1040,7 +1049,22 @@ class coffParser ( Parser ):
             elif tipo == "texto":
                 return self.memLocalTexto + 1
             else:
-                return None
+                atributos = self.obtenerAtributosDeClase(tipo)
+                listaDeDireccionesGlobales = []
+                for atributo in atributos:
+                    tipo = self.tablaVariables[atributo[0], atributo[1]][0]
+                    print("////////////")
+                    print(tipo)
+                    if tipo == "entero":
+                        self.memGlobalEntero = self.memGlobalEntero + 1
+                        listaDeDireccionesGlobales.append(self.memGlobalEntero)
+                    elif tipo == "decimal":
+                        self.memGlobalDecimal = self.memGlobalDecimal + 1
+                        listaDeDireccionesGlobales.append(self.memGlobalDecimal)
+                    elif tipo == "texto":
+                        self.memGlobalTexto = self.memGlobalTexto + 1
+                        listaDeDireccionesGlobales.append(self.memGlobalTexto)
+            return listaDeDireccionesGlobales
 
 
     class ProgramaContext(ParserRuleContext):
@@ -5206,7 +5230,6 @@ class coffParser ( Parser ):
             
 
             tipoVar = self.checkIfVariableExists()
-
 
             self.match(coffParser.ID)
 

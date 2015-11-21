@@ -1,64 +1,27 @@
 clase coff{
 	atributos:
-		entero a;
-		texto b = "a";
-		decimal cc = 3.0;
+		entero a=9;
 	metodos:
-		funcion texto manuel(entero c, decimal &d){
-			entero m;
-			texto t;
-			asigna m = 2;
-			imprimir(d);
-			imprimir(c);
-			si (c > m) {
-				asigna t = "c es mayor que m";
-			} o {
-				asigna t = "c es menor o igual que m";
-			}
-			retorna t;
-		}
-		
-		funcion entero andres(){
-			retorna 1;
+		funcion vacio manuel(entero c){
+			asigna a = c;
+			imprimir(a);
 		}
 }
-
-clase coffito extiende coff{
-	atributos:
-		entero aaa;
-		
-	metodos:
-		funcion entero andsssres(){
-			retorna 1;
-		}
-}
-
 
 entero h;
 texto p;
 coff F;
 
-funcion entero dos(entero b){
-	asigna b = b + 2;
-	
-
-
-	retorna b;
-	
-	
-} 
 
 principal vacio inicio(){
 
-	entero j;
-	decimal y;
-	texto t;
+	coff k;
 
-	coff k,h;
-	asigna y = 3.0;
 
-	asigna t = k.manuel(5,y);
-	imprimir(t);
+	asigna k.a = 3;
+
+
+	ejec k.manuel(4);
 	
 
 }
