@@ -5,7 +5,7 @@ funcion vacio uno(entero a){
 	imprimir( a );
 } 
 
-funcion entero dos(entero b){
+funcion decimal dos(decimal b){
 
 	retorna b * 2;
 } 
@@ -13,10 +13,11 @@ funcion entero dos(entero b){
 principal vacio inicio(){
 	
 	entero i=1,j=1;
+	texto k;
+	decimal y;
+	asigna i = dos(dos(2.0));
 
-	asigna i = dos(dos(i+j));
-
-	imprimir(i);
+	imprimir(y);
 
 	imprimir(f * i);
 

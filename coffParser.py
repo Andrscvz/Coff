@@ -667,7 +667,6 @@ class coffParser ( Parser ):
                             #self.printTablaVariables()
                             #self.printDirProcs()
                             #self.printCuadruplos()
-                            print ("var1: " + oIzqTipo + " " + oIzq, " var2: " + oDerTipo + " " + oDer, " operador: " + oper)
                             print ("Error semantico en la linea:" + str(self.getCurrentToken().line) + " Tipos de operandos no compatibles" )
                             sys.exit()
                             self._syntaxErrors = self._syntaxErrors + 1
@@ -5131,12 +5130,7 @@ class coffParser ( Parser ):
             self.ejecToken = self.idVariableActual
             
 
-
-
             tipoVar = self.checkIfVariableExists()
-
-
-
 
             #Cuadruplo de asignacion
             self.insertarValorTipo(self.obtenerDireccionVariable(self.idVariableActual),tipoVar)
