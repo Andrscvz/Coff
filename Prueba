@@ -3,13 +3,13 @@ clase coff{
 		entero a=9;
 	metodos:
 		funcion vacio manuel(entero c){
-			asigna a = c;
+			asigna a = a + 1;
 			imprimir(a);
 		}
 }
 
 entero h;
-texto p;
+texto p = "l";
 coff F;
 
 

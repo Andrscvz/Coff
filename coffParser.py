@@ -1028,9 +1028,7 @@ class coffParser ( Parser ):
                 atributos = self.obtenerAtributosDeClase(tipo)
                 listaDeDireccionesGlobales = []
                 for atributo in atributos:
-                    print("////////////")
                     tipo = self.tablaVariables[atributo[0], atributo[1]][0]
-                    print(tipo)
                     if tipo == "entero":
                         self.memGlobalEntero = self.memGlobalEntero + 1
                         listaDeDireccionesGlobales.append(self.memGlobalEntero)
@@ -1053,8 +1051,6 @@ class coffParser ( Parser ):
                 listaDeDireccionesGlobales = []
                 for atributo in atributos:
                     tipo = self.tablaVariables[atributo[0], atributo[1]][0]
-                    print("////////////")
-                    print(tipo)
                     if tipo == "entero":
                         self.memGlobalEntero = self.memGlobalEntero + 1
                         listaDeDireccionesGlobales.append(self.memGlobalEntero)
@@ -1101,7 +1097,7 @@ class coffParser ( Parser ):
                 listener.exitPrograma(self)
 
 
-
+    cuadruploInicialTof = 0
 
     def programa(self):
 
@@ -1110,7 +1106,9 @@ class coffParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 162
+
             self.crearCuadruploMain()
+
             self.p1()
             self.idFuncionActual = None
             self.p2()
@@ -1124,13 +1122,9 @@ class coffParser ( Parser ):
             self.terminacionProc = 'end'
             self.dirProcs["inicio",0][3] = [self.memLocalEntero - 8999,self.memLocalDecimal - 14999,self.memLocalTexto - 20999]
             self.crearCuadruploTerminarProc()
-
-            self.printTablaVariables()
-
             
-            #self.printTablaVariables()
-            #self.printDirProcs()
-
+            self.printTablaVariables()
+            self.printDirProcs()
             self.printCuadruplos()
         except RecognitionException as re:
             localctx.exception = re
@@ -1237,9 +1231,12 @@ class coffParser ( Parser ):
                 self.state = 173
                 #####################################
                 self.globalTof = 1
-                self.completarCuadruploMain()
+                
+                if self.cuadruploInicialTof == 0:
+                    self.completarCuadruploMain()
+                    self.cuadruploInicialTof = 1
+
                 self.variables()
-                self.crearCuadruploVarsGlobales()
                 self.globalTof = 0
                 #####################################
                 self.state = 174
@@ -1247,7 +1244,10 @@ class coffParser ( Parser ):
 
             elif token in [coffParser.FUNCION, coffParser.PRINCIPAL]:
                 self.enterOuterAlt(localctx, 2)
-
+                if self.cuadruploInicialTof == 0:
+                    self.completarCuadruploMain
+                else:
+                    self.crearCuadruploVarsGlobales()
 
             else:
                 raise NoViableAltException(self)
@@ -2045,7 +2045,17 @@ class coffParser ( Parser ):
                 self.valordeclaracion()
                 self.state = 239
 
-                
+                if self.atributosTof:
+                    if self.tipoDeclaracion == 'entero':
+                        self.atributosClase[len(self.atributosClase)-1].append('entero')
+                        self.atributosClase[len(self.atributosClase)-1].append(int(self.valorDeclaracion))
+                    elif self.tipoDeclaracion == 'decimal':
+                        self.atributosClase[len(self.atributosClase)-1].append('decimal')
+                        self.atributosClase[len(self.atributosClase)-1].append(float(self.valorDeclaracion))
+                    elif self.tipoDeclaracion == 'texto':
+                        self.atributosClase[len(self.atributosClase)-1].append('texto')
+                        self.atributosClase[len(self.atributosClase)-1].append(self.valorDeclaracion.replace('"',""))
+
                 if self.tipoDeclaracion == 'entero':
                     self.insertarValorTipo([int(self.valorDeclaracion)], self.tipoDeclaracion)
                 elif self.tipoDeclaracion == 'decimal':
@@ -2415,6 +2425,7 @@ class coffParser ( Parser ):
     valorEntraaMetodoOFuncion = [] #Variable que revisa si es una variable simple o una funcion o metodo dentro de valor
     valorIdClaseActual = [] #Variable que guarda el id del objeto para luego revisar su metodo dentro de valor
     valorIdFuncionMetodoActual = [] #Variable que guarda el nombre de la funcion o metodo para revisar dentro de valor
+    valorEsAtributo = []
 
     def valor(self):
 
@@ -2458,6 +2469,8 @@ class coffParser ( Parser ):
                 #Almacena el nombre de la funcion o del metodo
                 self.valorIdFuncionMetodoActual.append(str(self.getCurrentToken().text))
 
+                self.valorEsAtributo.append(1)
+
                 self.ejecToken = str(self.getCurrentToken().text) 
 
                 #Si inicia la expresion con un negativo se multiplica por -1
@@ -2486,7 +2499,11 @@ class coffParser ( Parser ):
                     #buscar en vars globales
                     elif (self.ejecToken, 0) in self.tablaVariables:
                         self.insertarValorTipo(self.obtenerDireccionVariable(self.ejecToken),self.tablaVariables[self.ejecToken,0][0]) 
-                        
+                    
+                    if self.valorEsAtributo[len(self.valorEsAtributo)-1] == 0:
+                        self.pilaO.pop()
+                        self.pilaO.append(self.idVariableActual) 
+
                 elif self.esAtributo == 0:
 
                     #si fue una funcion o metodo genero el cuadruplo de gosub
@@ -2527,6 +2544,7 @@ class coffParser ( Parser ):
                 self.valorEntraaMetodoOFuncion.pop()
                 self.valorIdClaseActual.pop()
                 self.valorIdFuncionMetodoActual.pop()
+                self.valorEsAtributo.pop()
 
                 if self.tofFactor:
                     self.tofFactor = 0
@@ -2645,6 +2663,16 @@ class coffParser ( Parser ):
                 #se checa si la variable simple existe en la tabla de variables
                 self.idVariableActual = self.ejecToken
                 self.checkIfVariableExists()
+
+                for key,value in self.tablaVariables.items():
+                    if key[0] == self.idVariableActual and key[1] == self.scopeProcs:
+                        self.valorEsAtributo[len(self.valorEsAtributo)-1] = 0
+
+                if self.valorEsAtributo[len(self.valorEsAtributo)-1]:
+                    for key,value in self.tablaVariables.items():
+                        if key[0] == self.idVariableActual and key[1] != 0:
+                            self.valorEsAtributo[len(self.valorEsAtributo)-1] = 0                  
+
                 ###############################################
 
             else:
