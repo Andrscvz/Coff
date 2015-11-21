@@ -1,12 +1,21 @@
 clase coff{
 	atributos:
-		texto a;
-		entero b = 0;
+		entero a;
+		texto b = "a";
+		decimal cc = 3.0;
 	metodos:
-		funcion entero manuel(entero c, decimal &d){
+		funcion texto manuel(entero c, decimal &d){
 			entero m;
-			coff k;
-			retorna 1;
+			texto t;
+			asigna m = 2;
+			imprimir(d);
+			imprimir(c);
+			si (c > m) {
+				asigna t = "c es mayor que m";
+			} o {
+				asigna t = "c es menor o igual que m";
+			}
+			retorna t;
 		}
 		
 		funcion entero andres(){
@@ -18,10 +27,27 @@ entero h;
 texto p;
 coff F;
 
+funcion entero dos(entero b){
+	asigna b = b + 2;
+	
+
+
+	retorna b;
+	
+	
+} 
+
 principal vacio inicio(){
 
 	entero j;
 	decimal y;
-	coff k;
+	texto t;
+
+	coff k,h;
+	asigna y = 3.0;
+
+	asigna t = k.manuel(5,y);
+	imprimir(t);
+	
 
 }
