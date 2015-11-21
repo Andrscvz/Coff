@@ -1063,6 +1063,16 @@ class coffParser ( Parser ):
             return listaDeDireccionesGlobales
 
 
+    def obtenerVariableEsUnAtributo(self, claseIDRef, idVariableActual):        
+        i = len(self.dirProcs[claseIDRef,0][2]) -1
+
+        while i >= 0 :
+            if self.dirProcs[claseIDRef,0][2][i][0] == idVariableActual:
+                return 1;
+            i = i - 1;
+
+        return 0;
+
     class ProgramaContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -1117,7 +1127,7 @@ class coffParser ( Parser ):
             self.state = 165
 
             self.completarCuadruploVarsGlobales()
-
+            self.metodoTof = 0
             self.principal()
             self.terminacionProc = 'end'
             self.dirProcs["inicio",0][3] = [self.memLocalEntero - 8999,self.memLocalDecimal - 14999,self.memLocalTexto - 20999]
@@ -1230,6 +1240,7 @@ class coffParser ( Parser ):
                 self.enterOuterAlt(localctx, 1)
                 self.state = 173
                 #####################################
+                self.metodoTof = 0
                 self.globalTof = 1
                 
                 if self.cuadruploInicialTof == 0:
@@ -2469,7 +2480,7 @@ class coffParser ( Parser ):
                 #Almacena el nombre de la funcion o del metodo
                 self.valorIdFuncionMetodoActual.append(str(self.getCurrentToken().text))
 
-                self.valorEsAtributo.append(1)
+                self.valorEsAtributo.append(0)
 
                 self.ejecToken = str(self.getCurrentToken().text) 
 
@@ -2500,7 +2511,7 @@ class coffParser ( Parser ):
                     elif (self.ejecToken, 0) in self.tablaVariables:
                         self.insertarValorTipo(self.obtenerDireccionVariable(self.ejecToken),self.tablaVariables[self.ejecToken,0][0]) 
                     
-                    if self.valorEsAtributo[len(self.valorEsAtributo)-1] == 0:
+                    if self.valorEsAtributo[len(self.valorEsAtributo)-1]:
                         self.pilaO.pop()
                         self.pilaO.append(self.idVariableActual) 
 
@@ -2663,16 +2674,13 @@ class coffParser ( Parser ):
                 #se checa si la variable simple existe en la tabla de variables
                 self.idVariableActual = self.ejecToken
                 self.checkIfVariableExists()
-
-                for key,value in self.tablaVariables.items():
-                    if key[0] == self.idVariableActual and key[1] == self.scopeProcs:
-                        self.valorEsAtributo[len(self.valorEsAtributo)-1] = 0
-
-                if self.valorEsAtributo[len(self.valorEsAtributo)-1]:
-                    for key,value in self.tablaVariables.items():
-                        if key[0] == self.idVariableActual and key[1] != 0:
-                            self.valorEsAtributo[len(self.valorEsAtributo)-1] = 0                  
-
+                #print("//////////////")
+                #print(self.metodoTof)
+                #print(self.obtenerVariableEsUnAtributo(self.claseIDRef,self.idVariableActual))
+                #print(self.claseIDRef," ",self.idVariableActual)
+                #print("//////////////")
+                if self.metodoTof:
+                    self.valorEsAtributo[len(self.valorEsAtributo)-1] = self.obtenerVariableEsUnAtributo(self.claseIDRef,self.idVariableActual)
                 ###############################################
 
             else:
@@ -2685,6 +2693,7 @@ class coffParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
+
 
     class Va2Context(ParserRuleContext):
 
@@ -3011,7 +3020,7 @@ class coffParser ( Parser ):
                     return
 
 
-                self.insertarValorTipo(atributo,tipoAtributo)  
+                self.insertarValorTipo(self.obtenerDireccionVariable(atributo),tipoAtributo)  
                 if (str(self.getCurrentToken().text) == ";" or str(self.getCurrentToken().text) == ","):                 
                     self.idVariableActual = self.tokenActual
                     self.checkIfAttributeBelongs(self.idVariableActual, self.ejecToken)
@@ -5247,8 +5256,7 @@ class coffParser ( Parser ):
                 listener.exitAsignacion(self)
 
 
-
-
+    asignacionEsAtributo = 0
     def asignacion(self):
 
         localctx = coffParser.AsignacionContext(self, self._ctx, self.state)
@@ -5263,6 +5271,9 @@ class coffParser ( Parser ):
             tipoVar = self.checkIfVariableExists()
 
             self.match(coffParser.ID)
+
+            if self.metodoTof:
+                self.asignacionEsAtributo = self.obtenerVariableEsUnAtributo(self.claseIDRef,self.idVariableActual)  
 
             self.state = 481
             self.a1()
@@ -5345,11 +5356,13 @@ class coffParser ( Parser ):
 
             elif token in [coffParser.CIZQ, coffParser.IGUAL]:
                 tipoVar = self.checkIfVariableExists()
-                 #Cuadruplo de asignacion
-                self.insertarValorTipo(self.obtenerDireccionVariable(self.idVariableActual),tipoVar)
+                #Cuadruplo de asignacion
+                if self.asignacionEsAtributo:
+                    self.insertarValorTipo(self.idVariableActual,tipoVar)
+                else:
+                    self.insertarValorTipo(self.obtenerDireccionVariable(self.idVariableActual),tipoVar)
+                
                 self.enterOuterAlt(localctx, 2)
-
-
             else:
                 raise NoViableAltException(self)
 
@@ -5863,8 +5876,6 @@ class coffParser ( Parser ):
                 listener.exitLectura(self)
 
 
-
-
     def lectura(self):
 
         localctx = coffParser.LecturaContext(self, self._ctx, self.state)
@@ -5878,8 +5889,20 @@ class coffParser ( Parser ):
             self.state = 541
             self.idVariableActual = str(self.getCurrentToken().text)
             self.checkIfVariableExists()
+            
+            lecturaEsAtributo = 0
 
-            self.crearCuadruploLectura(self.obtenerDireccionVariable(self.idVariableActual))
+            if self.metodoTof:
+                lecturaEsAtributo = self.obtenerVariableEsUnAtributo(self.claseIDRef,self.idVariableActual) 
+
+
+            if lecturaEsAtributo:
+                self.crearCuadruploLectura(self.idVariableActual)
+            else:
+                self.crearCuadruploLectura(self.obtenerDireccionVariable(self.idVariableActual))
+            
+
+
             self.match(coffParser.ID)
             self.state = 542
             self.l1()

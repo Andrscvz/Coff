@@ -3,23 +3,27 @@ clase coff{
 		entero a=9;
 	metodos:
 		funcion vacio manuel(entero c){
-			asigna a = a + 1;
+			asigna a = c;
+			asigna c = a;
 			imprimir(a);
+			imprimir(c);
+			leer(a);
+			leer(c);
 		}
 }
 
 entero h;
-texto p = "l";
+texto p;
 coff F;
-
 
 principal vacio inicio(){
 
 	coff k;
 
 
-	asigna k.a = 3;
+	asigna k.a = 0;
 
+	asigna h = k.a;
 
 	ejec k.manuel(4);
 	
