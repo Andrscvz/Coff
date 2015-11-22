@@ -4,29 +4,17 @@ clase coff{
 		texto kaka = "sss";
 	metodos:
 		funcion vacio manuel(entero c){
-			asigna a = c;
-			asigna c = a;
-			imprimir(a);
-			imprimir(c);
-			leer(a);
-			leer(c);
 		}
 }
 
-entero h;
-texto p;
-coff F;
+coff f;
 
 principal vacio inicio(){
 
 	coff k;
 
-
-	asigna k.a = 0;
-
-	asigna h = k.a;
-
 	ejec k.manuel(4);
-	
+
+	ejec f.manuel(4);
 
 }

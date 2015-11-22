@@ -747,7 +747,11 @@ class coffParser ( Parser ):
     def lookForMethodClass(self): 
         instanciaID = self.ejecToken
         metodoID = self.tokenActual
-        tipoObjeto = self.tablaVariables[instanciaID,self.scopeProcs][0] #contiene el tipo del objeto
+        try:
+            tipoObjeto = self.tablaVariables[instanciaID,self.scopeProcs][0] #contiene el tipo del objeto
+        except KeyError:
+            tipoObjeto = self.tablaVariables[instanciaID,0][0] #contiene el tipo del objeto
+
         try:
             claseID = self.dirProcs[tipoObjeto,0][0] #contiene el id de la clase
         except KeyError:
@@ -877,7 +881,12 @@ class coffParser ( Parser ):
     def obtenerClaseDeUnaFuncionEra(self, nombreVariable, nombreFuncion):
         if nombreVariable == None:
             return None
-        aux = self.tablaVariables[nombreVariable,self.scopeProcs][0]
+
+        try:
+            aux = self.tablaVariables[nombreVariable,self.scopeProcs][0]
+        except KeyError:
+            aux = self.tablaVariables[nombreVariable,0][0]
+
         return aux
 
     def obtenerTipoDeUnMetodoEra(self, nombreVariable, nombreFuncion):
@@ -890,6 +899,27 @@ class coffParser ( Parser ):
     def obtenerTipoDeUnaFuncionEra(self, nombreFuncion):
         return self.dirProcs[nombreFuncion,0][1]
 
+    def obtenerClaseDeUnaVariable(self,nombreVariable):
+        try:
+            return self.tablaVariables[nombreVariable,self.scopeProcs][0]
+        except KeyError:
+            return self.tablaVariables[nombreVariable,0][0]
+
+    def crearCuadruploAtributos(self,nombreVariable):
+        clase = self.obtenerClaseDeUnaVariable(nombreVariable)
+        if clase == None:
+            return None
+
+        i = 0
+
+        try:
+            tv = self.tablaVariables[nombreVariable,self.scopeProcs]
+        except KeyError:
+            tv = self.tablaVariables[nombreVariable,0]
+
+        while i < len(self.dirProcs[clase,0][2]):
+            self.quadruplos.append(['atributo',None,self.dirProcs[clase,0][2][i][0],tv[2][i]])
+            i = i + 1
 
     def crearCuadruploEra(self, nombreVariable, nombreFuncion):
         clase = self.obtenerClaseDeUnaFuncionEra(nombreVariable, nombreFuncion)
@@ -2559,6 +2589,7 @@ class coffParser ( Parser ):
                     #Saco el tipo de la funcion o metodo
                     if self.valorMetodoOFuncion[len(self.valorMetodoOFuncion)-1]:
                         self.crearCuadruploEra(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
+                        self.crearCuadruploAtributos(self.valorIdClaseActual[len(self.valorIdClaseActual)-1])
                         self.crearCuadruploParam()
                         tipoMetFunc = self.obtenerTipoDeUnMetodoEra(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
                     else:        
@@ -2575,6 +2606,8 @@ class coffParser ( Parser ):
                     elif tipoMetFunc == "texto":
                         self.memLocalTexto = self.memLocalTexto + 1
                         auxDireccion = self.memLocalTexto
+                    else:
+                        auxDireccion = 1000000000000000
 
                     #creo el cuadruplo donde se va a tener el retorno
                     self.crearCuadruploAsignacionRetorno(auxDireccion)
@@ -3584,6 +3617,7 @@ class coffParser ( Parser ):
                     sys.exit()
                     return
                 self.crearCuadruploEra(self.llamarfunmetIdClaseActual[len(self.llamarfunmetIdClaseActual)-1],self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1])
+                self.crearCuadruploAtributos(self.llamarfunmetIdClaseActual[len(self.llamarfunmetIdClaseActual)-1])
                 self.crearCuadruploParam()
                 self.crearCuadruploGosub(self.llamarfunmetIdClaseActual[len(self.llamarfunmetIdClaseActual)-1],self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1])
 
