@@ -679,17 +679,9 @@ class coffParser ( Parser ):
     def crearCuadruploEscritura(self):
         if self.pilaO:
             elemento = self.pilaO.pop()
-            elementoTipo = self.pTipos.pop()
-            elementoTipo = elementoTipo.split(',')
-            if len(elementoTipo) == 1:
-                self.quadruplos.append(['imprimir',None,None,elemento])
-            else:
-                #Para arreglos! CHECAR
-                x = int(elementoTipo[2])
-                while x > 0:
-                    self.quadruplos.append(['imprimir',None,None,elemento])
-                    elemento = elemento + 1
-                    x = x - 1
+            self.pTipos.pop()
+            self.quadruplos.append(['imprimir',None,None,elemento])
+
 
     def crearCuadruploLectura(self,elemento):
         self.quadruplos.append(['leer',None,None,elemento])
@@ -977,10 +969,10 @@ class coffParser ( Parser ):
             self.pilaParam.pop(0)
 
 
-    def guardarCuadruploParam(self,direccionParametro):
+    def guardarCuadruploParam(self,referencia,direccionParametro):
         operando = self.pilaO.pop()
         self.pTipos.pop()
-        self.pilaParam.append(['param',0,direccionParametro,operando])
+        self.pilaParam.append(['param',referencia,direccionParametro,operando])
 
     def obtenerCuadruploInicioFuncion(self,nombreVariable,nombreFuncion):
         if nombreVariable == None:
@@ -2944,7 +2936,7 @@ class coffParser ( Parser ):
                 variableParametro = self.dirProcs[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],0][2][numeroParametroActual]
                 dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
 
-                self.guardarCuadruploParam(dirParametroActual)
+                self.guardarCuadruploParam(variableParametro[2],dirParametroActual)
                 ######################################
                 self.state = 289
                 self.va3()
@@ -3022,7 +3014,7 @@ class coffParser ( Parser ):
                     numeroParametroActual = self.contadorParametros[len(self.contadorParametros)-1]-1
                     variableParametro = self.dirProcs[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],0][2][numeroParametroActual]
                     dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
-                    self.guardarCuadruploParam(dirParametroActual)
+                    self.guardarCuadruploParam(variableParametro[2],dirParametroActual)
 
                 else:
                     cParametros = self.obtenerCantidadParametrosFuncionOMetodo(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
@@ -3041,7 +3033,7 @@ class coffParser ( Parser ):
                     variableParametro = self.dirProcs[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],self.dirProcs[claseDeMetodoActual,0][0]][2][numeroParametroActual]
                 
                     dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
-                    self.guardarCuadruploParam(dirParametroActual)
+                    self.guardarCuadruploParam(variableParametro[2],dirParametroActual)
                 ###################################################################
                 self.state = 296
                 self.va3()
@@ -3274,7 +3266,7 @@ class coffParser ( Parser ):
                 claseDeMetodoActual = self.obtenerClaseDeUnaFuncionEra(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
                 variableParametro = self.dirProcs[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],self.dirProcs[claseDeMetodoActual,0][0]][2][numeroParametroActual]
                 dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
-                self.guardarCuadruploParam(dirParametroActual)
+                self.guardarCuadruploParam(variableParametro[2],dirParametroActual)
 
                 ###################################
                 self.state = 313
@@ -3381,7 +3373,7 @@ class coffParser ( Parser ):
 
 
 
-
+    parametrosActualReferenciaTof = []
     def parametros(self):
 
         localctx = coffParser.ParametrosContext(self, self._ctx, self.state)
@@ -3497,11 +3489,12 @@ class coffParser ( Parser ):
             self.state = 328
             self.tiposimple()
             self.state = 329
+            self.parametrosActualReferenciaTof.append(0)
             self.pa2()
             self.state = 330
             ##########################################################
             self.idVariableActual = str(self.getCurrentToken().text)
-            self.listaParametros.append([self.idVariableActual,self.scopeProcs])
+            self.listaParametros.append([self.idVariableActual,self.scopeProcs,self.parametrosActualReferenciaTof[len(self.parametrosActualReferenciaTof)-1]])
 
             
             self.dirProcs[self.parametrosAux[0], self.parametrosAux[1]][2] = self.listaParametros
@@ -3525,6 +3518,7 @@ class coffParser ( Parser ):
 
 
             self.insertarVariableEnMemoria(self.idVariableActual)
+            self.parametrosActualReferenciaTof.pop()
             ########################################################
             self.match(coffParser.ID)
             self.state = 331
@@ -3570,6 +3564,9 @@ class coffParser ( Parser ):
             if token in [coffParser.AMP]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 333
+
+                self.parametrosActualReferenciaTof[len(self.parametrosActualReferenciaTof)-1] = 1
+
                 self.match(coffParser.AMP)
 
             elif token in [coffParser.ID]:
@@ -3902,7 +3899,7 @@ class coffParser ( Parser ):
                     variableParametro = self.dirProcs[self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1],0][2][numeroParametroActual]
                     dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
 
-                self.guardarCuadruploParam(dirParametroActual)
+                self.guardarCuadruploParam(variableParametro[2],dirParametroActual)
                 ##########################################
                 self.ll3()
 
@@ -3999,7 +3996,7 @@ class coffParser ( Parser ):
                     variableParametro = self.dirProcs[self.llamarfunmetIdFuncionMetodoActual[len(self.llamarfunmetIdFuncionMetodoActual)-1],0][2][numeroParametroActual]
                     dirParametroActual = self.tablaVariables[variableParametro[0],variableParametro[1]][2]
 
-                self.guardarCuadruploParam(dirParametroActual)
+                self.guardarCuadruploParam(variableParametro[2],dirParametroActual)
                 ##########################################		
 
                 self.state = 362
