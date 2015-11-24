@@ -1,28 +1,17 @@
 
-funcion vacio fibonacci( entero n){
+funcion entero fibonacci( entero x){
 	
-	entero x1 = 1, x2 = 1,aux;
-
-	si(n <= 2){
-		si(n == 1){
-			imprimir(x1);
-		}o{
-			imprimir(x1);
-			imprimir(x2);
-		}
+	si( x == 0){
+		asigna x = 1;
 	}o{
-		asigna n = n - 2;
-		imprimir(x1);
-		imprimir(x2);
-		mientras(n > 0){
-			asigna aux = x1;
-			asigna x1 = x2;
-			asigna x2 = aux + x2;
-			imprimir(x2);
-			asigna  n = n - 1;
+		si(x == 1){
+			asigna x = 1;
+		}o{
+			asigna x = fibonacci(x - 1) + fibonacci(x - 2);
 		}
 	}
 
+	retorna x;
 }
 
 principal vacio inicio(){
@@ -31,6 +20,8 @@ principal vacio inicio(){
 
 	leer(j);
 
-	ejec fibonacci(j);
+	asigna j = fibonacci(j);
+
+	imprimir(j);
 
 }

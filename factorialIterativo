@@ -1,12 +1,15 @@
 
 funcion entero factorial( entero n){
-	
-	entero x;
 
-	si(n == 1){
+	entero x = 1;
+
+	si(n <= 1){
 		asigna x = 1;
 	}o{
-		asigna x = n * factorial(n - 1); 
+		mientras( n > 0){
+			asigna x = x * n;
+			asigna n = n - 1;
+		}
 	}
 
 	retorna x;
@@ -15,11 +18,10 @@ funcion entero factorial( entero n){
 principal vacio inicio(){
 
 	entero j;
-	entero m;
 
-	leer(m);
+	leer(j);
 
-	asigna j = factorial(m);
+	asigna j = factorial(j);
 
 	imprimir(j);
 
