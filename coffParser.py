@@ -357,7 +357,7 @@ class coffParser ( Parser ):
 
     contQuadTemporales = 1 #Para variables temporales
 
-    quadOperadores = [['*','/'],['+','-'],['==','!=','>','>=','<','<='],['&&','||'],['=']]
+    quadOperadores = [['*','/'],['+','-'],['==','!=','>','>=','<','<='],['&&','||'],['='],['#']]
 
     tofFactor = 0
     ################################################# revisar CAVAZOS
@@ -624,11 +624,15 @@ class coffParser ( Parser ):
 
 
     def crearCuadruploExpAsig(self,op,tipoCuadruplo):
-        #OP = 0 - mult,div 1 - suma,resta 2 - relacionales 3 - logicos 4 - asignacion
+        #OP = 0 - mult,div 1 - suma,resta 2 - relacionales 3 - logicos 4 - asignacion 5 - apuntadores
         if self.pOper:
             oper = self.pOper.pop()
             if oper in self.quadOperadores[op]:
                 if self.pilaO:
+                    
+                    if op == 5:
+                        oper = '+'
+
                     oDer = self.pilaO.pop()
                     oDerTipo = self.pTipos.pop()
                     if self.pilaO:
@@ -651,7 +655,11 @@ class coffParser ( Parser ):
                                     auxDireccion = self.memLocalTexto
 
                                 self.quadruplos.append([oper,oIzq,oDer,auxDireccion])
-                                self.insertarValorTipo(auxDireccion,res)
+
+                                if op == 5:
+                                    self.insertarValorTipo([[auxDireccion]],res)
+                                else:
+                                    self.insertarValorTipo(auxDireccion,res)
                                 self.contQuadTemporales = self.contQuadTemporales + 1
                             elif tipoCuadruplo == 'asignacion':
                                 self.quadruplos.append([oper,oDer,None,oIzq])
@@ -1164,9 +1172,9 @@ class coffParser ( Parser ):
             self.dirProcs["inicio",0][3] = [self.memLocalEntero - 8999,self.memLocalDecimal - 14999,self.memLocalTexto - 20999]
             self.crearCuadruploTerminarProc()
             
-            self.printTablaVariables()
-            self.printDirProcs()
-            self.printCuadruplos()
+            #self.printTablaVariables()
+            #self.printDirProcs()
+            #self.printCuadruplos()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -2583,6 +2591,7 @@ class coffParser ( Parser ):
     valorIdClaseActual = [] #Variable que guarda el id del objeto para luego revisar su metodo dentro de valor
     valorIdFuncionMetodoActual = [] #Variable que guarda el nombre de la funcion o metodo para revisar dentro de valor
     valorEsAtributo = []
+    valorArregloTof = 1
 
     def valor(self):
 
@@ -2628,6 +2637,8 @@ class coffParser ( Parser ):
 
                 self.valorEsAtributo.append(0)
 
+                self.valorArregloTof = 1
+
                 self.ejecToken = str(self.getCurrentToken().text) 
 
                 #Si inicia la expresion con un negativo se multiplica por -1
@@ -2647,19 +2658,22 @@ class coffParser ( Parser ):
                 ###############################################
                 #Checo si fue una funcion o metodo o si fue una variable simple
                 if self.valorEntraaMetodoOFuncion[len(self.valorEntraaMetodoOFuncion)-1] == 0:
-                    #Buscar dentro del mismo scope
-                    if (self.ejecToken, self.scopeProcs) in self.tablaVariables:
-                        self.insertarValorTipo(self.obtenerDireccionVariable(self.ejecToken),self.tablaVariables[self.ejecToken,self.scopeProcs][0])
-                    #si no se encuentra buscar en la def de la clase
-                    elif (self.ejecToken, self.claseScopeRef) in self.tablaVariables:
-                        self.insertarValorTipo(self.obtenerDireccionVariable(self.ejecToken),self.tablaVariables[self.ejecToken, self.claseScopeRef][0])
-                    #buscar en vars globales
-                    elif (self.ejecToken, 0) in self.tablaVariables:
-                        self.insertarValorTipo(self.obtenerDireccionVariable(self.ejecToken),self.tablaVariables[self.ejecToken,0][0]) 
-                    
-                    if self.valorEsAtributo[len(self.valorEsAtributo)-1]:
-                        self.pilaO.pop()
-                        self.pilaO.append(self.idVariableActual) 
+
+                    if self.valorArregloTof:
+
+                        #Buscar dentro del mismo scope
+                        if (self.ejecToken, self.scopeProcs) in self.tablaVariables:
+                            self.insertarValorTipo(self.obtenerDireccionVariable(self.ejecToken),self.tablaVariables[self.ejecToken,self.scopeProcs][0])
+                        #si no se encuentra buscar en la def de la clase
+                        elif (self.ejecToken, self.claseScopeRef) in self.tablaVariables:
+                            self.insertarValorTipo(self.obtenerDireccionVariable(self.ejecToken),self.tablaVariables[self.ejecToken, self.claseScopeRef][0])
+                        #buscar en vars globales
+                        elif (self.ejecToken, 0) in self.tablaVariables:
+                            self.insertarValorTipo(self.obtenerDireccionVariable(self.ejecToken),self.tablaVariables[self.ejecToken,0][0]) 
+                        
+                        if self.valorEsAtributo[len(self.valorEsAtributo)-1]:
+                            self.pilaO.pop()
+                            self.pilaO.append(self.idVariableActual) 
 
                 elif self.esAtributo == 0:
 
@@ -2813,20 +2827,31 @@ class coffParser ( Parser ):
                 self.match(coffParser.CIZQ)
                 self.state = 282
                 self.expresion()
-                ###############################################
+
+                ###################ARREGLOS############################
+
+                if self.pTipos[len(self.pTipos)-1] != "entero":
+                    print("Error en la linea " + str(self.getCurrentToken().line) + ", se esperaba un entero al llamar el elemento de un arreglo")
+                    sys.exit()
+                    return
 
                 try:
-                    self.valorConstante = int(self.getCurrentToken.text)
-                    self.valorArregloTof = 1
-                except ValueError:
-                    print("Error en la linea " + str(self.getCurrentToken().line + ", se esperaba una constante entera para accesar"))
+                    #Se genera cuadruplo que verifica que la expresion este dentro del rango del arreglo
+                    self.quadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],self.scopeProcs][1]-1])
+                    #Se le suma el resultado a la direccion de la variable inicial                
+                    self.insertarValorTipo([self.tablaVariables[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],self.scopeProcs][2]],"entero")
+                except KeyError:
+                    #Se genera cuadruplo que verifica que la expresion este dentro del rango del arreglo
+                    self.quadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],0][1]-1])
+                    #Se le suma el resultado a la direccion de la variable inicial                
+                    self.insertarValorTipo([self.tablaVariables[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],0][2]],"entero")
 
-                if self.tipoDeclaracion == 'entero':
-                    self.insertarValorTipo([int(self.valorDeclaracion)], self.tipoDeclaracion)
-                elif self.tipoDeclaracion == 'decimal':
-                    self.insertarValorTipo([float(self.valorDeclaracion)], self.tipoDeclaracion)
-                elif self.tipoDeclaracion == 'texto':
-                    self.insertarValorTipo([self.valorDeclaracion.replace('"',"")], self.tipoDeclaracion)
+
+                self.insertarOperador('#')
+                self.crearCuadruploExpAsig(5,"expresion")
+
+                self.valorArregloTof = 0
+
 
                 ###############################################
                 self.state = 283
@@ -5397,6 +5422,7 @@ class coffParser ( Parser ):
 
 
     asignacionEsAtributo = 0
+    asignacionIdVarible = None
     def asignacion(self):
 
         localctx = coffParser.AsignacionContext(self, self._ctx, self.state)
@@ -5406,7 +5432,7 @@ class coffParser ( Parser ):
             self.state = 481
             self.idVariableActual = str(self.getCurrentToken().text)
             self.ejecToken = self.idVariableActual
-            
+            self.asignacionIdVarible = self.idVariableActual
 
             tipoVar = self.checkIfVariableExists()
 
@@ -5553,6 +5579,36 @@ class coffParser ( Parser ):
                 self.match(coffParser.CIZQ)
                 self.state = 494
                 self.expresion()
+
+
+                ###################ARREGLOS############################
+
+                if self.pTipos[len(self.pTipos)-1] != "entero":
+                    print("Error en la linea " + str(self.getCurrentToken().line) + ", se esperaba un entero al llamar el elemento de un arreglo")
+                    sys.exit()
+                    return  
+
+                try:
+
+                    #Se genera cuadruplo que verifica que la expresion este dentro del rango del arreglo
+                    self.quadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.asignacionIdVarible,self.scopeProcs][1]-1])
+                    #Se le suma el resultado a la direccion de la variable inicial
+                    
+                    self.insertarValorTipo([self.tablaVariables[self.asignacionIdVarible,self.scopeProcs][2]],"entero")
+                except KeyError:
+                    #Se genera cuadruplo que verifica que la expresion este dentro del rango del arreglo
+                    self.quadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.asignacionIdVarible,0][1]-1])
+                    #Se le suma el resultado a la direccion de la variable inicial
+                    
+                    self.insertarValorTipo([self.tablaVariables[self.asignacionIdVarible,0][2]],"entero")
+
+                self.insertarOperador('#')
+                self.crearCuadruploExpAsig(5,"expresion")
+
+
+                ###############################################
+
+
                 self.state = 495
                 self.match(coffParser.CDER)
 

@@ -105,6 +105,7 @@ class maquinaVirtual:
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 				indexs = self.obtenerDireccion(aux1)
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+
 		else:
 			i = 0
 			while i < len(self.listaAtributos):
@@ -112,7 +113,7 @@ class maquinaVirtual:
 					indexs = self.obtenerDireccion(self.listaAtributos[i][1])
 					aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 				i = i + 1
-				
+
 
 		if type(self.cuadruplos[self.InstruccionIndex][2]) is int:
 			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][2])
@@ -420,20 +421,20 @@ class maquinaVirtual:
 	# valida el indice de una lista
 
 	def validarIndex(self):
-		longLista = self.cuadruplos[self.InstruccionIndex][1][0]
+		longLista = self.cuadruplos[self.InstruccionIndex][3]
 		aux1 = None
-		if type(self.cuadruplos[self.InstruccionIndex][2]) is int:
-			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][2])
+		if type(self.cuadruplos[self.InstruccionIndex][1]) is int:
+			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][1])
 			aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 
-		elif type(self.cuadruplos[self.InstruccionIndex][2]) is list:
-			aux1 = self.cuadruplos[self.InstruccionIndex][2][0]
+		elif type(self.cuadruplos[self.InstruccionIndex][1]) is list:
+			aux1 = self.cuadruplos[self.InstruccionIndex][1][0]
 			if type(aux1) is list:
 				indexs = self.obtenerDireccion(aux1[0])
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 				indexs = self.obtenerDireccion(aux1)
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
-		if aux1 < 0 or aux1 >= longLista:
+		if aux1 < 0 or aux1 > longLista:
 			print ("Error en tiempo de ejecucion: Indice fuera de rango" )
 			sys.exit()
 
@@ -484,7 +485,7 @@ class maquinaVirtual:
 			elif self.cuadruplos[self.InstruccionIndex][0] == "resultado":
 				self.guardarDirRetornar()
 
-			elif self.cuadruplos[self.InstruccionIndex][0] == "validarIndex":
+			elif self.cuadruplos[self.InstruccionIndex][0] == "ver":
 				self.validarIndex()
 
 			elif self.cuadruplos[self.InstruccionIndex][0] == "atributo":

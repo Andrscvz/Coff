@@ -1,6 +1,0 @@
-
-principal vacio inicio(){
-	entero i[10];
-	entero j[3] = [1,2,3];
-
-}
