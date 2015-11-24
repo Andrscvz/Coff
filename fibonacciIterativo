@@ -1,0 +1,38 @@
+
+funcion entero fibonacci( entero n){
+	
+	entero x = 1, x1 = 1, x2 = 1,aux;
+
+	si(n == 0){
+
+		asigna x = 1;
+		
+	}o{
+		si(n == 1){
+			asigna x = 1;
+		}o{
+			asigna n = n - 1;
+			mientras(n > 0){
+				asigna aux = x;
+				asigna x = x1 + x;
+				asigna x1 = aux;
+				asigna n = n - 1;
+			}
+		}
+	}
+
+	retorna x;
+
+}
+
+principal vacio inicio(){
+
+	entero j;
+
+	leer(j);
+
+	asigna j =  fibonacci(j);
+
+	imprimir(j);
+
+}

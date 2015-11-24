@@ -16,6 +16,8 @@ class maquinaVirtual:
 
 	stackDireccionesFunciones = []
 
+	listaAtributos = []
+
 	stackRetornos = []
 
 	contLocalInt = 0
@@ -103,7 +105,15 @@ class maquinaVirtual:
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 				indexs = self.obtenerDireccion(aux1)
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
-				
+
+		else:
+			i = 0
+			while i < len(self.listaAtributos):
+				if self.listaAtributos[i][0] == self.cuadruplos[self.InstruccionIndex][1]:
+					indexs = self.obtenerDireccion(self.listaAtributos[i][1])
+					aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+				i = i + 1
+
 
 		if type(self.cuadruplos[self.InstruccionIndex][2]) is int:
 			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][2])
@@ -116,6 +126,13 @@ class maquinaVirtual:
 				aux2 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 				indexs = self.obtenerDireccion(aux2)
 				aux2 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+		else:
+			i = 0
+			while i < len(self.listaAtributos):
+				if self.listaAtributos[i][0] == self.cuadruplos[self.InstruccionIndex][2]:
+					indexs = self.obtenerDireccion(self.listaAtributos[i][1])
+					aux2 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+				i = i + 1
 
 		indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][3])
 
@@ -183,12 +200,30 @@ class maquinaVirtual:
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 				indexs = self.obtenerDireccion(aux1)
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+		else:
+			i = 0
+			while i < len(self.listaAtributos):
+				if self.listaAtributos[i][0] == self.cuadruplos[self.InstruccionIndex][3]:
+					indexs = self.obtenerDireccion(self.listaAtributos[i][1])
+					aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+				i = i + 1
+
 		print(aux1)
 
 	# lee un valor de consola
 
 	def leer(self):
-		indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][3])
+		if type(self.cuadruplos[self.InstruccionIndex][3]) is int:
+			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][3])
+		else:
+			i = 0
+			while i < len(self.listaAtributos):
+				if self.listaAtributos[i][0] == self.cuadruplos[self.InstruccionIndex][3]:
+					indexs = self.obtenerDireccion(self.listaAtributos[i][1])
+					aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+				i = i + 1
+
+
 		if indexs[1] == 0:
 			while True:
 				try:
@@ -238,14 +273,30 @@ class maquinaVirtual:
 				indexs = self.obtenerDireccion(aux1[0])
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 				indexs = self.obtenerDireccion(aux1)
-				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]	
+				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 
-		if type(self.cuadruplos[self.InstruccionIndex][3]) is list:
+		else:
+			i = 0
+			while i < len(self.listaAtributos):
+				if self.listaAtributos[i][0] == self.cuadruplos[self.InstruccionIndex][1]:
+					indexs = self.obtenerDireccion(self.listaAtributos[i][1])
+					aux2 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+				i = i + 1	
+
+		if type(self.cuadruplos[self.InstruccionIndex][3]) is int:
+			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][3])
+
+		elif type(self.cuadruplos[self.InstruccionIndex][3]) is list:
 			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][3][0][0])
 			aux = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 			indexs = self.obtenerDireccion(aux)
 		else:
-			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][3])
+			i = 0
+			while i < len(self.listaAtributos):
+				if self.listaAtributos[i][0] == self.cuadruplos[self.InstruccionIndex][3]:
+					indexs = self.obtenerDireccion(self.listaAtributos[i][1])
+					aux2 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+				i = i + 1
 		
 		if indexs[1] == 0:
 			try:
@@ -337,6 +388,8 @@ class maquinaVirtual:
 			del self.memoria[1][2][-aux[2]:]
 			self.contLocalTexto = self.contLocalTexto - aux[2]
 
+		del self.listaAtributos[:]
+
 	# le asigna valor a la direccion especifica
 
 	def retornar(self):
@@ -351,8 +404,14 @@ class maquinaVirtual:
 			if type(aux1) is list:
 				indexs = self.obtenerDireccion(aux1)
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
-				indexs = self.obtenerDireccion(aux1)
-				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+
+		else:
+			i = 0
+			while i < len(self.listaAtributos):
+				if self.listaAtributos[i][0] == self.cuadruplos[self.InstruccionIndex][3]:
+					indexs = self.obtenerDireccion(self.listaAtributos[i][1])
+					aux2 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+				i = i + 1
 
 		if len(self.stackRetornos) > 0:	
 			indexs2 = self.obtenerDireccion(self.stackRetornos.pop())
@@ -366,25 +425,31 @@ class maquinaVirtual:
 	# valida el indice de una lista
 
 	def validarIndex(self):
-		longLista = self.cuadruplos[self.InstruccionIndex][1][0]
+		longLista = self.cuadruplos[self.InstruccionIndex][3]
 		aux1 = None
-		if type(self.cuadruplos[self.InstruccionIndex][2]) is int:
-			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][2])
+		if type(self.cuadruplos[self.InstruccionIndex][1]) is int:
+			indexs = self.obtenerDireccion(self.cuadruplos[self.InstruccionIndex][1])
 			aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 
-		elif type(self.cuadruplos[self.InstruccionIndex][2]) is list:
-			aux1 = self.cuadruplos[self.InstruccionIndex][2][0]
+		elif type(self.cuadruplos[self.InstruccionIndex][1]) is list:
+			aux1 = self.cuadruplos[self.InstruccionIndex][1][0]
 			if type(aux1) is list:
 				indexs = self.obtenerDireccion(aux1[0])
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
 				indexs = self.obtenerDireccion(aux1)
 				aux1 = self.memoria[indexs[0]][indexs[1]][indexs[2]]
-		if aux1 < 0 or aux1 >= longLista:
+		if aux1 < 0 or aux1 > longLista:
 			print ("Error en tiempo de ejecucion: Indice fuera de rango" )
 			sys.exit()
 
-# lectura de los cuadruplos hasta que se encuentre el "END"
+	#Guarda las direcciones de los atributos de un objeto
+	def atributo(self):
+		atributo = self.cuadruplos[self.InstruccionIndex][2]
+		direccion = self.cuadruplos[self.InstruccionIndex][3]
+		self.listaAtributos.append([atributo,direccion])
 
+
+	# lectura de los cuadruplos hasta que se encuentre el "END"
 	def empezar(self):
 		while (self.cuadruplos[self.InstruccionIndex][0] != "end"):
 			#print(self.cuadruplos[self.InstruccionIndex])
@@ -417,12 +482,19 @@ class maquinaVirtual:
 
 			elif self.cuadruplos[self.InstruccionIndex][0] == "leer":
 				self.leer()
+
 			elif self.cuadruplos[self.InstruccionIndex][0] == "retornar":
 				self.retornar()
-			elif self.cuadruplos[self.InstruccionIndex][0] == "asignacionRetorno":
+
+			elif self.cuadruplos[self.InstruccionIndex][0] == "resultado":
 				self.guardarDirRetornar()
-			elif self.cuadruplos[self.InstruccionIndex][0] == 'validarIndex':
+
+			elif self.cuadruplos[self.InstruccionIndex][0] == "ver":
 				self.validarIndex()
+
+			elif self.cuadruplos[self.InstruccionIndex][0] == "atributo":
+				self.atributo()
+
 			self.InstruccionIndex = self.InstruccionIndex + 1
 
 

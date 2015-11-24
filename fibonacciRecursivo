@@ -1,0 +1,27 @@
+
+funcion entero fibonacci( entero x){
+	
+	si( x == 0){
+		asigna x = 1;
+	}o{
+		si(x == 1){
+			asigna x = 1;
+		}o{
+			asigna x = fibonacci(x - 1) + fibonacci(x - 2);
+		}
+	}
+
+	retorna x;
+}
+
+principal vacio inicio(){
+
+	entero j;
+
+	leer(j);
+
+	asigna j = fibonacci(j);
+
+	imprimir(j);
+
+}

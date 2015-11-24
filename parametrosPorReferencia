@@ -1,0 +1,17 @@
+
+funcion vacio suma( entero x, entero y, entero &resultado){
+	asigna resultado = x + y;
+}
+
+principal vacio inicio(){
+
+	entero x,y,resultado;
+
+	asigna x = 1;
+	asigna y = 2;
+
+	ejec suma(x,y,resultado);
+
+	imprimir(resultado);
+
+}

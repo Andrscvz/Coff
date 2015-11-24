@@ -1,0 +1,28 @@
+
+funcion entero factorial( entero n){
+
+	entero x = 1;
+
+	si(n <= 1){
+		asigna x = 1;
+	}o{
+		mientras( n > 0){
+			asigna x = x * n;
+			asigna n = n - 1;
+		}
+	}
+
+	retorna x;
+}
+
+principal vacio inicio(){
+
+	entero j;
+
+	leer(j);
+
+	asigna j = factorial(j);
+
+	imprimir(j);
+
+}

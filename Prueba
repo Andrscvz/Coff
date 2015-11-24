@@ -1,0 +1,34 @@
+
+clase coff{
+	atributos:
+		entero a=9;
+		texto kaka = "sss";
+	metodos:
+		funcion vacio manuel(entero c){
+			leer(a);
+			asigna a = a * c;
+			imprimir(a * 10);
+		}
+		funcion vacio andres(){
+			imprimir(a);
+		}
+}
+
+coff f;
+
+principal vacio inicio(){
+
+	coff k;
+
+	ejec k.andres();
+
+	ejec k.manuel(2);
+
+	ejec k.andres();
+
+	ejec f.manuel(3);
+
+	ejec f.andres();
+
+}
+

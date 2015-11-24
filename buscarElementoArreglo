@@ -1,0 +1,35 @@
+
+entero arr[10] = [	1,	0,	9,	2,	8,
+					3,	7,	4,	6,	5];
+
+
+funcion vacio encontrar(entero x){
+
+	entero i = 0;
+	entero tof = 0;
+
+	mientras( i < 10){
+
+		si(arr[i] == x){
+			asigna tof = 1;
+		}
+
+		asigna i = i + 1;
+	}
+
+	si(tof){
+		imprimir("Si se encuentra! :)");
+	}o{
+		imprimir("No se encuentra! :(");
+	}
+	
+}
+
+principal vacio inicio(){
+	entero j;
+
+	leer(j);
+
+	ejec encontrar(j);
+
+}

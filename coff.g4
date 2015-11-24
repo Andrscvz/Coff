@@ -99,7 +99,7 @@ valor : valordeclaracion
 
 va1 : va4
     | PIZQ va2 PDER
-    | CIZQ CTEENT CDER
+    | CIZQ expresion CDER
     | 
     ;
 
