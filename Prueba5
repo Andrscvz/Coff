@@ -1,24 +1,6 @@
 
-entero f = 10;
-
-funcion vacio uno(entero a){	
-	imprimir( a );
-} 
-
-funcion decimal dos(decimal b){
-
-	retorna b * 2;
-} 
-
 principal vacio inicio(){
-	
-	entero i=1,j=1;
-	texto k;
-	decimal y;
-	asigna i = dos(dos(2.0));
-
-	imprimir(y);
-
-	imprimir(f * i);
+	entero i[10];
+	entero j[3] = [1,2,3];
 
 }

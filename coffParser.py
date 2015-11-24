@@ -1019,8 +1019,8 @@ class coffParser ( Parser ):
         print("###################Fin###################")
 
 
-    def crearCuadruploAsignacionRetorno(self,elemento):
-        self.quadruplos.append(['asignacionRetorno',None,None,elemento])
+    def crearCuadruploResultado(self,elemento):
+        self.quadruplos.append(['resultado',None,None,elemento])
 
 
     #Regresa la direccion especifica de una variable
@@ -2099,7 +2099,40 @@ class coffParser ( Parser ):
                 self.state = 233
                 self.match(coffParser.CIZQ)
                 self.state = 234
-                self.match(coffParser.CTEENT)
+
+                ########################ARREGLOS########################
+                try:            
+                    tamano  = self.getCurrentToken().text
+
+                    if int(tamano) < 1:
+                        print("Error en la linea " + str(self.getCurrentToken().line) + ", el arreglo debe de contener al menos un elemento")
+                        sys.exit()
+                        return
+
+                    self.tablaVariables[self.idVariableActual,self.scopeProcs][1] = int(tamano)
+
+                    if self.globalTof:
+                        if self.tipoVariableActual == "entero":
+                            self.memGlobalEntero = self.memGlobalEntero + int(tamano) - 1
+                        elif self.tipoVariableActual == "decimal":
+                            self.memGlobalDecimal = self.memGlobalDecimal + int(tamano) - 1
+                        elif self.tipoVariableActual == "texto":
+                            self.memGlobalTexto = self.memGlobalTexto + int(tamano) - 1
+                    else:
+                        if self.tipoVariableActual == "entero":
+                            self.memLocalEntero = self.memLocalEntero + int(tamano) - 1
+                        elif self.tipoVariableActual == "decimal":
+                            self.memLocalDecimal = self.memLocalDecimal + int(tamano) - 1
+                        elif self.tipoVariableActual == "texto":
+                            self.memLocalTexto = self.memLocalTexto + int(tamano) - 1
+
+                except ValueError:
+                    print("Error en la linea " + str(self.getCurrentToken().line) + ", solo enteros en la definicion del arreglo")
+                    sys.exit()
+                    return
+                ########################################################
+
+                self.match(coffParser.CTEENT)      
                 self.state = 235
                 self.match(coffParser.CDER)
                 self.state = 236
@@ -2250,8 +2283,7 @@ class coffParser ( Parser ):
             if isinstance( listener, coffListener ):
                 listener.exitV4(self)
 
-
-
+    v4direccionActualArreglo = 0
 
     def v4(self):
 
@@ -2273,6 +2305,25 @@ class coffParser ( Parser ):
                 self.match(coffParser.CIZQ)
                 self.state = 251
                 self.valordeclaracion()
+
+                #################Asignar Valores a arreglo#################
+                self.v4direccionActualArreglo = int(self.obtenerDireccionVariable(self.idVariableActual))
+
+                self.insertarValorTipo(self.v4direccionActualArreglo,self.tipoVariableActual)
+
+                if self.tipoDeclaracion == 'entero':
+                    self.insertarValorTipo([int(self.valorDeclaracion)], self.tipoDeclaracion)
+                elif self.tipoDeclaracion == 'decimal':
+                    self.insertarValorTipo([float(self.valorDeclaracion)], self.tipoDeclaracion)
+                elif self.tipoDeclaracion == 'texto':
+                    self.insertarValorTipo([self.valorDeclaracion.replace('"',"")], self.tipoDeclaracion)
+
+                self.insertarOperador("=")
+                self.crearCuadruploExpAsig(4,"asignacion")
+
+                self.v4direccionActualArreglo = self.v4direccionActualArreglo + 1
+                ###########################################################
+
                 self.state = 252
                 self.v5()
                 self.state = 253
@@ -2335,6 +2386,29 @@ class coffParser ( Parser ):
                 self.match(coffParser.COMA)
                 self.state = 259
                 self.valordeclaracion()
+
+                #################Asignar Valores a arreglo#################
+                #reviso que no se declaren mas elementos de los que tiene
+                if self.v4direccionActualArreglo - int(self.obtenerDireccionVariable(self.idVariableActual)) + 1 > self.tablaVariables[self.idVariableActual,self.scopeProcs][1]:
+                    print("Error en la linea " + str(self.getCurrentToken().line) + ", la cantidad de elementos declarados supera el tamano del arreglo")
+                    sys.exit()
+                    return
+
+                self.insertarValorTipo(self.v4direccionActualArreglo,self.tipoVariableActual)
+
+                if self.tipoDeclaracion == 'entero':
+                    self.insertarValorTipo([int(self.valorDeclaracion)], self.tipoDeclaracion)
+                elif self.tipoDeclaracion == 'decimal':
+                    self.insertarValorTipo([float(self.valorDeclaracion)], self.tipoDeclaracion)
+                elif self.tipoDeclaracion == 'texto':
+                    self.insertarValorTipo([self.valorDeclaracion.replace('"',"")], self.tipoDeclaracion)
+
+                self.insertarOperador("=")
+                self.crearCuadruploExpAsig(4,"asignacion")
+
+                self.v4direccionActualArreglo = self.v4direccionActualArreglo + 1
+                ###########################################################
+
                 self.state = 260
                 self.v5()
 
@@ -2610,7 +2684,7 @@ class coffParser ( Parser ):
                         auxDireccion = 1000000000000000
 
                     #creo el cuadruplo donde se va a tener el retorno
-                    self.crearCuadruploAsignacionRetorno(auxDireccion)
+                    self.crearCuadruploResultado(auxDireccion)
 
                     if self.valorMetodoOFuncion[len(self.valorMetodoOFuncion)-1]:
                         self.crearCuadruploGosub(self.valorIdClaseActual[len(self.valorIdClaseActual)-1],self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1])
@@ -2729,11 +2803,28 @@ class coffParser ( Parser ):
                 self.match(coffParser.PDER)
 
             elif token in [coffParser.CIZQ]:
-                #Arreglos simples o arreglos de atributos de clase###########################################################################################IMPLEMENTAR ARREGLO
                 self.enterOuterAlt(localctx, 3)
                 self.state = 281
                 self.match(coffParser.CIZQ)
                 self.state = 282
+
+                ###############################################
+
+                try:
+                    self.valorConstante = int(self.getCurrentToken.text)
+                    self.valorArregloTof = 1
+                except ValueError:
+                    print("Error en la linea " + str(self.getCurrentToken().line + ", se esperaba una constante entera para accesar"))
+
+                if self.tipoDeclaracion == 'entero':
+                    self.insertarValorTipo([int(self.valorDeclaracion)], self.tipoDeclaracion)
+                elif self.tipoDeclaracion == 'decimal':
+                    self.insertarValorTipo([float(self.valorDeclaracion)], self.tipoDeclaracion)
+                elif self.tipoDeclaracion == 'texto':
+                    self.insertarValorTipo([self.valorDeclaracion.replace('"',"")], self.tipoDeclaracion)
+
+                ###############################################
+
                 self.match(coffParser.CTEENT)
                 self.state = 283
                 self.match(coffParser.CDER)

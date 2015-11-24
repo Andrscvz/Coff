@@ -481,7 +481,7 @@ class maquinaVirtual:
 			elif self.cuadruplos[self.InstruccionIndex][0] == "retornar":
 				self.retornar()
 
-			elif self.cuadruplos[self.InstruccionIndex][0] == "asignacionRetorno":
+			elif self.cuadruplos[self.InstruccionIndex][0] == "resultado":
 				self.guardarDirRetornar()
 
 			elif self.cuadruplos[self.InstruccionIndex][0] == "validarIndex":
