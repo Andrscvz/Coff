@@ -289,7 +289,11 @@ class maquinaVirtual:
 		valor = None
 		if type(aux[3]) is int:
 			indexs = self.obtenerDireccion(aux[3])
-			valor = self.memoria[indexs[0]][indexs[1]][indexs[2] - self.stackCantidadEspacio[len(self.stackCantidadEspacio) - 2][indexs[1]]]
+			
+			if indexs[0] == 0:
+				valor = self.memoria[indexs[0]][indexs[1]][indexs[2]]
+			else:
+				valor = self.memoria[indexs[0]][indexs[1]][indexs[2] - self.stackCantidadEspacio[len(self.stackCantidadEspacio) - 2][indexs[1]]]
 
 		elif type(aux[3]) is list:
 			valor = aux[3][0]

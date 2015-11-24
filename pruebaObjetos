@@ -1,0 +1,54 @@
+clase Persona{
+	atributos:
+
+		entero edad;
+		entero aniosExperiencia;
+		texto nombre;
+		texto apellido;
+
+	metodos:
+
+}
+
+
+clase Empleado extiende Persona{
+	atributos:
+		entero id;
+	metodos:
+
+}
+
+clase Ingeniero extiende Empleado{
+	atributos:
+		texto carrera = "ITC";
+	metodos:
+		funcion vacio imprimeAtributos(){
+			imprimir(id);
+		}		
+}
+
+clase Abogado extiende Empleado{
+	atributos:
+		texto carrera = "Leyes";
+	metodos:
+		funcion vacio imprimeAtributos(){
+			imprimir(id);
+		}		
+}
+
+
+principal vacio inicio(){
+
+	Abogado a;
+	Ingeniero i;
+	asigna a.nombre = "nombreAbogado";
+	asigna a.apellido = "apellidoAbogado";
+
+	asigna i.nombre = "nombreIngeniero";
+	asigna i.apellido = "apellidoIngeniero";
+
+	ejec i.imprimeAtributos();
+
+	
+
+}
