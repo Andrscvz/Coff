@@ -112,11 +112,11 @@ class maquinaVirtual:
 				return posEnMemoria
 			elif direccion >= 5000 and direccion < 10000:
 				posEnMemoria[1] = 1
-				posEnMemoria[2] = direccion - 3000
+				posEnMemoria[2] = direccion - 5000
 				return posEnMemoria
 			elif direccion >= 10000 and direccion < 15000:
 				posEnMemoria[1] = 2
-				posEnMemoria[2] = direccion - 6000
+				posEnMemoria[2] = direccion - 10000
 				return posEnMemoria
 
 	#Regresa el id de la clase padre
@@ -355,7 +355,8 @@ class maquinaVirtual:
 					posEnMemoria = self.obtenerPosEnMemoria(self.listaAtributos[i][1])
 					aux2 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
 				i = i + 1
-		
+
+
 		if posEnMemoria[1] == 0:
 			self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]] = int(aux1)
 		elif posEnMemoria[1] == 1:
