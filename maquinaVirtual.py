@@ -80,12 +80,16 @@ class maquinaVirtual:
 	def obtenerTamanioFuncion(self):
 		if type(self.cuadruplos[self.InstruccionIndex][3]) is list:
 			return
-
+		clase = None
 		clase = self.cuadruplos[self.InstruccionIndex][2]
 		funcion = self.cuadruplos[self.InstruccionIndex][3]
 		if clase != None:
 			idClasePadre = self.obtenerIdClasePadre(clase)
-			self.cuadruplos[self.InstruccionIndex][3] = self.dirPrincipal[funcion,idClasePadre][3]
+			idFuncion = None
+			for i in self.dirPrincipal[clase,0][3]:
+				if i[0] == funcion:
+					idFuncion = i[1]
+			self.cuadruplos[self.InstruccionIndex][3] = self.dirPrincipal[funcion,idFuncion][3]
 		else:
 			self.cuadruplos[self.InstruccionIndex][3] = self.dirPrincipal[funcion,0][3]
 
