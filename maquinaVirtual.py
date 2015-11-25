@@ -2,11 +2,11 @@ import sys
 
 class maquinaVirtual:
 
-	dirProcs = None
+	dirProcs = None	#Contiene el directorio de procedimientos
 
-	cuadruploActual = 0
+	cuadruploActual = 0	#Contador con el cuadruplo en ejecucion
 
-	cuadruplos = None
+	cuadruplos = None	#Lista que contienelos cuadruplos
 
 	memoria = [[[],[],[]],[[],[],[]]] #[[[Global Entero], [Global Decimal], [Global Texto]], [[Local Entero], [Local Decimal], [Local Texto]]]
 
@@ -41,7 +41,6 @@ class maquinaVirtual:
 		self.cantidadEspacioActual.append([contInicioInt,contInicioDecimal, contInicioTexto])
 
 		while (self.cuadruplos[self.cuadruploActual][0] != "end"):
-			#print(self.cuadruplos[self.cuadruploActual])
 			if self.cuadruplos[self.cuadruploActual][0] in ["+", "-", "*", "/", "==", ">", "&&", "||", "<", "!=", ">=", "<="]:
 				self.operacion(self.cuadruplos[self.cuadruploActual][0])
 
@@ -86,45 +85,38 @@ class maquinaVirtual:
 
 			self.cuadruploActual = self.cuadruploActual + 1
 
+	# Imprime el valor del cuadruplo en la consola
+	def imprimir(self):
+		aux1 = None
+		if type(self.cuadruplos[self.cuadruploActual][3]) is int:
+			posEnMemoria = self.obtenerPosEnMemoria(self.cuadruplos[self.cuadruploActual][3])
+			aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
 
-	# calcula los indices de acuerdo a una funcion
-
-	def obtenerPosEnMemoria(self, direccion):
-		posEnMemoria = [0, 0, 0]
-		if direccion >= 15000:
-			posEnMemoria[0] = 1
-			if direccion >= 15000 and direccion < 25000:
-				posEnMemoria[1] = 0
-				posEnMemoria[2] = direccion - 15000 - self.cantidadEspacioActual[len(self.cantidadEspacioActual) - 1][0] + self.contLocalInt
-				return posEnMemoria
-			elif direccion >= 25000 and direccion < 35000:
-				posEnMemoria[1] = 1
-				posEnMemoria[2] = direccion - 25000 - self.cantidadEspacioActual[len(self.cantidadEspacioActual) - 1][1] + self.contLocalDecimal
-				return posEnMemoria
-			elif direccion >= 35000 and direccion < 45000:
-				posEnMemoria[1] = 2
-				posEnMemoria[2] = direccion - 35000 - self.cantidadEspacioActual[len(self.cantidadEspacioActual) - 1][2] + self.contLocalTexto
-				return posEnMemoria
+		elif type(self.cuadruplos[self.cuadruploActual][3]) is list:
+			aux1 = self.cuadruplos[self.cuadruploActual][3][0]
+			if type(aux1) is list:
+				posEnMemoria = self.obtenerPosEnMemoria(aux1[0])
+				aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
+				posEnMemoria = self.obtenerPosEnMemoria(aux1)
+				aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
 		else:
-			if direccion < 5000:
-				posEnMemoria[1] = 0
-				posEnMemoria[2] = direccion
-				return posEnMemoria
-			elif direccion >= 5000 and direccion < 10000:
-				posEnMemoria[1] = 1
-				posEnMemoria[2] = direccion - 5000
-				return posEnMemoria
-			elif direccion >= 10000 and direccion < 15000:
-				posEnMemoria[1] = 2
-				posEnMemoria[2] = direccion - 10000
-				return posEnMemoria
+			i = 0
+			while i < len(self.listaAtributos):
+				if self.listaAtributos[i][0] == self.cuadruplos[self.cuadruploActual][3]:
+					posEnMemoria = self.obtenerPosEnMemoria(self.listaAtributos[i][1])
+					aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
+				i = i + 1
 
-	#Regresa el id de la clase padre
+		print(aux1)
+
+	
+
+	#Regresa el id de la clase padre que se encuentra dentro del directorio de procedimientos.
 	def obtenerIdClasePadre(self,clase):
 		return self.dirProcs[clase,0][0]
 
-	# busca la cantidad de recursos que usa una funcion
-
+	#Calcula el tamano que va a requerir una funcion para generar espacio en la memoria.
+	#Retorna en formato [cantenteros,cantdecimales,canttexto]
 	def obtenerTamanioFuncion(self):
 		if type(self.cuadruplos[self.cuadruploActual][3]) is list:
 			return
@@ -137,12 +129,17 @@ class maquinaVirtual:
 			for i in self.dirProcs[clase,0][3]:
 				if i[0] == funcion:
 					idFuncion = i[1]
-			self.cuadruplos[self.cuadruploActual][3] = self.dirProcs[funcion,idFuncion][3]
+			return self.dirProcs[funcion,idFuncion][3]
 		else:
-			self.cuadruplos[self.cuadruploActual][3] = self.dirProcs[funcion,0][3]
+			return self.dirProcs[funcion,0][3]
 
-	# hace operaciones aritmeticas y logicas entre 2 valores y lo guarda en una direccion
+	# Guarda las direcciones de los atributos de un objeto para procesar con los metodos
+	def atributo(self):
+		atributo = self.cuadruplos[self.cuadruploActual][2]
+		direccion = self.cuadruplos[self.cuadruploActual][3]
+		self.listaAtributos.append([atributo,direccion])
 
+	# Realiza las operaciones basicas entre dos operadores y lo guarda en una direccion temporal 
 	def operacion(self, op):
 		aux1 = 0
 		aux2 = 0
@@ -237,33 +234,41 @@ class maquinaVirtual:
 			else:
 				self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]] = 0
 
-	# imprime un valor en consola
+	# Recibe una direccion virtual de memoria y la transforma a una real
+	# Retorna en formato [globalOLocal,Entero/Decimal/Texto,posicionDentroDeLaLista]
+	# Ej. [0,1,10]
 
-	def imprimir(self):
-		aux1 = None
-		if type(self.cuadruplos[self.cuadruploActual][3]) is int:
-			posEnMemoria = self.obtenerPosEnMemoria(self.cuadruplos[self.cuadruploActual][3])
-			aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
-
-		elif type(self.cuadruplos[self.cuadruploActual][3]) is list:
-			aux1 = self.cuadruplos[self.cuadruploActual][3][0]
-			if type(aux1) is list:
-				posEnMemoria = self.obtenerPosEnMemoria(aux1[0])
-				aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
-				posEnMemoria = self.obtenerPosEnMemoria(aux1)
-				aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
+	def obtenerPosEnMemoria(self, direccion):
+		posEnMemoria = [0, 0, 0]
+		if direccion >= 15000:
+			posEnMemoria[0] = 1
+			if direccion >= 15000 and direccion < 25000:
+				posEnMemoria[1] = 0
+				posEnMemoria[2] = direccion - 15000 - self.cantidadEspacioActual[len(self.cantidadEspacioActual) - 1][0] + self.contLocalInt
+				return posEnMemoria
+			elif direccion >= 25000 and direccion < 35000:
+				posEnMemoria[1] = 1
+				posEnMemoria[2] = direccion - 25000 - self.cantidadEspacioActual[len(self.cantidadEspacioActual) - 1][1] + self.contLocalDecimal
+				return posEnMemoria
+			elif direccion >= 35000 and direccion < 45000:
+				posEnMemoria[1] = 2
+				posEnMemoria[2] = direccion - 35000 - self.cantidadEspacioActual[len(self.cantidadEspacioActual) - 1][2] + self.contLocalTexto
+				return posEnMemoria
 		else:
-			i = 0
-			while i < len(self.listaAtributos):
-				if self.listaAtributos[i][0] == self.cuadruplos[self.cuadruploActual][3]:
-					posEnMemoria = self.obtenerPosEnMemoria(self.listaAtributos[i][1])
-					aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
-				i = i + 1
+			if direccion < 5000:
+				posEnMemoria[1] = 0
+				posEnMemoria[2] = direccion
+				return posEnMemoria
+			elif direccion >= 5000 and direccion < 10000:
+				posEnMemoria[1] = 1
+				posEnMemoria[2] = direccion - 5000
+				return posEnMemoria
+			elif direccion >= 10000 and direccion < 15000:
+				posEnMemoria[1] = 2
+				posEnMemoria[2] = direccion - 10000
+				return posEnMemoria
 
-		print(aux1)
-
-	# lee un valor de consola
-
+	# Lee un valor de la consola
 	def leer(self):
 		if type(self.cuadruplos[self.cuadruploActual][3]) is int:
 			posEnMemoria = self.obtenerPosEnMemoria(self.cuadruplos[self.cuadruploActual][3])
@@ -299,26 +304,7 @@ class maquinaVirtual:
 		elif posEnMemoria[1] == 2:
 			self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]] = input('>> ')
 
-	# se le asigna al program counter el indice del cuadruplo que se quierea ejecutar
-
-	def gotof(self):
-		aux1 = None
-		if type(self.cuadruplos[self.cuadruploActual][1]) is int:
-			posEnMemoria = self.obtenerPosEnMemoria(self.cuadruplos[self.cuadruploActual][1])
-			aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
-
-		elif type(self.cuadruplos[self.cuadruploActual][1]) is list:
-			aux1 = self.cuadruplos[self.cuadruploActual][1][0]
-			if type(aux1) is list:
-				posEnMemoria = self.obtenerPosEnMemoria(aux1[0])
-				aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
-				posEnMemoria = self.obtenerPosEnMemoria(aux1)
-				aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]	
-		if aux1 == 0:
-			self.cuadruploActual = self.cuadruplos[self.cuadruploActual][3] - 1
-
-	# se le asigna un valor a una direccion de memoria especifica
-
+	# El valor que se especifica en el cuadruplo es insertado a la direccion de memoria ya sea una variable, atributo o elemento de un arreglo
 	def asignar(self):
 		aux1 = None
 		if type(self.cuadruplos[self.cuadruploActual][1]) is int:
@@ -364,12 +350,10 @@ class maquinaVirtual:
 		else:
 			self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]] = str(aux1)
 
-	# genera recursos para la funcion a instanciar y guarda los parametros que seran por referencia
-
+	# Revisa cuantas variables locales requiere de cada tipo y aumenta la memoria y cambia de contexto para entrar a una funcion nueva
 	def era(self):
 		self.referenciaFuncion.append([])
-		self.obtenerTamanioFuncion()
-		aux = self.cuadruplos[self.cuadruploActual][3]
+		aux = self.obtenerTamanioFuncion()
 		self.cantidadEspacioActual.append(aux)
 		self.memoria[1][0] = self.memoria[1][0] + ([0] * aux[0])
 		self.contLocalInt = self.contLocalInt + aux[0]
@@ -380,14 +364,29 @@ class maquinaVirtual:
 		self.memoria[1][2] = self.memoria[1][2] + ([""] * aux[2])
 		self.contLocalTexto = self.contLocalTexto + aux[2]
 
-	#cambia el program counter a uno especificado
-
+	# Va al numero de cuadruplo especificado por el cuadruplo y se guarda el actual para volver una vez que termine la funcion
 	def gosub(self):
 		self.guardarDireccionFuncionActual.append(self.cuadruploActual)
 		self.cuadruploActual = int(self.cuadruplos[self.cuadruploActual][3]) - 1
 
-	# se le asignan valores a los parametros de una funcion
+	# Si la condicion resulta en falso entonces el cuadruplo actual se mueve al cuadruplo que especifica el gotof
+	def gotof(self):
+		aux1 = None
+		if type(self.cuadruplos[self.cuadruploActual][1]) is int:
+			posEnMemoria = self.obtenerPosEnMemoria(self.cuadruplos[self.cuadruploActual][1])
+			aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
 
+		elif type(self.cuadruplos[self.cuadruploActual][1]) is list:
+			aux1 = self.cuadruplos[self.cuadruploActual][1][0]
+			if type(aux1) is list:
+				posEnMemoria = self.obtenerPosEnMemoria(aux1[0])
+				aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
+				posEnMemoria = self.obtenerPosEnMemoria(aux1)
+				aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]	
+		if aux1 == 0:
+			self.cuadruploActual = self.cuadruplos[self.cuadruploActual][3] - 1
+
+	# Se asignan valores a los parametros de una funcion y se revisa si son por referencia para insertar a la pila e parametros por refrencia
 	def param(self):
 		aux = self.cuadruplos[self.cuadruploActual]
 		valor = None
@@ -420,21 +419,7 @@ class maquinaVirtual:
 		if aux[1]:
 			self.referenciaFuncion[len(self.referenciaFuncion) - 1].append([aux[2], aux[3]])
 
-	# se asginan los valores a las variables que se pasaron por referencia al invocar una funcion
-
-	def regresaValoresPorReferencia(self, referencias):
-		for par in referencias:
-			posEnMemoria1 = self.obtenerPosEnMemoria(par[0])
-			if par[1] is list:
-				posEnMemoria2 = self.obtenerPosEnMemoria(par[1][0][0])
-				aux = self.memoria[posEnMemoria2[0]][posEnMemoria2[1]][posEnMemoria2[2]]
-				posEnMemoria2 = self.obtenerPosEnMemoria(aux)
-			else:
-				posEnMemoria2 = self.obtenerPosEnMemoria(par[1])
-			self.memoria[posEnMemoria2[0]][posEnMemoria2[1]][posEnMemoria2[2]- self.cantidadEspacioActual[len(self.cantidadEspacioActual) - 2][posEnMemoria2[1]]] = self.memoria[posEnMemoria1[0]][posEnMemoria1[1]][posEnMemoria1[2]]
-
-	#libera recursos que uso la funcion
-
+	# Borra la memoria local de la funcion que termino, se borra la lista de atributos para reiniciar los metodo y regresa los valores por referencia
 	def endproc(self):
 		self.cuadruploActual = self.guardarDireccionFuncionActual.pop()
 		referencias = self.referenciaFuncion.pop()
@@ -452,8 +437,19 @@ class maquinaVirtual:
 
 		del self.listaAtributos[:]
 
-	# le asigna valor a la direccion especifica
+	# Se inserta el valor local a las variables que fueron referenciadas cambiando el valor en el contexto viejo
+	def regresaValoresPorReferencia(self, referencias):
+		for par in referencias:
+			posEnMemoria1 = self.obtenerPosEnMemoria(par[0])
+			if par[1] is list:
+				posEnMemoria2 = self.obtenerPosEnMemoria(par[1][0][0])
+				aux = self.memoria[posEnMemoria2[0]][posEnMemoria2[1]][posEnMemoria2[2]]
+				posEnMemoria2 = self.obtenerPosEnMemoria(aux)
+			else:
+				posEnMemoria2 = self.obtenerPosEnMemoria(par[1])
+			self.memoria[posEnMemoria2[0]][posEnMemoria2[1]][posEnMemoria2[2]- self.cantidadEspacioActual[len(self.cantidadEspacioActual) - 2][posEnMemoria2[1]]] = self.memoria[posEnMemoria1[0]][posEnMemoria1[1]][posEnMemoria1[2]]
 
+	# Le asigna un valor a una direccion en especifico
 	def retornar(self):
 		aux1 = None
 
@@ -479,13 +475,11 @@ class maquinaVirtual:
 			posEnMemoria2 = self.obtenerPosEnMemoria(self.direccionResultadoFuncion.pop())
 			self.memoria[posEnMemoria2[0]][posEnMemoria2[1]][posEnMemoria2[2]- self.cantidadEspacioActual[len(self.cantidadEspacioActual) - 2][posEnMemoria2[1]]] = aux1
 
-	#almacena la direccion a la que se le asignara el valor de retorno
-
+	# Guarda la direccion en la que se va a hacer el retorno de una funcion
 	def guardarDireccionRetorno(self):
 		self.direccionResultadoFuncion.append(self.cuadruplos[self.cuadruploActual][3])
 
-	# valida el indice de una lista
-
+	# Revisa que el valor entero que llego se encuentre dentro del rango de los arreglos
 	def validarRango(self):
 		longLista = self.cuadruplos[self.cuadruploActual][3]
 		aux1 = None
@@ -503,9 +497,3 @@ class maquinaVirtual:
 		if aux1 < 0 or aux1 > longLista:
 			print ("Error en tiempo de ejecucion: Indice fuera de rango" )
 			sys.exit()
-
-	#Guarda las direcciones de los atributos de un objeto
-	def atributo(self):
-		atributo = self.cuadruplos[self.cuadruploActual][2]
-		direccion = self.cuadruplos[self.cuadruploActual][3]
-		self.listaAtributos.append([atributo,direccion])
