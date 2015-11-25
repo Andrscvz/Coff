@@ -650,12 +650,6 @@ class coffParser ( Parser ):
                         except TypeError: #si viene un atributo
                             res = self.cuboSemantico.checarSemanticaExp(oIzqTipo[0],oDerTipo,oper)
                         if res != None:
-                            print("bien")
-                            print(oIzqTipo)
-                            print(oIzq)
-                            print(oDerTipo)
-                            print(oDer)
-                            print("")
                             if tipoCuadruplo == 'expresion':
                                 if res == "entero":
                                     self.memLocalEntero = self.memLocalEntero + 1
@@ -677,16 +671,6 @@ class coffParser ( Parser ):
                             elif tipoCuadruplo == 'asignacion':
                                 self.quadruplos.append([oper,oDer,None,oIzq])
                         else:
-                            print("mal")
-                            print(oIzqTipo)
-                            print(oIzq)
-                            print(oDerTipo)
-                            print(oDer)
-                            print("")
-
-
-                            self.printTablaVariables()
-                            self.printCuadruplos()
                             print ("Error semantico en la linea:" + str(self.getCurrentToken().line) + " Tipos de operandos no compatibles" )
                             sys.exit()
                             self._syntaxErrors = self._syntaxErrors + 1
@@ -980,9 +964,6 @@ class coffParser ( Parser ):
             idClasePadre = self.dirProcs[clase,0][0]
             idFuncion = None
             for i in self.dirProcs[clase,0][3]:
-                print(i)
-                print(nombreFuncion)
-                print("")
                 if i[0] == nombreFuncion:
                     idFuncion = i[1]
             return len(self.dirProcs[nombreFuncion,idFuncion][2])

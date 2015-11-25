@@ -1,7 +1,6 @@
 clase Persona{
 	atributos:
 		entero edad;
-		entero aniosExperiencia;
 		texto nombre;
 	metodos:
 
@@ -11,8 +10,12 @@ clase Persona{
 clase Empleado extiende Persona{
 	atributos:
 		entero id;
+		texto empresa = "ITESM";
+		decimal salario;
 	metodos:
-
+		funcion vacio doblaSalario(){
+			asigna salario = salario * 2;
+		}
 }
 
 clase Ingeniero extiende Empleado{
@@ -20,14 +23,18 @@ clase Ingeniero extiende Empleado{
 		texto carrera = "ITC";
 	metodos:
 		funcion vacio imprimeAtributos(){
+			imprimir("*-*-*-*-*-*-*-*-*-*-*");
 			imprimir("Mi nombre es");
 			imprimir(nombre);
 			imprimir("Mi edad es");
 			imprimir(edad);
+			imprimir("Trabajo en");
+			imprimir(empresa);
 			imprimir("Mi id en la empresa es");
 			imprimir(id);
-			imprimir("Estudie");
-			imprimir(aniosExperiencia);
+			imprimir("Mi salario actualmente es",salario); 
+			imprimir("*-*-*-*-*-*-*-*-*-*-*");
+			imprimir("");
 		}		
 }
 
@@ -36,14 +43,18 @@ clase Abogado extiende Empleado{
 		texto carrera = "Leyes";
 	metodos:
 		funcion vacio imprimeAtributos(){
+			imprimir("*-*-*-*-*-*-*-*-*-*-*");
 			imprimir("Mi nombre es");
 			imprimir(nombre);
 			imprimir("Mi edad es");
 			imprimir(edad);
+			imprimir("Trabajo en");
+			imprimir(empresa);
 			imprimir("Mi id en la empresa es");
 			imprimir(id);
-			imprimir("Estudie");
-			imprimir(aniosExperiencia);
+			imprimir("Mi salario actualmente es",salario);
+			imprimir("*-*-*-*-*-*-*-*-*-*-*");
+			imprimir("");
 		}		
 }
 
@@ -53,9 +64,22 @@ principal vacio inicio(){
 	Abogado a;
 	Ingeniero i;
 
-	asigna i.nombre = "nombreIngeniero";
+	asigna a.id = 3;
+	asigna a.edad = 25;
+	asigna a.nombre = "Abogado Luis";
+	asigna a.salario = 100.5;
+	ejec a.imprimeAtributos();
 
+	ejec a.doblaSalario();
+	ejec a.imprimeAtributos();
 
-	
+	asigna i.id = 2;
+	asigna i.edad = 27;
+	asigna i.nombre = "Ingeniera Daniela";
+	asigna i.salario = 150.5;
+	ejec i.imprimeAtributos();
+
+	ejec i.doblaSalario();
+	ejec i.imprimeAtributos();
 
 }
