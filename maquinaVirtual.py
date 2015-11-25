@@ -267,12 +267,18 @@ class maquinaVirtual:
 	def leer(self):
 		if type(self.cuadruplos[self.cuadruploActual][3]) is int:
 			posEnMemoria = self.obtenerPosEnMemoria(self.cuadruplos[self.cuadruploActual][3])
+
+		elif type(self.cuadruplos[self.cuadruploActual][3]) is list:
+			aux1 = self.cuadruplos[self.cuadruploActual][3][0]
+			if type(aux1) is list:
+				posEnMemoria = self.obtenerPosEnMemoria(aux1[0])
+				aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
+				posEnMemoria = self.obtenerPosEnMemoria(aux1)
 		else:
 			i = 0
 			while i < len(self.listaAtributos):
 				if self.listaAtributos[i][0] == self.cuadruplos[self.cuadruploActual][3]:
 					posEnMemoria = self.obtenerPosEnMemoria(self.listaAtributos[i][1])
-					aux1 = self.memoria[posEnMemoria[0]][posEnMemoria[1]][posEnMemoria[2]]
 				i = i + 1
 
 

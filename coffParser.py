@@ -6160,11 +6160,8 @@ class coffParser ( Parser ):
                 listener.exitLectura(self)
 
     lecEsAtributo = 0
-
-
-
-
-
+    leerVariable = None
+    lecturaEsArreglo = 0
     def lectura(self):
 
         localctx = coffParser.LecturaContext(self, self._ctx, self.state)
@@ -6177,8 +6174,10 @@ class coffParser ( Parser ):
             self.match(coffParser.PIZQ)
             self.state = 542 
             self.idVariableActual = str(self.getCurrentToken().text)
+            self.leerVariable  = self.idVariableActual
             self.checkIfVariableExists(self.idVariableActual)
             
+            self.lecturaEsArreglo = 0
             lecturaEsAtributo = 0
             
             if self.metodoTof:
@@ -6203,7 +6202,11 @@ class coffParser ( Parser ):
             self.state = 544
             self.l2()
             if self.lecEsAtributo == 0:
-                self.crearCuadruploLectura(self.obtenerDireccionVariable(self.idVariableActual))
+                if self.lecturaEsArreglo:
+                    self.crearCuadruploLectura(self.obtenerDireccionVariable(self.idVariableActual))
+                else:
+                    self.crearCuadruploLectura(self.pilaO.pop())
+                    self.pTipos.pop()
 
             self.state = 545
             self.match(coffParser.PDER)
@@ -6343,6 +6346,36 @@ class coffParser ( Parser ):
                 self.match(coffParser.CIZQ)
                 self.state = 554
                 self.expresion()
+
+                ###################ARREGLOS############################
+
+                if self.pTipos[len(self.pTipos)-1] != "entero":
+                    print("Error en la linea " + str(self.getCurrentToken().line) + ", se esperaba un entero al llamar el elemento de un arreglo")
+                    sys.exit()
+                    return  
+
+                try:
+
+                    #Se genera cuadruplo que verifica que la expresion este dentro del rango del arreglo
+                    self.cuadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.leerVariable,self.scopeProcs][1]-1])
+                    #Se le suma el resultado a la direccion de la variable inicial
+                    
+                    self.insertarValorTipo([self.tablaVariables[self.leerVariable,self.scopeProcs][2]],"entero")
+                except KeyError:
+                    #Se genera cuadruplo que verifica que la expresion este dentro del rango del arreglo
+                    self.cuadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.leerVariable,0][1]-1])
+                    #Se le suma el resultado a la direccion de la variable inicial
+                    
+                    self.insertarValorTipo([self.tablaVariables[self.leerVariable,0][2]],"entero")
+
+                self.insertarOperador('#')
+                self.crearCuadruploExpAsig(5,"expresion")
+                self.lecturaEsArreglo = 0
+
+                ###############################################
+
+
+
                 self.state = 555
                 self.match(coffParser.CDER)
 
