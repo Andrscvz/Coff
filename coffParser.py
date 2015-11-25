@@ -353,7 +353,7 @@ class coffParser ( Parser ):
 
     pSaltos = [] #Pila de saltos para los condicionales y los ciclos
 
-    quadruplos = [] #Lista de cuadruplos
+    cuadruplos = [] #Lista de cuadruplos
 
     contadorParametros = [] #Pila que guarda en que parametro se esta revisando
 
@@ -365,15 +365,15 @@ class coffParser ( Parser ):
     ################################################# revisar CAVAZOS
     memGlobalEntero = -1 #Contador para memoria virtual de variables globales enteras
 
-    memGlobalDecimal = 2999 #Contador para memoria virtual de variables globales decimales
+    memGlobalDecimal = 4999 #Contador para memoria virtual de variables globales decimales
 
-    memGlobalTexto = 5999 #Contador para memoria virtual de variables globales texto
+    memGlobalTexto = 9999 #Contador para memoria virtual de variables globales texto
 
-    memLocalEntero = 8999 #Contador para memoria virtual de variables locales y temporales enteras
+    memLocalEntero = 14999 #Contador para memoria virtual de variables locales y temporales enteras
 
-    memLocalDecimal = 14999 #Contador para memoria virtual de variables locales y temporales decimales
+    memLocalDecimal = 24999 #Contador para memoria virtual de variables locales y temporales decimales
 
-    memLocalTexto = 20999 #Contador para memoria virtual de variables locales y temporales texto
+    memLocalTexto = 34999 #Contador para memoria virtual de variables locales y temporales texto
     ####################################################
 
     cuboSemantico = cuboSemantico() #Para hacer las validaciones semanticas
@@ -608,9 +608,9 @@ class coffParser ( Parser ):
         print("")
 
     def resetearDireccionesLocales(self):
-        self.memLocalEntero = 8999
-        self.memLocalDecimal = 14999
-        self.memLocalTexto = 20999
+        self.memLocalEntero = 14999
+        self.memLocalDecimal = 24999
+        self.memLocalTexto = 34999
 
 
     def insertarValorTipo(self,op,tipoOp):
@@ -661,7 +661,7 @@ class coffParser ( Parser ):
                                     self.memLocalTexto = self.memLocalTexto + 1
                                     auxDireccion = self.memLocalTexto
 
-                                self.quadruplos.append([oper,oIzq,oDer,auxDireccion])
+                                self.cuadruplos.append([oper,oIzq,oDer,auxDireccion])
 
                                 if op == 5:
                                     self.insertarValorTipo([[auxDireccion]],res)
@@ -669,7 +669,7 @@ class coffParser ( Parser ):
                                     self.insertarValorTipo(auxDireccion,res)
                                 self.contQuadTemporales = self.contQuadTemporales + 1
                             elif tipoCuadruplo == 'asignacion':
-                                self.quadruplos.append([oper,oDer,None,oIzq])
+                                self.cuadruplos.append([oper,oDer,None,oIzq])
                         else:
                             print ("Error semantico en la linea:" + str(self.getCurrentToken().line) + " Tipos de operandos no compatibles" )
                             sys.exit()
@@ -687,11 +687,11 @@ class coffParser ( Parser ):
         if self.pilaO:
             elemento = self.pilaO.pop()
             self.pTipos.pop()
-            self.quadruplos.append(['imprimir',None,None,elemento])
+            self.cuadruplos.append(['imprimir',None,None,elemento])
 
 
     def crearCuadruploLectura(self,elemento):
-        self.quadruplos.append(['leer',None,None,elemento])
+        self.cuadruplos.append(['leer',None,None,elemento])
 
 
     def crearCuadruploCondicion(self):
@@ -703,32 +703,32 @@ class coffParser ( Parser ):
             sys.exit()
             return
         else:
-            self.quadruplos.append(['gotof',condicion,None,None])
-            cont = len(self.quadruplos)
+            self.cuadruplos.append(['gotof',condicion,None,None])
+            cont = len(self.cuadruplos)
             self.pSaltos.append(cont-1)
 
     def crearCuadruploCondicionFalso(self):
         falso = self.pSaltos.pop()
-        self.quadruplos.append(['goto',None,None,None])
-        cont = len(self.quadruplos)
+        self.cuadruplos.append(['goto',None,None,None])
+        cont = len(self.cuadruplos)
         self.pSaltos.append(cont-1)
-        self.quadruplos[falso][3] = cont
+        self.cuadruplos[falso][3] = cont
 
     def crearCuadruploCondicionSalida(self):
         salida = self.pSaltos.pop()
-        cont = len(self.quadruplos)
-        self.quadruplos[salida][3] = cont
+        cont = len(self.cuadruplos)
+        self.cuadruplos[salida][3] = cont
 
     def crearCuadruploCondicionInicioCiclo(self):
-        cont = len(self.quadruplos)
+        cont = len(self.cuadruplos)
         self.pSaltos.append(cont)
 
     def crearCuadruploCondicionFinCiclo(self):
         falso = self.pSaltos.pop()
         retorno = self.pSaltos.pop()
-        self.quadruplos.append(['goto',None,None,retorno])
-        cont = len(self.quadruplos)
-        self.quadruplos[falso][3] = cont
+        self.cuadruplos.append(['goto',None,None,retorno])
+        cont = len(self.cuadruplos)
+        self.cuadruplos[falso][3] = cont
 
 
 
@@ -836,30 +836,30 @@ class coffParser ( Parser ):
                     return
 
     def crearCuadruploMain(self):
-        self.quadruplos.append(['goto',None,None,None])
+        self.cuadruplos.append(['goto',None,None,None])
 
 
     def completarCuadruploMain(self):
-        cont = len(self.quadruplos)
-        self.quadruplos[0][3] = cont
+        cont = len(self.cuadruplos)
+        self.cuadruplos[0][3] = cont
 
     cuadruploFinVarsGlobales = 0
     def crearCuadruploVarsGlobales(self):
-        self.cuadruploFinVarsGlobales = len(self.quadruplos)
-        self.quadruplos.append(['goto',None,None,None])
+        self.cuadruploFinVarsGlobales = len(self.cuadruplos)
+        self.cuadruplos.append(['goto',None,None,None])
 
     def completarCuadruploVarsGlobales(self):
-        cont = len(self.quadruplos)
-        self.quadruplos[self.cuadruploFinVarsGlobales][3] = cont
+        cont = len(self.cuadruplos)
+        self.cuadruplos[self.cuadruploFinVarsGlobales][3] = cont
 
     def crearCuadruploTerminarProc(self):
-        self.quadruplos.append([self.terminacionProc,None,None,None])
+        self.cuadruplos.append([self.terminacionProc,None,None,None])
 
 
     def crearCuadruploRetornar(self):
         elemento = self.pilaO.pop()
         tipoElemento = self.pTipos.pop()
-        self.quadruplos.append(['retornar',None,None,elemento])
+        self.cuadruplos.append(['retornar',None,None,elemento])
 
     def idDeMetodo(self,nombreMetodo):
         if(self.metodoTof):
@@ -943,12 +943,12 @@ class coffParser ( Parser ):
             tv = self.tablaVariables[nombreVariable,0]
 
         while i < len(self.dirProcs[clase,0][2]):
-            self.quadruplos.append(['atributo',None,self.dirProcs[clase,0][2][i][0],tv[2][i]])
+            self.cuadruplos.append(['atributo',None,self.dirProcs[clase,0][2][i][0],tv[2][i]])
             i = i + 1
 
     def crearCuadruploEra(self, nombreVariable, nombreFuncion):
         clase = self.obtenerClaseDeUnaFuncionEra(nombreVariable, nombreFuncion)
-        self.quadruplos.append(['era',None,clase,nombreFuncion])
+        self.cuadruplos.append(['era',None,clase,nombreFuncion])
 
 
     def obtenerCantidadParametrosFuncionOMetodo(self,nombreVariable,nombreFuncion):
@@ -1000,7 +1000,7 @@ class coffParser ( Parser ):
         
     def crearCuadruploParam(self):
         while len(self.pilaParam) > 0:
-            self.quadruplos.append(self.pilaParam[0])
+            self.cuadruplos.append(self.pilaParam[0])
             self.pilaParam.pop(0)
 
 
@@ -1023,7 +1023,7 @@ class coffParser ( Parser ):
 
     def crearCuadruploGosub(self,nombreVariable,nombreFuncion):
         cuadruplo = self.obtenerCuadruploInicioFuncion(nombreVariable,nombreFuncion)
-        self.quadruplos.append(['gosub',None,None,cuadruplo])
+        self.cuadruplos.append(['gosub',None,None,cuadruplo])
 
 
     def printTablaVariables(self):
@@ -1045,8 +1045,8 @@ class coffParser ( Parser ):
     def printCuadruplos(self):
         print("###################Cuadruplos###################")
         cuantos = 0
-        while cuantos < len(self.quadruplos):
-            print(str(cuantos), " " , self.quadruplos[cuantos])
+        while cuantos < len(self.cuadruplos):
+            print(str(cuantos), " " , self.cuadruplos[cuantos])
             cuantos = cuantos + 1
 
         print("")
@@ -1059,7 +1059,7 @@ class coffParser ( Parser ):
 
 
     def crearCuadruploResultado(self,elemento):
-        self.quadruplos.append(['resultado',None,None,elemento])
+        self.cuadruplos.append(['resultado',None,None,elemento])
 
 
     #Regresa la direccion especifica de una variable
@@ -1201,7 +1201,7 @@ class coffParser ( Parser ):
             self.metodoTof = 0
             self.principal()
             self.terminacionProc = 'end'
-            self.dirProcs["inicio",0][3] = [self.memLocalEntero - 8999,self.memLocalDecimal - 14999,self.memLocalTexto - 20999]
+            self.dirProcs["inicio",0][3] = [self.memLocalEntero - 14999,self.memLocalDecimal - 24999,self.memLocalTexto - 34999]
             self.crearCuadruploTerminarProc()
             
             #self.printTablaVariables()
@@ -1676,7 +1676,7 @@ class coffParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 201
             self.dirProcs["inicio",0].append([])
-            self.dirProcs["inicio",0].append(len(self.quadruplos))
+            self.dirProcs["inicio",0].append(len(self.cuadruplos))
             self.pr23()
             self.dirProcs["inicio",0][3] = self.getNumberOfEDT(["inicio",0])
             
@@ -2881,12 +2881,12 @@ class coffParser ( Parser ):
 
                 try:
                     #Se genera cuadruplo que verifica que la expresion este dentro del rango del arreglo
-                    self.quadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],self.scopeProcs][1]-1])
+                    self.cuadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],self.scopeProcs][1]-1])
                     #Se le suma el resultado a la direccion de la variable inicial                
                     self.insertarValorTipo([self.tablaVariables[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],self.scopeProcs][2]],"entero")
                 except KeyError:
                     #Se genera cuadruplo que verifica que la expresion este dentro del rango del arreglo
-                    self.quadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],0][1]-1])
+                    self.cuadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],0][1]-1])
                     #Se le suma el resultado a la direccion de la variable inicial                
                     self.insertarValorTipo([self.tablaVariables[self.valorIdFuncionMetodoActual[len(self.valorIdFuncionMetodoActual)-1],0][2]],"entero")
 
@@ -4835,9 +4835,9 @@ class coffParser ( Parser ):
             ##########################################
             if self.metodoTof:
 
-                self.dirProcs[self.idFuncionActual,self.claseScopeRef][3] = [self.memLocalEntero - 8999,self.memLocalDecimal - 14999,self.memLocalTexto - 20999]
+                self.dirProcs[self.idFuncionActual,self.claseScopeRef][3] = [self.memLocalEntero - 14999,self.memLocalDecimal - 24999,self.memLocalTexto - 34999]
             else:
-                self.dirProcs[self.idFuncionActual,0][3] = [self.memLocalEntero - 8999,self.memLocalDecimal - 14999,self.memLocalTexto - 20999]
+                self.dirProcs[self.idFuncionActual,0][3] = [self.memLocalEntero - 14999,self.memLocalDecimal - 24999,self.memLocalTexto - 34999]
             ###########################################
 
             self.crearCuadruploTerminarProc()
@@ -5033,7 +5033,7 @@ class coffParser ( Parser ):
             ###########Cuadruplo inicio de funcion###############
             idClasePadre = self.idDeMetodo(self.idFuncionActual)
             self.dirProcs[self.idFuncionActual,idClasePadre].append([])
-            self.dirProcs[self.idFuncionActual,idClasePadre].append(len(self.quadruplos))
+            self.dirProcs[self.idFuncionActual,idClasePadre].append(len(self.cuadruplos))
             self.fun23()
             self.state = 439
             self.dirProcs[self.idFuncionActual,idClasePadre][3] = self.getNumberOfEDT([self.idFuncionActual,idClasePadre])           
@@ -5684,13 +5684,13 @@ class coffParser ( Parser ):
                 try:
 
                     #Se genera cuadruplo que verifica que la expresion este dentro del rango del arreglo
-                    self.quadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.asignacionIdVarible,self.scopeProcs][1]-1])
+                    self.cuadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.asignacionIdVarible,self.scopeProcs][1]-1])
                     #Se le suma el resultado a la direccion de la variable inicial
                     
                     self.insertarValorTipo([self.tablaVariables[self.asignacionIdVarible,self.scopeProcs][2]],"entero")
                 except KeyError:
                     #Se genera cuadruplo que verifica que la expresion este dentro del rango del arreglo
-                    self.quadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.asignacionIdVarible,0][1]-1])
+                    self.cuadruplos.append(["ver",self.pilaO[len(self.pilaO)-1],0,self.tablaVariables[self.asignacionIdVarible,0][1]-1])
                     #Se le suma el resultado a la direccion de la variable inicial
                     
                     self.insertarValorTipo([self.tablaVariables[self.asignacionIdVarible,0][2]],"entero")
