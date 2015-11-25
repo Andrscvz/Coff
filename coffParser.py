@@ -979,9 +979,6 @@ class coffParser ( Parser ):
 
             idFuncion = None
             for i in self.dirProcs[clase,0][3]:
-                print(i)
-                print(nombreFuncion)
-                print("")
                 if i[0] == nombreFuncion:
                     idFuncion = i[1]
 
